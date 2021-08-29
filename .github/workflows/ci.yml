@@ -1,0 +1,55 @@
+name: CI
+
+on: [push, pull_request]
+
+env:
+  RUST_VERSION: 1.54.0
+  CARGO_TERM_COLOR: always
+
+jobs:
+  check:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup Rust
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: ${{ env.RUST_VERSION }}
+          profile: minimal
+          override: true
+
+      - name: Check
+        run: cargo check
+
+  format:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup Rust
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: ${{ env.RUST_VERSION }}
+          profile: minimal
+          components: rustfmt
+          override: true
+
+      - name: Check code format
+        run: cargo fmt --all -- --check
+
+  lint:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup Rust
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: ${{ env.RUST_VERSION }}
+          override: true
+          profile: minimal
+          components: clippy
+
+      - name: Run lint
+        run: cargo clippy --all-targets --all-features -- -D warnings
