@@ -1,5 +1,6 @@
 use crate::context_store;
 use anyhow::{Context as _, Result};
+use log::info;
 use serenity::client::Context;
 use serenity::model::id::GuildId;
 
@@ -21,6 +22,8 @@ pub async fn handle_voice_state_update(ctx: &Context, guild_id: Option<GuildId>)
             .await
             .unwrap();
         bound_text_channel_map.remove(&guild_id);
+
+        info!("Automatically disconnected in guild {}", guild_id.as_u64());
     }
 
     Ok(())
