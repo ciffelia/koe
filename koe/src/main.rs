@@ -1,11 +1,10 @@
-use crate::context_store::{BoundTextChannelMapStore, SpeechProviderStore, VoiceClientStore};
 use crate::voice_client::VoiceClient;
 use anyhow::{Context, Result};
 use dashmap::DashMap;
 use koe_speech::SpeechProvider;
+use serenity::model::id::{ChannelId, GuildId};
 use serenity::Client;
 use songbird::SerenityInit;
-use std::sync::Arc;
 
 mod command;
 mod context_store;
@@ -25,18 +24,14 @@ async fn main() -> Result<()> {
         .await
         .context("Failed to build serenity client")?;
 
-    {
-        let mut data = client.data.write().await;
+    let speech_provider = SpeechProvider::new(config.google_application_credentials).await?;
+    context_store::insert(&client, speech_provider).await;
 
-        let speech_provider = SpeechProvider::new(config.google_application_credentials).await?;
-        data.insert::<SpeechProviderStore>(Arc::new(speech_provider));
+    let voice_client = VoiceClient::new();
+    context_store::insert(&client, voice_client).await;
 
-        let voice_client = VoiceClient::new();
-        data.insert::<VoiceClientStore>(Arc::new(voice_client));
-
-        let bound_text_channel_map = DashMap::new();
-        data.insert::<BoundTextChannelMapStore>(Arc::new(bound_text_channel_map));
-    }
+    let bound_text_channel_map = DashMap::<GuildId, ChannelId>::new();
+    context_store::insert(&client, bound_text_channel_map).await;
 
     client.start().await.context("Client error occurred")?;
 

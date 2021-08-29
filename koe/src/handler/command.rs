@@ -1,5 +1,7 @@
 use crate::context_store;
+use crate::voice_client::VoiceClient;
 use anyhow::{Context as _, Result};
+use dashmap::DashMap;
 use log::error;
 use serenity::client::Context;
 use serenity::model::{
@@ -53,10 +55,10 @@ async fn handle_join(ctx: &Context, command: &ApplicationCommandInteraction) -> 
         }
     };
 
-    let voice_client = context_store::extract_voice_client(ctx).await?;
+    let voice_client = context_store::extract::<VoiceClient>(ctx).await?;
     voice_client.join(ctx, guild_id, voice_channel_id).await?;
 
-    let bound_text_channel_map = context_store::extract_bound_text_channel_map(ctx).await?;
+    let bound_text_channel_map = context_store::extract::<DashMap<GuildId, ChannelId>>(ctx).await?;
     bound_text_channel_map.insert(guild_id, text_channel_id);
 
     Ok("接続しました。".to_string())
@@ -68,7 +70,7 @@ async fn handle_leave(ctx: &Context, command: &ApplicationCommandInteraction) ->
         None => return Ok("`/leave` はサーバー内でのみ使えます。".to_string()),
     };
 
-    let voice_client = context_store::extract_voice_client(ctx).await?;
+    let voice_client = context_store::extract::<VoiceClient>(ctx).await?;
 
     if !voice_client.is_connected(ctx, guild_id).await? {
         return Ok("どのボイスチャンネルにも接続していません。".to_string());
@@ -76,7 +78,7 @@ async fn handle_leave(ctx: &Context, command: &ApplicationCommandInteraction) ->
 
     voice_client.leave(ctx, guild_id).await?;
 
-    let bound_text_channel_map = context_store::extract_bound_text_channel_map(ctx).await?;
+    let bound_text_channel_map = context_store::extract::<DashMap<GuildId, ChannelId>>(ctx).await?;
     bound_text_channel_map.remove(&guild_id);
 
     Ok("切断しました。".to_string())

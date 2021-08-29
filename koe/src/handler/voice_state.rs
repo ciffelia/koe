@@ -1,8 +1,10 @@
 use crate::context_store;
+use crate::voice_client::VoiceClient;
 use anyhow::{Context as _, Result};
+use dashmap::DashMap;
 use log::info;
 use serenity::client::Context;
-use serenity::model::id::GuildId;
+use serenity::model::id::{ChannelId, GuildId};
 
 pub async fn handle_voice_state_update(ctx: &Context, guild_id: Option<GuildId>) -> Result<()> {
     let guild_id = match guild_id {
@@ -15,10 +17,10 @@ pub async fn handle_voice_state_update(ctx: &Context, guild_id: Option<GuildId>)
         .context("Failed to count the number of users in the bot's channel")?;
 
     if count == 1 {
-        let voice_client = context_store::extract_voice_client(ctx).await.unwrap();
+        let voice_client = context_store::extract::<VoiceClient>(ctx).await.unwrap();
         voice_client.leave(ctx, guild_id).await.unwrap();
 
-        let bound_text_channel_map = context_store::extract_bound_text_channel_map(ctx)
+        let bound_text_channel_map = context_store::extract::<DashMap<GuildId, ChannelId>>(ctx)
             .await
             .unwrap();
         bound_text_channel_map.remove(&guild_id);
