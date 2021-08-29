@@ -1,0 +1,9 @@
+[package]
+name = "koe-audio"
+version = "0.1.0"
+edition = "2018"
+
+[dependencies]
+anyhow = "1.0.43"
+tokio = { version = "1.10.1", features = ["process"] }
+log = "0.4.14"

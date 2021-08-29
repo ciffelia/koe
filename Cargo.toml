@@ -1,0 +1,7 @@
+[workspace]
+members = [
+    "koe",
+    "koe-audio",
+    "koe-config",
+    "koe-speech"
+]
