@@ -42,24 +42,24 @@ Discord 読み上げ Bot
 #### 2-1. アプリケーションの作成
 
 1. [Discord Developer Portal](https://discord.com/developers/applications) を開き、新しくアプリケーションを作成します。
-2. `General Information`の`Client ID`を控えておきます。
+2. General Information の Client ID を控えておきます。
 3. 作成したアプリケーションで、Bot を有効にします。
-4. `Bot`の`Token`を控えておきます。
+4. Bot の Token を控えておきます。
 
 #### 2-2. サーバーに Bot を追加
 
-以下の URL にアクセスして、サーバーに Bot を追加します。先ほど控えた`Client ID`を使います。
+以下の URL にアクセスして、サーバーに Bot を追加します。`CLIENT_ID`は、先ほど控えた Client ID に置き換えてください。
 
 ```
 https://discord.com/api/oauth2/authorize?client_id=CLIENT_ID&permissions=3146752&scope=bot%20applications.commands
 ```
 
-##### 補足: Bot に必要な権限
+##### 補足: Koe が使用する権限
 
 ###### OAuth2 Scopes
 
-- application.commands
-- bot
+- `application.commands`
+- `bot`
 
 ###### Bot Permissions
 
