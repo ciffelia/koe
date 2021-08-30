@@ -53,9 +53,9 @@ impl SpeechProvider {
     }
 
     fn parse_resp(resp: SynthesizeSpeechResponse) -> Result<EncodedAudio> {
-        let speech_base64 = resp.audio_content.ok_or(anyhow!(
-            "No audio_content found in the response from Text-to-Speech API"
-        ))?;
+        let speech_base64 = resp.audio_content.ok_or_else(|| {
+            anyhow!("No audio_content found in the response from Text-to-Speech API")
+        })?;
 
         let speech_bytes =
             base64::decode(speech_base64).context("Failed to decode base64 audio_content")?;
