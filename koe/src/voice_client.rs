@@ -26,7 +26,8 @@ impl VoiceClient {
 
         let call = manager.get_or_insert(guild_id);
 
-        // See https://docs.rs/songbird/latest/songbird/struct.Call.html#method.join
+        // Call::joinを実行するには、2段階のawaitが必要
+        // 詳細は https://docs.rs/songbird/latest/songbird/struct.Call.html#method.join
         let join_res: Result<Join> = {
             let mut handler = call.lock().await;
             handler.deafen(true).await?;
