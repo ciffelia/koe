@@ -2,6 +2,7 @@ use crate::context_store;
 use crate::status::VoiceConnectionStatusMap;
 use crate::voice_client::VoiceClient;
 use anyhow::Result;
+use chrono::Duration;
 use serenity::{client::Context, model::channel::Message};
 
 pub async fn handle_message(ctx: &Context, msg: Message) -> Result<()> {
@@ -22,10 +23,36 @@ pub async fn handle_message(ctx: &Context, msg: Message) -> Result<()> {
     };
 
     if status.bound_text_channel == msg.channel_id {
-        let author_name = msg.author_nick(&ctx.http).await.unwrap_or(msg.author.name);
-        let text = author_name + "。" + &msg.content;
+        let text = build_read_text(ctx, &msg, &status.last_message_read).await;
         status.speech_queue.push(text)?;
+        status.last_message_read = Some(msg);
     }
 
     Ok(())
+}
+
+async fn build_read_text(ctx: &Context, msg: &Message, last_msg: &Option<Message>) -> String {
+    let mut text = String::new();
+
+    if should_read_author_name(msg, last_msg) {
+        let author_name = msg
+            .author_nick(&ctx.http)
+            .await
+            .unwrap_or_else(|| msg.author.name.clone());
+
+        text.push_str(&author_name);
+        text.push('。');
+    }
+    text.push_str(&msg.content);
+
+    text
+}
+
+fn should_read_author_name(msg: &Message, last_msg: &Option<Message>) -> bool {
+    let last_msg = match last_msg {
+        Some(msg) => msg,
+        None => return true,
+    };
+
+    msg.author != last_msg.author || (msg.timestamp - last_msg.timestamp) > Duration::seconds(10)
 }

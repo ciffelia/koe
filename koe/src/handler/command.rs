@@ -71,6 +71,7 @@ async fn handle_join(ctx: &Context, command: &ApplicationCommandInteraction) -> 
         guild_id,
         VoiceConnectionStatus {
             bound_text_channel: text_channel_id,
+            last_message_read: None,
             speech_queue: SpeechQueue::new(NewSpeechQueueOption {
                 guild_id,
                 speech_provider,
