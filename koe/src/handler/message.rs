@@ -68,6 +68,7 @@ fn should_read_author_name(msg: &Message, last_msg: &Option<Message>) -> bool {
     msg.author != last_msg.author || (msg.timestamp - last_msg.timestamp) > Duration::seconds(10)
 }
 
+/// メッセージのURLや特殊文字を除去
 fn process_read_text(text: &str) -> String {
     url_regex().replace_all(text, "、").into()
 }
