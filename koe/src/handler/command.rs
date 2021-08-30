@@ -98,7 +98,7 @@ async fn handle_leave(ctx: &Context, command: &ApplicationCommandInteraction) ->
     Ok("切断しました。".to_string())
 }
 
-pub async fn get_user_voice_channel(
+async fn get_user_voice_channel(
     ctx: &Context,
     guild_id: &GuildId,
     user_id: &UserId,
