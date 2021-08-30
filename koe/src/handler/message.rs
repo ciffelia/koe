@@ -41,12 +41,11 @@ async fn build_read_text(ctx: &Context, msg: &Message, last_msg: &Option<Message
             .await
             .unwrap_or_else(|| msg.author.name.clone());
 
-        text.push_str(&author_name);
+        text.push_str(&process_read_text(&author_name));
         text.push('。');
     }
-    text.push_str(&msg.content);
 
-    text = url_regex().replace_all(&text, "、").into();
+    text.push_str(&process_read_text(&msg.content));
 
     // 文字数を60文字に制限
     if text.chars().count() > 60 {
@@ -63,4 +62,8 @@ fn should_read_author_name(msg: &Message, last_msg: &Option<Message>) -> bool {
     };
 
     msg.author != last_msg.author || (msg.timestamp - last_msg.timestamp) > Duration::seconds(10)
+}
+
+fn process_read_text(text: &str) -> String {
+    url_regex().replace_all(text, "、").into()
 }
