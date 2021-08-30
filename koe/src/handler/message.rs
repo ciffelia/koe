@@ -49,7 +49,7 @@ async fn build_read_text(ctx: &Context, msg: &Message, last_msg: &Option<Message
         text.push('。');
     }
 
-    text.push_str(&process_read_text(&msg.content));
+    text.push_str(&process_read_text(&msg.content_safe(&ctx.cache).await));
 
     // 文字数を60文字に制限
     if text.chars().count() > 60 {
