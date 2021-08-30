@@ -1,7 +1,8 @@
 use anyhow::{anyhow, Result};
-use serenity::client::Context;
-use serenity::prelude::TypeMapKey;
-use serenity::Client;
+use serenity::{
+    client::{Client, Context},
+    prelude::TypeMapKey,
+};
 use songbird::Songbird;
 use std::marker::PhantomData;
 use std::sync::Arc;

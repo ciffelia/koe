@@ -3,8 +3,7 @@ use crate::status::VoiceConnectionStatusMap;
 use crate::voice_client::VoiceClient;
 use anyhow::{Context as _, Result};
 use log::debug;
-use serenity::client::Context;
-use serenity::model::id::GuildId;
+use serenity::{client::Context, model::id::GuildId};
 
 pub async fn handle_voice_state_update(ctx: &Context, guild_id: Option<GuildId>) -> Result<()> {
     let guild_id = match guild_id {

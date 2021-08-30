@@ -1,9 +1,11 @@
 use crate::context_store;
 use anyhow::Result;
 use serenity::client::Context;
-use songbird::id::{ChannelId, GuildId};
-use songbird::join::Join;
-use songbird::Call;
+use songbird::{
+    id::{ChannelId, GuildId},
+    join::Join,
+    Call,
+};
 use std::sync::Arc;
 use tokio::sync::Mutex;
 

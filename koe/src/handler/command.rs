@@ -5,10 +5,14 @@ use crate::voice_client::VoiceClient;
 use anyhow::{Context as _, Result};
 use koe_speech::SpeechProvider;
 use log::error;
-use serenity::client::Context;
-use serenity::model::{
-    id::{ChannelId, GuildId, UserId},
-    interactions::{application_command::ApplicationCommandInteraction, InteractionResponseType},
+use serenity::{
+    client::Context,
+    model::{
+        id::{ChannelId, GuildId, UserId},
+        interactions::{
+            application_command::ApplicationCommandInteraction, InteractionResponseType,
+        },
+    },
 };
 
 pub async fn handle_command(ctx: &Context, command: &ApplicationCommandInteraction) -> Result<()> {

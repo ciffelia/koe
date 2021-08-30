@@ -1,7 +1,8 @@
 use anyhow::{Context as _, Result};
-use serenity::client::Context;
-use serenity::model::id::GuildId;
-use serenity::model::interactions::application_command::ApplicationCommand;
+use serenity::{
+    client::Context,
+    model::{id::GuildId, interactions::application_command::ApplicationCommand},
+};
 
 pub async fn setup_global_commands(ctx: &Context) -> Result<()> {
     ApplicationCommand::set_global_application_commands(&ctx.http, |commands| {
