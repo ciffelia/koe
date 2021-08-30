@@ -17,6 +17,10 @@ async fn main() -> Result<()> {
 
     let config = koe_config::load()?;
 
+    let speech_provider = SpeechProvider::new(config.google_application_credentials).await?;
+    let voice_client = VoiceClient::new();
+    let bound_text_channel_map = DashMap::<GuildId, ChannelId>::new();
+
     let mut client = Client::builder(config.discord_bot_token)
         .event_handler(handler::Handler)
         .application_id(config.discord_client_id)
@@ -24,13 +28,8 @@ async fn main() -> Result<()> {
         .await
         .context("Failed to build serenity client")?;
 
-    let speech_provider = SpeechProvider::new(config.google_application_credentials).await?;
     context_store::insert(&client, speech_provider).await;
-
-    let voice_client = VoiceClient::new();
     context_store::insert(&client, voice_client).await;
-
-    let bound_text_channel_map = DashMap::<GuildId, ChannelId>::new();
     context_store::insert(&client, bound_text_channel_map).await;
 
     client.start().await.context("Client error occurred")?;
