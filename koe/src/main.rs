@@ -8,6 +8,7 @@ use songbird::SerenityInit;
 mod command;
 mod context_store;
 mod handler;
+mod regex;
 mod speech;
 mod status;
 mod voice_client;

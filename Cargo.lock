@@ -756,6 +756,8 @@ dependencies = [
  "koe-config",
  "koe-speech",
  "log 0.4.14",
+ "once_cell",
+ "regex",
  "serenity",
  "songbird",
  "tokio",

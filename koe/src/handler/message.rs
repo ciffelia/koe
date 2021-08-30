@@ -1,4 +1,5 @@
 use crate::context_store;
+use crate::regex::url_regex;
 use crate::status::VoiceConnectionStatusMap;
 use crate::voice_client::VoiceClient;
 use anyhow::Result;
@@ -44,6 +45,8 @@ async fn build_read_text(ctx: &Context, msg: &Message, last_msg: &Option<Message
         text.push('。');
     }
     text.push_str(&msg.content);
+
+    text = url_regex().replace_all(&text, "、").into();
 
     // 文字数を60文字に制限
     if text.chars().count() > 60 {
