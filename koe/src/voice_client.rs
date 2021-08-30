@@ -38,12 +38,6 @@ impl VoiceClient {
         let join = join_res?;
         join.await?;
 
-        let (call, res) = manager.join(guild_id, channel_id).await;
-        res.context("Failed to join voice channel")?;
-
-        let mut handler = call.lock().await;
-        handler.deafen(true).await?;
-
         Ok(())
     }
 
