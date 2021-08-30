@@ -2,7 +2,7 @@ use crate::context_store;
 use crate::status::VoiceConnectionStatusMap;
 use crate::voice_client::VoiceClient;
 use anyhow::{Context as _, Result};
-use log::info;
+use log::debug;
 use serenity::client::Context;
 use serenity::model::id::GuildId;
 
@@ -26,7 +26,7 @@ pub async fn handle_voice_state_update(ctx: &Context, guild_id: Option<GuildId>)
         let status_map = context_store::extract::<VoiceConnectionStatusMap>(ctx).await?;
         status_map.remove(&guild_id);
 
-        info!("Automatically disconnected in guild {}", guild_id.as_u64());
+        debug!("Automatically disconnected in guild {}", guild_id.as_u64());
     }
 
     Ok(())
