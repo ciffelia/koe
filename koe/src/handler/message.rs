@@ -23,6 +23,10 @@ pub async fn handle_message(ctx: &Context, msg: Message) -> Result<()> {
         None => return Ok(()),
     };
 
+    if msg.author.id == ctx.cache.current_user_id().await {
+        return Ok(());
+    }
+
     if status.bound_text_channel == msg.channel_id {
         let text = build_read_text(ctx, &msg, &status.last_message_read).await;
         status.speech_queue.push(text)?;
