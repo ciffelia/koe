@@ -1,10 +1,10 @@
 use crate::context_store;
+use crate::status::VoiceConnectionStatusMap;
 use crate::voice_client::VoiceClient;
 use anyhow::{Context as _, Result};
-use dashmap::DashMap;
 use log::info;
 use serenity::client::Context;
-use serenity::model::id::{ChannelId, GuildId};
+use serenity::model::id::GuildId;
 
 pub async fn handle_voice_state_update(ctx: &Context, guild_id: Option<GuildId>) -> Result<()> {
     let guild_id = match guild_id {
@@ -20,10 +20,10 @@ pub async fn handle_voice_state_update(ctx: &Context, guild_id: Option<GuildId>)
         let voice_client = context_store::extract::<VoiceClient>(ctx).await.unwrap();
         voice_client.leave(ctx, guild_id).await.unwrap();
 
-        let bound_text_channel_map = context_store::extract::<DashMap<GuildId, ChannelId>>(ctx)
+        let status_map = context_store::extract::<VoiceConnectionStatusMap>(ctx)
             .await
             .unwrap();
-        bound_text_channel_map.remove(&guild_id);
+        status_map.remove(&guild_id);
 
         info!("Automatically disconnected in guild {}", guild_id.as_u64());
     }

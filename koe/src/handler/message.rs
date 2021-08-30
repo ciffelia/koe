@@ -1,15 +1,9 @@
 use crate::context_store;
+use crate::status::VoiceConnectionStatusMap;
 use crate::voice_client::VoiceClient;
 use anyhow::Result;
-use dashmap::DashMap;
 use koe_speech::SpeechProvider;
-use serenity::{
-    client::Context,
-    model::{
-        channel::Message,
-        id::{ChannelId, GuildId},
-    },
-};
+use serenity::{client::Context, model::channel::Message};
 
 pub async fn handle_message(ctx: &Context, msg: Message) -> Result<()> {
     let guild_id = match msg.guild_id {
@@ -22,9 +16,9 @@ pub async fn handle_message(ctx: &Context, msg: Message) -> Result<()> {
         return Ok(());
     }
 
-    let bound_text_channel_map = context_store::extract::<DashMap<GuildId, ChannelId>>(ctx).await?;
-    let bound_text_channel = bound_text_channel_map.get(&guild_id);
-    if bound_text_channel.as_deref() != Some(&msg.channel_id) {
+    let status_map = context_store::extract::<VoiceConnectionStatusMap>(ctx).await?;
+    let bound_text_channel = status_map.get(&guild_id).map(|s| s.bound_text_channel);
+    if bound_text_channel != Some(msg.channel_id) {
         return Ok(());
     }
 
