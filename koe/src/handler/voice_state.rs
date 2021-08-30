@@ -17,12 +17,13 @@ pub async fn handle_voice_state_update(ctx: &Context, guild_id: Option<GuildId>)
         .context("Failed to count the number of users in the bot's channel")?;
 
     if count == 1 {
-        let voice_client = context_store::extract::<VoiceClient>(ctx).await.unwrap();
-        voice_client.leave(ctx, guild_id).await.unwrap();
-
-        let status_map = context_store::extract::<VoiceConnectionStatusMap>(ctx)
+        let voice_client = context_store::extract::<VoiceClient>(ctx).await?;
+        voice_client
+            .leave(ctx, guild_id)
             .await
-            .unwrap();
+            .context("Failed to leave voice channel")?;
+
+        let status_map = context_store::extract::<VoiceConnectionStatusMap>(ctx).await?;
         status_map.remove(&guild_id);
 
         info!("Automatically disconnected in guild {}", guild_id.as_u64());

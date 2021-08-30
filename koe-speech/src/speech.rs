@@ -1,5 +1,5 @@
 use crate::google_cloud;
-use anyhow::{Context, Result};
+use anyhow::{anyhow, Context, Result};
 use google_texttospeech1::api::{
     AudioConfig, SynthesisInput, SynthesizeSpeechRequest, SynthesizeSpeechResponse,
     VoiceSelectionParams,
@@ -53,9 +53,12 @@ impl SpeechProvider {
     }
 
     fn parse_resp(resp: SynthesizeSpeechResponse) -> Result<EncodedAudio> {
-        let speech_base64 = resp.audio_content.unwrap();
+        let speech_base64 = resp.audio_content.ok_or(anyhow!(
+            "No audio_content found in the response from Text-to-Speech API"
+        ))?;
+
         let speech_bytes =
-            base64::decode(speech_base64).context("Failed to decode audio_content")?;
+            base64::decode(speech_base64).context("Failed to decode base64 audio_content")?;
         let speech = EncodedAudio::from(speech_bytes);
 
         Ok(speech)
