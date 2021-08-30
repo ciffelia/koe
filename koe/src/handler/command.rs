@@ -1,7 +1,9 @@
 use crate::context_store;
+use crate::speech::{NewSpeechQueueOption, SpeechQueue};
 use crate::status::{VoiceConnectionStatus, VoiceConnectionStatusMap};
 use crate::voice_client::VoiceClient;
 use anyhow::{Context as _, Result};
+use koe_speech::SpeechProvider;
 use log::error;
 use serenity::client::Context;
 use serenity::model::{
@@ -56,13 +58,20 @@ async fn handle_join(ctx: &Context, command: &ApplicationCommandInteraction) -> 
     };
 
     let voice_client = context_store::extract::<VoiceClient>(ctx).await?;
-    voice_client.join(ctx, guild_id, voice_channel_id).await?;
+    let call = voice_client.join(ctx, guild_id, voice_channel_id).await?;
+
+    let speech_provider = context_store::extract::<SpeechProvider>(ctx).await?;
 
     let status_map = context_store::extract::<VoiceConnectionStatusMap>(ctx).await?;
     status_map.insert(
         guild_id,
         VoiceConnectionStatus {
             bound_text_channel: text_channel_id,
+            speech_queue: SpeechQueue::new(NewSpeechQueueOption {
+                guild_id,
+                speech_provider,
+                call,
+            }),
         },
     );
 
