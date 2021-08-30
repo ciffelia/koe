@@ -2,6 +2,7 @@ use crate::status::VoiceConnectionStatusMap;
 use crate::voice_client::VoiceClient;
 use anyhow::{Context, Result};
 use koe_speech::SpeechProvider;
+use log::info;
 use serenity::Client;
 use songbird::SerenityInit;
 
@@ -18,6 +19,7 @@ async fn main() -> Result<()> {
     env_logger::init();
 
     let config = koe_config::load()?;
+    info!("Config loaded");
 
     let speech_provider = SpeechProvider::new(config.google_application_credentials).await?;
     let voice_client = VoiceClient::new();
@@ -34,6 +36,7 @@ async fn main() -> Result<()> {
     context_store::insert(&client, voice_client).await;
     context_store::insert(&client, status_map).await;
 
+    info!("Starting client...");
     client.start().await.context("Client error occurred")?;
 
     Ok(())
