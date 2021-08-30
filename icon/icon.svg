@@ -1,0 +1,53 @@
+<svg width="1600" height="1600" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background generated in haikei.app -->
+  <path fill="#931C1C" d="M0 0h1600v1600H0z" />
+  <path
+    d="M0 632l229-23 228-339 229 88 228 212 229-194 228 279 229-209v1155H0z"
+    fill="#f5730a"
+  />
+  <path
+    d="M0 807l229-330 228 288 229-364 228 122 229 51 228 128 229-229v1128H0z"
+    fill="#e7670a"
+  />
+  <path
+    d="M0 595l229 130 228 97 229-270 228 114 229 190 228-154 229 164v735H0z"
+    fill="#da5b09"
+  />
+  <path
+    d="M0 706l229 256 228-218 229 136 228-43 229-58 228 138 229 54v630H0z"
+    fill="#cc4f08"
+  />
+  <path
+    d="M0 858l229 220 228-26 229-251 228 234 229 60 228-128 229-151v785H0z"
+    fill="#be4407"
+  />
+  <path
+    d="M0 962l229 82 228-21 229 118 228-194 229 204 228-143 229-27v620H0z"
+    fill="#b03806"
+  />
+  <path
+    d="M0 1138l229 64 228 20 229 5 228 79 229 2 228-206 229 160v339H0z"
+    fill="#a32d04"
+  />
+  <path
+    d="M0 1235l229 65 228 119 229-70 228-129 229 188 228 9 229-38v222H0z"
+    fill="#952103"
+  />
+  <path
+    d="M0 1360l229 31 228 31 229 76 228-136 229 70 228 10 229 27v132H0z"
+    fill="#871400"
+  />
+  <!-- Font: Quicksand -->
+  <text
+    x="50%"
+    y="50%"
+    font-family="Quicksand"
+    font-size="1200"
+    font-weight="700"
+    dominant-baseline="central"
+    text-anchor="middle"
+    fill="#fdfdfd"
+  >
+    K
+  </text>
+</svg>
