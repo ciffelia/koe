@@ -1,4 +1,4 @@
-use anyhow::{bail, Context as _, Result};
+use anyhow::{Context as _, Result};
 use koe_speech::SpeechProvider;
 use log::{debug, error};
 use serenity::model::id::GuildId;
@@ -34,7 +34,10 @@ impl SpeechQueue {
     }
 
     pub fn push(&mut self, text: String) -> Result<()> {
-        self.text_sender.send(text)?;
+        self.text_sender
+            .send(text)
+            .context("Failed to send text to SpeechQueueWorker")?;
+
         Ok(())
     }
 }
@@ -81,31 +84,28 @@ impl SpeechQueueWorker {
     pub fn start(self) {
         tokio::task::spawn(async move {
             let guild_id = self.guild_id;
-            debug!("SpeechQueueWorker for guild {} started", guild_id);
 
-            if let Err(err) = self.work_loop().await {
-                error!(
-                    "SpeechQueueWorker for guild {} exited with error: {:?}",
-                    guild_id, err
-                );
-            } else {
-                debug!("SpeechQueueWorker for guild {} exited", guild_id);
-            }
+            debug!("SpeechQueueWorker for guild {} started", guild_id);
+            self.work_loop().await;
+            debug!("SpeechQueueWorker for guild {} exiting", guild_id);
         });
     }
 
-    async fn work_loop(mut self) -> Result<()> {
+    async fn work_loop(mut self) {
         loop {
             tokio::select! {
                 biased;
                 Some(SpeechQueueWorkerCommand::Terminate) = self.command_receiver.recv() => {
-                    return Ok(());
+                    break;
                 }
                 Some(text) = self.text_receiver.recv() => {
-                    self.speak(text).await.context("Failed to speak")?;
+                    if let Err(err) = self.speak(text).await {
+                        error!("Failed to speak: {:?}", err);
+                    }
                 }
                 else => {
-                    bail!("Both mpsc channels are closed");
+                    error!("Both mpsc channels are closed");
+                    break;
                 }
             };
         }
