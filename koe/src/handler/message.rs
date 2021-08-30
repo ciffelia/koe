@@ -45,7 +45,12 @@ async fn build_read_text(ctx: &Context, msg: &Message, last_msg: &Option<Message
     }
     text.push_str(&msg.content);
 
-    text
+    // 文字数を60文字に制限
+    if text.chars().count() > 60 {
+        text.chars().take(60 - 5).collect::<String>() + "、以下 略"
+    } else {
+        text
+    }
 }
 
 fn should_read_author_name(msg: &Message, last_msg: &Option<Message>) -> bool {
