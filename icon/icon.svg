@@ -37,12 +37,12 @@
     d="M0 1360l229 31 228 31 229 76 228-136 229 70 228 10 229 27v132H0z"
     fill="#871400"
   />
-  <!-- Font: Quicksand -->
+  <!-- Font: Rampart One, SIL Open Font License -->
   <text
     x="50%"
-    y="50%"
-    font-family="Quicksand"
-    font-size="1200"
+    y="45%"
+    font-family="Rampart One"
+    font-size="1000"
     font-weight="700"
     dominant-baseline="central"
     text-anchor="middle"
