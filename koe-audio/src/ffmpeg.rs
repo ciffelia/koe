@@ -1,5 +1,5 @@
 use anyhow::{bail, Context, Result};
-use log::debug;
+use log::trace;
 use std::process::Stdio;
 use tokio::io::AsyncWriteExt;
 use tokio::process::Command;
@@ -24,7 +24,7 @@ pub async fn convert_to_pcm_s16le(source: Vec<u8>) -> Result<Vec<u8>> {
         .stderr(Stdio::piped())
         .spawn()
         .context("Failed to spawn ffmpeg")?;
-    debug!("Spawned ffmpeg");
+    trace!("Spawned ffmpeg");
 
     {
         let mut stdin = child.stdin.take().unwrap();
@@ -33,13 +33,13 @@ pub async fn convert_to_pcm_s16le(source: Vec<u8>) -> Result<Vec<u8>> {
             .await
             .context("Failed to write to ffmpeg's stdin")?;
     }
-    debug!("Wrote to ffmpeg's stdin");
+    trace!("Wrote to ffmpeg's stdin");
 
     let out = child
         .wait_with_output()
         .await
         .context("Failed to read ffmpeg's output")?;
-    debug!("Received ffmpeg's output");
+    trace!("Received ffmpeg's output");
 
     if !out.status.success() {
         bail!(
