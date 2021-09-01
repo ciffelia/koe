@@ -2,7 +2,7 @@
 
 [![MIT License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat)](LICENSE)
 
-指定されたテキストチャンネルに送信されたメッセージをボイスチャンネルで読み上げる Bot です。
+指定されたテキストチャンネルに送信されたメッセージをボイスチャンネルで読み上げる Discord Bot です。
 マイクをミュートにしている、いわゆる「聞き専」ユーザーも会話に参加しやすくなります。
 
 ## 特徴
