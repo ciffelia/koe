@@ -1,14 +1,20 @@
-# Koe
+# <img src="./icon/icon.svg" height="24"> Koe
 
 [![MIT License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat)](LICENSE)
 
-Discord 読み上げ Bot
+指定されたテキストチャンネルに送信されたメッセージをボイスチャンネルで読み上げる Bot です。
+マイクをミュートにしている、いわゆる「聞き専」ユーザーも会話に参加しやすくなります。
 
 ## 特徴
 
 - Google Text-to-Speech API を使った流暢な発音
 - 日本語テキストチャットの読み上げに特化
 - Slash Commands に対応
+
+## 実装予定の機能
+
+- あらかじめ特定のフレーズの読み方を設定できる辞書機能
+- メンバーごとに声の種類、ピッチ、速度を設定できる機能
 
 ## 使い方
 
