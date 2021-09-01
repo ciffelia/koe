@@ -1,4 +1,4 @@
-# <img src="./icon/icon.svg" height="24"> Koe
+# <img src="./icon/icon.png" height="24"> Koe
 
 [![MIT License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat)](LICENSE)
 
