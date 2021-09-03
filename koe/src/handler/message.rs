@@ -4,6 +4,7 @@ use crate::status::VoiceConnectionStatusMap;
 use crate::voice_client::VoiceClient;
 use anyhow::Result;
 use chrono::Duration;
+use discord_md::generate::MarkdownToString;
 use serenity::{client::Context, model::channel::Message};
 
 pub async fn handle_message(ctx: &Context, msg: Message) -> Result<()> {
@@ -51,11 +52,13 @@ async fn build_read_text(ctx: &Context, msg: &Message, last_msg: &Option<Message
             .await
             .unwrap_or_else(|| msg.author.name.clone());
 
-        text.push_str(&process_read_text(&author_name));
+        text.push_str(&remove_url(&author_name));
         text.push('。');
     }
 
-    text.push_str(&process_read_text(&msg.content_safe(&ctx.cache).await));
+    let message_with_mentions_replaced = msg.content_safe(&ctx.cache).await;
+    let plain_text_message = discord_md::parse(&message_with_mentions_replaced).to_plain_string();
+    text.push_str(&remove_url(&plain_text_message));
 
     // 文字数を60文字に制限
     if text.chars().count() > 60 {
@@ -74,7 +77,7 @@ fn should_read_author_name(msg: &Message, last_msg: &Option<Message>) -> bool {
     msg.author != last_msg.author || (msg.timestamp - last_msg.timestamp) > Duration::seconds(10)
 }
 
-/// メッセージのURLや特殊文字を除去
-fn process_read_text(text: &str) -> String {
+/// メッセージのURLを除去
+fn remove_url(text: &str) -> String {
     url_regex().replace_all(text, "、").into()
 }
