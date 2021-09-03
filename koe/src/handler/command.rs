@@ -35,7 +35,7 @@ async fn execute_command(ctx: &Context, command: &ApplicationCommandInteraction)
         "join" | "kjoin" => handle_join(ctx, command).await,
         "leave" | "kleave" => handle_leave(ctx, command).await,
         "help" => handle_help(ctx, command).await,
-        _ => Ok("Error: unknown command".to_string()),
+        _ => Ok("エラー: コマンドが登録されていません。".to_string()),
     };
 
     match res {
