@@ -23,6 +23,7 @@ pub async fn handle_message(ctx: &Context, msg: Message) -> Result<()> {
         None => return Ok(()),
     };
 
+    // Skip message from Koe itself
     if msg.author.id == ctx.cache.current_user_id().await {
         return Ok(());
     }
