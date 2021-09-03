@@ -32,8 +32,8 @@ pub async fn handle_command(ctx: &Context, command: &ApplicationCommandInteracti
 
 async fn execute_command(ctx: &Context, command: &ApplicationCommandInteraction) -> String {
     let res = match command.data.name.as_str() {
-        "join" => handle_join(ctx, command).await,
-        "leave" => handle_leave(ctx, command).await,
+        "join" | "kjoin" => handle_join(ctx, command).await,
+        "leave" | "kleave" => handle_leave(ctx, command).await,
         _ => Ok("Error: unknown command".to_string()),
     };
 
@@ -49,7 +49,7 @@ async fn execute_command(ctx: &Context, command: &ApplicationCommandInteraction)
 async fn handle_join(ctx: &Context, command: &ApplicationCommandInteraction) -> Result<String> {
     let guild_id = match command.guild_id {
         Some(id) => id,
-        None => return Ok("`/join` はサーバー内でのみ使えます。".to_string()),
+        None => return Ok("`/join`, `/kjoin` はサーバー内でのみ使えます。".to_string()),
     };
     let user_id = command.user.id;
     let text_channel_id = command.channel_id;
@@ -86,7 +86,7 @@ async fn handle_join(ctx: &Context, command: &ApplicationCommandInteraction) -> 
 async fn handle_leave(ctx: &Context, command: &ApplicationCommandInteraction) -> Result<String> {
     let guild_id = match command.guild_id {
         Some(id) => id,
-        None => return Ok("`/leave` はサーバー内でのみ使えます。".to_string()),
+        None => return Ok("`/leave`, `/kleave` はサーバー内でのみ使えます。".to_string()),
     };
 
     let voice_client = context_store::extract::<VoiceClient>(ctx).await?;
