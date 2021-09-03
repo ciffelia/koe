@@ -5,6 +5,7 @@ use crate::voice_client::VoiceClient;
 use anyhow::Result;
 use chrono::Duration;
 use discord_md::generate::MarkdownToString;
+use log::trace;
 use serenity::{client::Context, model::channel::Message};
 
 pub async fn handle_message(ctx: &Context, msg: Message) -> Result<()> {
@@ -36,7 +37,10 @@ pub async fn handle_message(ctx: &Context, msg: Message) -> Result<()> {
 
     if status.bound_text_channel == msg.channel_id {
         let text = build_read_text(ctx, &msg, &status.last_message_read).await;
+
+        trace!("Queue reading {:?}", &text);
         status.speech_queue.push(text)?;
+
         status.last_message_read = Some(msg);
     }
 
