@@ -20,6 +20,9 @@ pub async fn setup_guild_commands(ctx: &Context, guild_id: GuildId) -> Result<()
         .set_application_commands(&ctx.http, |commands| {
             commands
                 .create_application_command(|command| {
+                    command.name("help").description("使い方を表示")
+                })
+                .create_application_command(|command| {
                     command
                         .name("join")
                         .description("ボイスチャンネルに接続し、読み上げを開始")
@@ -38,9 +41,6 @@ pub async fn setup_guild_commands(ctx: &Context, guild_id: GuildId) -> Result<()
                     command
                         .name("kleave")
                         .description("ボイスチャンネルから退出")
-                })
-                .create_application_command(|command| {
-                    command.name("help").description("使い方を表示")
                 })
         })
         .await
