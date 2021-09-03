@@ -34,6 +34,7 @@ async fn execute_command(ctx: &Context, command: &ApplicationCommandInteraction)
     let res = match command.data.name.as_str() {
         "join" | "kjoin" => handle_join(ctx, command).await,
         "leave" | "kleave" => handle_leave(ctx, command).await,
+        "help" => handle_help(ctx, command).await,
         _ => Ok("Error: unknown command".to_string()),
     };
 
@@ -101,6 +102,13 @@ async fn handle_leave(ctx: &Context, command: &ApplicationCommandInteraction) ->
     status_map.remove(&guild_id);
 
     Ok("切断しました。".to_string())
+}
+
+async fn handle_help(_ctx: &Context, _command: &ApplicationCommandInteraction) -> Result<String> {
+    Ok(
+        "使い方はこちらをご覧ください:\nhttps://github.com/ciffelia/koe/blob/main/README.md"
+            .to_string(),
+    )
 }
 
 async fn get_user_voice_channel(

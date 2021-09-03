@@ -39,6 +39,9 @@ pub async fn setup_guild_commands(ctx: &Context, guild_id: GuildId) -> Result<()
                         .name("kleave")
                         .description("ボイスチャンネルから退出")
                 })
+                .create_application_command(|command| {
+                    command.name("help").description("使い方を表示")
+                })
         })
         .await
         .context("Failed to set guild application commands")?;
