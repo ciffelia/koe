@@ -52,10 +52,10 @@ enum CommandResponse {
 
 impl<T> From<T> for CommandResponse
 where
-    T: Into<String>,
+    T: ToString,
 {
     fn from(value: T) -> Self {
-        CommandResponse::Text(value.into())
+        CommandResponse::Text(value.to_string())
     }
 }
 
