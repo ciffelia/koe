@@ -1,7 +1,7 @@
+use crate::connection_status::{VoiceConnectionStatus, VoiceConnectionStatusMap};
 use crate::context_store;
 use crate::sanitize::sanitize_response;
 use crate::speech::{NewSpeechQueueOption, SpeechQueue};
-use crate::status::{VoiceConnectionStatus, VoiceConnectionStatusMap};
 use crate::voice_client::VoiceClient;
 use anyhow::{Context as _, Result};
 use koe_db::dict::{GetAllOption, InsertOption, InsertResponse, RemoveOption, RemoveResponse};

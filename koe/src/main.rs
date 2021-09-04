@@ -1,4 +1,4 @@
-use crate::status::VoiceConnectionStatusMap;
+use crate::connection_status::VoiceConnectionStatusMap;
 use crate::voice_client::VoiceClient;
 use anyhow::{Context, Result};
 use koe_db::redis;
@@ -8,12 +8,12 @@ use serenity::Client;
 use songbird::SerenityInit;
 
 mod command_setup;
+mod connection_status;
 mod context_store;
 mod handler;
 mod regex;
 mod sanitize;
 mod speech;
-mod status;
 mod voice_client;
 
 #[tokio::main]
