@@ -162,7 +162,7 @@ async fn build_speech_request(
         "ja-JP-Wavenet-{}",
         koe_db::voice::get_kind(conn, author_id.to_string())
             .await?
-            .unwrap_or("B".to_string())
+            .unwrap_or_else(|| "B".to_string())
     );
 
     let speaking_rate = koe_db::voice::get_speed(conn, author_id.to_string())

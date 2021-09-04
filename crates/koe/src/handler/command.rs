@@ -158,9 +158,7 @@ impl From<&ApplicationCommandInteraction> for CommandKind {
                             _ => return CommandKind::Unknown,
                         };
 
-                        CommandKind::VoiceSpeed(VoiceSpeedOption {
-                            speed: speed.clone(),
-                        })
+                        CommandKind::VoiceSpeed(VoiceSpeedOption { speed: *speed })
                     }
                     "pitch" => {
                         let option_pitch = match option_voice.options.get(0) {
@@ -172,9 +170,7 @@ impl From<&ApplicationCommandInteraction> for CommandKind {
                             _ => return CommandKind::Unknown,
                         };
 
-                        CommandKind::VoicePitch(VoicePitchOption {
-                            pitch: pitch.clone(),
-                        })
+                        CommandKind::VoicePitch(VoicePitchOption { pitch: *pitch })
                     }
                     _ => CommandKind::Unknown,
                 }
