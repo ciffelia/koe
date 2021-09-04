@@ -51,11 +51,7 @@ async fn build_read_text(ctx: &Context, msg: &Message, last_msg: &Option<Message
     let mut text = String::new();
 
     if should_read_author_name(msg, last_msg) {
-        let author_name = msg
-            .author_nick(&ctx.http)
-            .await
-            .unwrap_or_else(|| msg.author.name.clone());
-
+        let author_name = build_author_name(ctx, msg).await;
         text.push_str(&remove_url(&author_name));
         text.push('。');
     }
@@ -79,6 +75,12 @@ fn should_read_author_name(msg: &Message, last_msg: &Option<Message>) -> bool {
     };
 
     msg.author != last_msg.author || (msg.timestamp - last_msg.timestamp) > Duration::seconds(10)
+}
+
+async fn build_author_name(ctx: &Context, msg: &Message) -> String {
+    msg.author_nick(&ctx.http)
+        .await
+        .unwrap_or_else(|| msg.author.name.clone())
 }
 
 /// メッセージのURLを除去
