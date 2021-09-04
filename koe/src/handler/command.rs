@@ -20,6 +20,85 @@ use serenity::{
     },
 };
 
+#[derive(Debug, Clone)]
+enum CommandKind {
+    Join,
+    Leave,
+    DictAdd(DictAddOption),
+    DictRemove(DictRemoveOption),
+    DictView,
+    Help,
+    Unknown,
+}
+
+#[derive(Debug, Clone)]
+struct DictAddOption {
+    pub word: String,
+    pub read_as: String,
+}
+
+#[derive(Debug, Clone)]
+struct DictRemoveOption {
+    pub word: String,
+}
+
+impl From<&ApplicationCommandInteraction> for CommandKind {
+    fn from(cmd: &ApplicationCommandInteraction) -> Self {
+        match cmd.data.name.as_str() {
+            "join" | "kjoin" => CommandKind::Join,
+            "leave" | "kleave" => CommandKind::Leave,
+            "dict" => {
+                let option_dict = match cmd.data.options.get(0) {
+                    Some(option) => option,
+                    None => return CommandKind::Unknown,
+                };
+
+                match option_dict.name.as_str() {
+                    "add" => {
+                        let option_word = match option_dict.options.get(0) {
+                            Some(x) => x,
+                            None => return CommandKind::Unknown,
+                        };
+                        let option_read_as = match option_dict.options.get(1) {
+                            Some(x) => x,
+                            None => return CommandKind::Unknown,
+                        };
+                        let word = match &option_word.resolved {
+                            Some(ApplicationCommandInteractionDataOptionValue::String(x)) => x,
+                            _ => return CommandKind::Unknown,
+                        };
+                        let read_as = match &option_read_as.resolved {
+                            Some(ApplicationCommandInteractionDataOptionValue::String(x)) => x,
+                            _ => return CommandKind::Unknown,
+                        };
+
+                        CommandKind::DictAdd(DictAddOption {
+                            word: word.clone(),
+                            read_as: read_as.clone(),
+                        })
+                    }
+                    "remove" => {
+                        let option_word = match option_dict.options.get(0) {
+                            Some(x) => x,
+                            None => return CommandKind::Unknown,
+                        };
+                        let word = match &option_word.resolved {
+                            Some(ApplicationCommandInteractionDataOptionValue::String(x)) => x,
+                            _ => return CommandKind::Unknown,
+                        };
+
+                        CommandKind::DictRemove(DictRemoveOption { word: word.clone() })
+                    }
+                    "view" => CommandKind::DictView,
+                    _ => CommandKind::Unknown,
+                }
+            }
+            "help" => CommandKind::Help,
+            _ => CommandKind::Unknown,
+        }
+    }
+}
+
 pub async fn handle_command(ctx: &Context, command: &ApplicationCommandInteraction) -> Result<()> {
     let response_text = execute_command(ctx, command).await;
 
@@ -36,12 +115,19 @@ pub async fn handle_command(ctx: &Context, command: &ApplicationCommandInteracti
 }
 
 async fn execute_command(ctx: &Context, command: &ApplicationCommandInteraction) -> String {
-    let res = match command.data.name.as_str() {
-        "join" | "kjoin" => handle_join(ctx, command).await,
-        "leave" | "kleave" => handle_leave(ctx, command).await,
-        "dict" => handle_dict(ctx, command).await,
-        "help" => handle_help(ctx, command).await,
-        _ => Ok("エラー: コマンドが登録されていません。".to_string()),
+    let command_kind = CommandKind::from(command);
+
+    let res = match command_kind {
+        CommandKind::Join => handle_join(ctx, command).await,
+        CommandKind::Leave => handle_leave(ctx, command).await,
+        CommandKind::DictAdd(option) => handle_dict_add(ctx, command, option).await,
+        CommandKind::DictRemove(option) => handle_dict_remove(ctx, command, option).await,
+        CommandKind::DictView => handle_dict_view(ctx, command).await,
+        CommandKind::Help => handle_help(ctx, command).await,
+        CommandKind::Unknown => {
+            error!("Failed to parse command: {:?}", command);
+            Ok("エラー: コマンドを認識できません。".to_string())
+        }
     };
 
     match res {
@@ -110,42 +196,14 @@ async fn handle_leave(ctx: &Context, command: &ApplicationCommandInteraction) ->
     Ok("切断しました。".to_string())
 }
 
-async fn handle_dict(ctx: &Context, command: &ApplicationCommandInteraction) -> Result<String> {
-    let option = match command.data.options.get(0) {
-        Some(option) => option,
-        None => return Ok("エラー: サブコマンドを認識できません。".to_string()),
-    };
-
-    match option.name.as_str() {
-        "add" => handle_dict_add(ctx, command).await,
-        "remove" => handle_dict_remove(ctx, command).await,
-        "view" => handle_dict_view(ctx, command).await,
-        _ => Ok("エラー: サブコマンドが登録されていません。".to_string()),
-    }
-}
-
-async fn handle_dict_add(ctx: &Context, command: &ApplicationCommandInteraction) -> Result<String> {
+async fn handle_dict_add(
+    ctx: &Context,
+    command: &ApplicationCommandInteraction,
+    option: DictAddOption,
+) -> Result<String> {
     let guild_id = match command.guild_id {
         Some(id) => id,
         None => return Ok("`/dict add` はサーバー内でのみ使えます。".to_string()),
-    };
-
-    let option_word = match command.data.options[0].options.get(0) {
-        Some(option) => option,
-        None => return Ok("エラー: 語句を認識できません。".to_string()),
-    };
-    let option_read_as = match command.data.options[0].options.get(1) {
-        Some(option) => option,
-        None => return Ok("エラー: 読み方を認識できません。".to_string()),
-    };
-
-    let word = match &option_word.resolved {
-        Some(ApplicationCommandInteractionDataOptionValue::String(val)) => val,
-        _ => return Ok("エラー: 語句が文字列として入力されていません。".to_string()),
-    };
-    let read_as = match &option_read_as.resolved {
-        Some(ApplicationCommandInteractionDataOptionValue::String(val)) => val,
-        _ => return Ok("エラー: 読み方が文字列として入力されていません。".to_string()),
     };
 
     let client = context_store::extract::<redis::Client>(ctx).await?;
@@ -155,8 +213,8 @@ async fn handle_dict_add(ctx: &Context, command: &ApplicationCommandInteraction)
         &mut conn,
         InsertOption {
             guild_id: guild_id.to_string(),
-            word: word.clone(),
-            read_as: read_as.clone(),
+            word: option.word.clone(),
+            read_as: option.read_as.clone(),
         },
     )
     .await?;
@@ -164,10 +222,10 @@ async fn handle_dict_add(ctx: &Context, command: &ApplicationCommandInteraction)
     match resp {
         InsertResponse::Success => Ok(format!(
             "{}の読み方を{}として辞書に登録しました。",
-            word, read_as
+            option.word, option.read_as
         )),
         InsertResponse::WordAlreadyExists => {
-            Ok(format!("すでに{}は辞書に登録されています。", word,))
+            Ok(format!("すでに{}は辞書に登録されています。", option.word))
         }
     }
 }
@@ -175,20 +233,11 @@ async fn handle_dict_add(ctx: &Context, command: &ApplicationCommandInteraction)
 async fn handle_dict_remove(
     ctx: &Context,
     command: &ApplicationCommandInteraction,
+    option: DictRemoveOption,
 ) -> Result<String> {
     let guild_id = match command.guild_id {
         Some(id) => id,
         None => return Ok("`/dict remove` はサーバー内でのみ使えます。".to_string()),
-    };
-
-    let option_word = match command.data.options[0].options.get(0) {
-        Some(option) => option,
-        None => return Ok("エラー: 語句を認識できません。".to_string()),
-    };
-
-    let word = match &option_word.resolved {
-        Some(ApplicationCommandInteractionDataOptionValue::String(val)) => val,
-        _ => return Ok("エラー: 語句が文字列として入力されていません。".to_string()),
     };
 
     let client = context_store::extract::<redis::Client>(ctx).await?;
@@ -198,14 +247,16 @@ async fn handle_dict_remove(
         &mut conn,
         RemoveOption {
             guild_id: guild_id.to_string(),
-            word: word.clone(),
+            word: option.word.clone(),
         },
     )
     .await?;
 
     match resp {
-        RemoveResponse::Success => Ok(format!("辞書から{}を削除しました。", word)),
-        RemoveResponse::WordDoesNotExist => Ok(format!("{}は辞書に登録されていません。", word,)),
+        RemoveResponse::Success => Ok(format!("辞書から{}を削除しました。", option.word)),
+        RemoveResponse::WordDoesNotExist => {
+            Ok(format!("{}は辞書に登録されていません。", option.word))
+        }
     }
 }
 
