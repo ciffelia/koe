@@ -2,7 +2,7 @@ mod command;
 mod message;
 mod voice_state;
 
-use crate::command::{setup_global_commands, setup_guild_commands};
+use crate::command_setup::{setup_global_commands, setup_guild_commands};
 use crate::handler::voice_state::handle_voice_state_update;
 use command::handle_command;
 use log::{error, info};

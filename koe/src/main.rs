@@ -7,7 +7,7 @@ use log::info;
 use serenity::Client;
 use songbird::SerenityInit;
 
-mod command;
+mod command_setup;
 mod context_store;
 mod handler;
 mod regex;
