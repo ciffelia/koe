@@ -13,7 +13,6 @@
 
 ## 実装予定の機能
 
-- あらかじめ特定のフレーズの読み方を設定できる辞書機能
 - メンバーごとに声の種類、ピッチ、速度を設定できる機能
 
 ## 使い方
@@ -35,6 +34,14 @@ Koe はテキストチャンネルで送信されたコマンドによって動�
 - `/leave`の代わりに`/kleave`を使うこともできます。
   - サーバーに複数のBotが存在していて、コマンドが重複しているときに便利です。
 - 全員が VC から退室すると、Bot も自動的に退室します。
+
+### 辞書を閲覧・編集: `/dict`
+
+- あらかじめ、特定の語句に別の読み方を設定しておくことができます。これを辞書機能といいます。
+- 辞書はサーバーごとに設定できます。1つのサーバーに1冊の辞書です。
+- `/dict add 読み方を設定したい語句 読み方`を送信すると、辞書に語句を追加します。
+- `/dict remove 語句`を送信すると、辞書から語句を削除します。
+- `/dict view`を送信すると、辞書全体を表示します。
 
 ### 使い方を表示: `/help`
 
@@ -102,8 +109,12 @@ https://discord.com/api/oauth2/authorize?client_id=CLIENT_ID&permissions=3146752
 - `GOOGLE_APPLICATION_CREDENTIALS`（必須）: JSON キーのファイルパスを設定します。絶対パス・相対パスどちらも使えます。
 - `DISCORD_CLIENT_ID`（必須）: 2-1 で控えた Client ID を設定します。
 - `DISCORD_BOT_TOKEN`（必須）: 2-1 で控えた Bot Token を設定します。
+- `REDIS_URL`（必須）: Redis の URL を設定します。
+  - 形式は `redis://[<username>][:<password>@]<hostname>[:port][/<db>]` です。
+  - 詳細は https://docs.rs/redis#connection-parameters もご確認ください。
 - `RUST_LOG`（任意）: `koe`に設定すると、詳細なログが出力されます。
 
 #### 3-2. 起動
 
-Bot を起動します。
+1. Redis を起動します。
+2. Bot を起動します。
