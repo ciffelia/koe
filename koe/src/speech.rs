@@ -1,5 +1,5 @@
 use anyhow::{Context as _, Result};
-use koe_speech::SpeechProvider;
+use koe_speech::{SpeechProvider, SpeechRequest};
 use log::{debug, error};
 use serenity::model::id::GuildId;
 use songbird::input::{Codec, Container, Input, Reader};
@@ -9,17 +9,17 @@ use tokio::sync::mpsc::{unbounded_channel, UnboundedReceiver, UnboundedSender};
 use tokio::sync::Mutex;
 
 pub struct SpeechQueue {
-    text_sender: UnboundedSender<String>,
+    request_sender: UnboundedSender<SpeechRequest>,
     command_sender: UnboundedSender<SpeechQueueWorkerCommand>,
 }
 
 impl SpeechQueue {
     pub fn new(option: NewSpeechQueueOption) -> Self {
-        let (text_sender, text_receiver) = unbounded_channel();
+        let (request_sender, request_receiver) = unbounded_channel();
         let (command_sender, command_receiver) = unbounded_channel();
 
         let worker = SpeechQueueWorker::new(NewSpeechQueueWorkerOption {
-            text_receiver,
+            request_receiver,
             command_receiver,
             guild_id: option.guild_id,
             speech_provider: option.speech_provider,
@@ -28,15 +28,15 @@ impl SpeechQueue {
         worker.start();
 
         Self {
-            text_sender,
+            request_sender,
             command_sender,
         }
     }
 
-    pub fn push(&mut self, text: String) -> Result<()> {
-        self.text_sender
-            .send(text)
-            .context("Failed to send text to SpeechQueueWorker")?;
+    pub fn push(&mut self, request: SpeechRequest) -> Result<()> {
+        self.request_sender
+            .send(request)
+            .context("Failed to send request to SpeechQueueWorker")?;
 
         Ok(())
     }
@@ -63,7 +63,7 @@ pub struct NewSpeechQueueOption {
 }
 
 struct SpeechQueueWorker {
-    text_receiver: UnboundedReceiver<String>,
+    request_receiver: UnboundedReceiver<SpeechRequest>,
     command_receiver: UnboundedReceiver<SpeechQueueWorkerCommand>,
     guild_id: GuildId,
     speech_provider: Arc<SpeechProvider>,
@@ -73,7 +73,7 @@ struct SpeechQueueWorker {
 impl SpeechQueueWorker {
     pub fn new(option: NewSpeechQueueWorkerOption) -> Self {
         Self {
-            text_receiver: option.text_receiver,
+            request_receiver: option.request_receiver,
             command_receiver: option.command_receiver,
             guild_id: option.guild_id,
             speech_provider: option.speech_provider,
@@ -98,8 +98,8 @@ impl SpeechQueueWorker {
                 Some(SpeechQueueWorkerCommand::Terminate) = self.command_receiver.recv() => {
                     break;
                 }
-                Some(text) = self.text_receiver.recv() => {
-                    if let Err(err) = self.speak(text).await {
+                Some(request) = self.request_receiver.recv() => {
+                    if let Err(err) = self.speak(request).await {
                         error!("Failed to speak: {:?}", err);
                     }
                 }
@@ -111,10 +111,10 @@ impl SpeechQueueWorker {
         }
     }
 
-    async fn speak(&self, text: String) -> Result<()> {
+    async fn speak(&self, request: SpeechRequest) -> Result<()> {
         let encoded_audio = self
             .speech_provider
-            .make_speech(text)
+            .make_speech(request)
             .await
             .context("Failed to execute Text-to-Speech")?;
 
@@ -137,7 +137,7 @@ impl SpeechQueueWorker {
 }
 
 struct NewSpeechQueueWorkerOption {
-    pub text_receiver: UnboundedReceiver<String>,
+    pub request_receiver: UnboundedReceiver<SpeechRequest>,
     pub command_receiver: UnboundedReceiver<SpeechQueueWorkerCommand>,
     pub guild_id: GuildId,
     pub speech_provider: Arc<SpeechProvider>,

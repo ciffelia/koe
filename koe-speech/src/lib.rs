@@ -1,4 +1,4 @@
 mod google_cloud;
 mod speech;
 
-pub use speech::SpeechProvider;
+pub use speech::{SpeechProvider, SpeechRequest};

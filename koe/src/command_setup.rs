@@ -87,6 +87,56 @@ pub async fn setup_guild_commands(ctx: &Context, guild_id: GuildId) -> Result<()
                                 .kind(ApplicationCommandOptionType::SubCommand)
                         })
                 })
+                .create_application_command(|command| {
+                    command
+                        .name("voice")
+                        .description("声質を設定")
+                        .create_option(|option| {
+                            option
+                                .name("kind")
+                                .description("声の種類を設定")
+                                .kind(ApplicationCommandOptionType::SubCommand)
+                                .create_sub_option(|option| {
+                                    option
+                                        .name("kind")
+                                        .description("声の種類")
+                                        .kind(ApplicationCommandOptionType::String)
+                                        .required(true)
+                                        .add_string_choice("A: 女性1", "A")
+                                        .add_string_choice("B: 女性2（デフォルト）", "B")
+                                        .add_string_choice("C: 男性1", "C")
+                                        .add_string_choice("D: 男性2", "D")
+                                })
+                        })
+                        .create_option(|option| {
+                            option
+                                .name("speed")
+                                .description("声の速さを設定")
+                                .kind(ApplicationCommandOptionType::SubCommand)
+                                .create_sub_option(|option| {
+                                    option
+                                        .name("speed")
+                                        .description("声の速さ (0.25 ～ 4.0, デフォルト: 1.3)")
+                                        .kind(ApplicationCommandOptionType::Number)
+                                        .required(true)
+                                })
+                        })
+                        .create_option(|option| {
+                            option
+                                .name("pitch")
+                                .description("声のピッチを設定")
+                                .kind(ApplicationCommandOptionType::SubCommand)
+                                .create_sub_option(|option| {
+                                    option
+                                        .name("pitch")
+                                        .description(
+                                            "声のピッチ (-20.0 ～ 20.0, 単位: 半音, デフォルト: 0)",
+                                        )
+                                        .kind(ApplicationCommandOptionType::Number)
+                                        .required(true)
+                                })
+                        })
+                })
         })
         .await
         .context("Failed to set guild application commands")?;

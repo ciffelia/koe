@@ -23,23 +23,24 @@ impl SpeechProvider {
         Ok(Self { hub })
     }
 
-    pub async fn make_speech(&self, text: String) -> Result<EncodedAudio> {
+    pub async fn make_speech(&self, option: SpeechRequest) -> Result<EncodedAudio> {
         let (_, resp) = self
             .hub
             .text()
             .synthesize(SynthesizeSpeechRequest {
                 input: Some(SynthesisInput {
-                    text: Some(text),
+                    text: Some(option.text),
                     ..Default::default()
                 }),
                 voice: Some(VoiceSelectionParams {
                     language_code: Some("ja-JP".to_string()),
-                    name: Some("ja-JP-Wavenet-B".to_string()),
+                    name: Some(option.voice_name),
                     ..Default::default()
                 }),
                 audio_config: Some(AudioConfig {
                     audio_encoding: Some("OGG_OPUS".to_string()),
-                    speaking_rate: Some(1.3),
+                    speaking_rate: Some(option.speaking_rate),
+                    pitch: Some(option.pitch),
                     ..Default::default()
                 }),
             })
@@ -63,4 +64,12 @@ impl SpeechProvider {
 
         Ok(speech)
     }
+}
+
+#[derive(Debug, Clone)]
+pub struct SpeechRequest {
+    pub text: String,
+    pub voice_name: String,
+    pub speaking_rate: f64,
+    pub pitch: f64,
 }

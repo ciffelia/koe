@@ -8,10 +8,14 @@ use chrono::Duration;
 use discord_md::generate::MarkdownToString;
 use koe_db::dict::GetAllOption;
 use koe_db::redis;
+use koe_speech::SpeechRequest;
 use log::trace;
 use serenity::{
     client::Context,
-    model::{channel::Message, id::GuildId},
+    model::{
+        channel::Message,
+        id::{GuildId, UserId},
+    },
     utils::ContentSafeOptions,
 };
 
@@ -43,10 +47,15 @@ pub async fn handle_message(ctx: &Context, msg: Message) -> Result<()> {
     }
 
     if status.bound_text_channel == msg.channel_id {
-        let text = build_read_text(ctx, guild_id, &msg, &status.last_message_read).await?;
+        let client = context_store::extract::<redis::Client>(ctx).await?;
+        let mut conn = client.get_async_connection().await?;
 
+        let text =
+            build_read_text(ctx, &mut conn, guild_id, &msg, &status.last_message_read).await?;
         trace!("Queue reading {:?}", &text);
-        status.speech_queue.push(text)?;
+
+        let request = build_speech_request(&mut conn, text, msg.author.id).await?;
+        status.speech_queue.push(request)?;
 
         status.last_message_read = Some(msg);
     }
@@ -56,6 +65,7 @@ pub async fn handle_message(ctx: &Context, msg: Message) -> Result<()> {
 
 async fn build_read_text(
     ctx: &Context,
+    conn: &mut redis::aio::Connection,
     guild_id: GuildId,
     msg: &Message,
     last_msg: &Option<Message>,
@@ -72,7 +82,7 @@ async fn build_read_text(
         content
     };
 
-    let text = replace_words_on_dict(ctx, guild_id, &text).await?;
+    let text = replace_words_on_dict(conn, guild_id, &text).await?;
 
     // 文字数を60文字に制限
     if text.chars().count() > 60 {
@@ -111,12 +121,13 @@ async fn replace_entities(ctx: &Context, guild_id: GuildId, text: &str) -> Strin
     serenity::utils::content_safe(&ctx.cache, &text, &options).await
 }
 
-async fn replace_words_on_dict(ctx: &Context, guild_id: GuildId, text: &str) -> Result<String> {
-    let client = context_store::extract::<redis::Client>(ctx).await?;
-    let mut conn = client.get_async_connection().await?;
-
+async fn replace_words_on_dict(
+    conn: &mut redis::aio::Connection,
+    guild_id: GuildId,
+    text: &str,
+) -> Result<String> {
     let dict = koe_db::dict::get_all(
-        &mut conn,
+        conn,
         GetAllOption {
             guild_id: guild_id.to_string(),
         },
@@ -140,4 +151,32 @@ async fn replace_words_on_dict(ctx: &Context, guild_id: GuildId, text: &str) -> 
 /// メッセージのURLを除去
 fn remove_url(text: &str) -> String {
     url_regex().replace_all(text, "、").into()
+}
+
+async fn build_speech_request(
+    conn: &mut redis::aio::Connection,
+    text: String,
+    author_id: UserId,
+) -> Result<SpeechRequest> {
+    let voice_name = format!(
+        "ja-JP-Wavenet-{}",
+        koe_db::voice::get_kind(conn, author_id.to_string())
+            .await?
+            .unwrap_or("B".to_string())
+    );
+
+    let speaking_rate = koe_db::voice::get_speed(conn, author_id.to_string())
+        .await?
+        .unwrap_or(1.3);
+
+    let pitch = koe_db::voice::get_pitch(conn, author_id.to_string())
+        .await?
+        .unwrap_or(0.0);
+
+    Ok(SpeechRequest {
+        text,
+        voice_name,
+        speaking_rate,
+        pitch,
+    })
 }
