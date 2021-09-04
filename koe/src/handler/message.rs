@@ -12,6 +12,7 @@ use log::trace;
 use serenity::{
     client::Context,
     model::{channel::Message, id::GuildId},
+    utils::ContentSafeOptions,
 };
 
 pub async fn handle_message(ctx: &Context, msg: Message) -> Result<()> {
@@ -59,17 +60,17 @@ async fn build_read_text(
     msg: &Message,
     last_msg: &Option<Message>,
 ) -> Result<String> {
-    let mut text = String::new();
+    let author_name = build_author_name(ctx, msg).await;
 
-    if should_read_author_name(msg, last_msg) {
-        let author_name = build_author_name(ctx, msg).await;
-        text.push_str(&remove_url(&author_name));
-        text.push('。');
-    }
+    let content = replace_entities(ctx, guild_id, &msg.content).await;
+    let content = discord_md::parse(&content).to_plain_string();
+    let content = remove_url(&content);
 
-    let message_with_mentions_replaced = msg.content_safe(&ctx.cache).await;
-    let plain_text_message = discord_md::parse(&message_with_mentions_replaced).to_plain_string();
-    text.push_str(&remove_url(&plain_text_message));
+    let text = if should_read_author_name(msg, last_msg) {
+        format!("{}。{}", author_name, content)
+    } else {
+        content
+    };
 
     let text = replace_words_on_dict(ctx, guild_id, &text).await?;
 
@@ -94,6 +95,20 @@ async fn build_author_name(ctx: &Context, msg: &Message) -> String {
     msg.author_nick(&ctx.http)
         .await
         .unwrap_or_else(|| msg.author.name.clone())
+}
+
+/// ID表記されたメンションやチャンネル名を読める形に書き換える
+async fn replace_entities(ctx: &Context, guild_id: GuildId, text: &str) -> String {
+    let options = ContentSafeOptions::new()
+        .clean_channel(true)
+        .clean_role(true)
+        .clean_user(true)
+        .show_discriminator(false)
+        .display_as_member_from(guild_id)
+        .clean_here(false)
+        .clean_everyone(false);
+
+    serenity::utils::content_safe(&ctx.cache, &text, &options).await
 }
 
 async fn replace_words_on_dict(ctx: &Context, guild_id: GuildId, text: &str) -> Result<String> {
