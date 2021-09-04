@@ -1,4 +1,5 @@
 use crate::context_store;
+use crate::sanitize::sanitize_response;
 use crate::speech::{NewSpeechQueueOption, SpeechQueue};
 use crate::status::{VoiceConnectionStatus, VoiceConnectionStatusMap};
 use crate::voice_client::VoiceClient;
@@ -175,7 +176,7 @@ async fn handle_join(
     let voice_channel_id = match get_user_voice_channel(ctx, &guild_id, &user_id).await? {
         Some(channel) => channel,
         None => {
-            return Ok("あなたはボイスチャンネルに接続していません。".into());
+            return Ok("ボイスチャンネルに接続してから `/join` を送信してください。".into());
         }
     };
 
@@ -250,12 +251,15 @@ async fn handle_dict_add(
     match resp {
         InsertResponse::Success => Ok(format!(
             "{}の読み方を{}として辞書に登録しました。",
-            option.word, option.read_as
+            sanitize_response(&option.word),
+            sanitize_response(&option.read_as)
         )
         .into()),
-        InsertResponse::WordAlreadyExists => {
-            Ok(format!("すでに{}は辞書に登録されています。", option.word).into())
-        }
+        InsertResponse::WordAlreadyExists => Ok(format!(
+            "すでに{}は辞書に登録されています。",
+            sanitize_response(&option.word)
+        )
+        .into()),
     }
 }
 
@@ -282,10 +286,16 @@ async fn handle_dict_remove(
     .await?;
 
     match resp {
-        RemoveResponse::Success => Ok(format!("辞書から{}を削除しました。", option.word).into()),
-        RemoveResponse::WordDoesNotExist => {
-            Ok(format!("{}は辞書に登録されていません。", option.word).into())
-        }
+        RemoveResponse::Success => Ok(format!(
+            "辞書から{}を削除しました。",
+            sanitize_response(&option.word)
+        )
+        .into()),
+        RemoveResponse::WordDoesNotExist => Ok(format!(
+            "{}は辞書に登録されていません。",
+            sanitize_response(&option.word)
+        )
+        .into()),
     }
 }
 
@@ -319,7 +329,7 @@ async fn handle_dict_view(
 
     embed.fields(
         dict.into_iter()
-            .map(|(word, read_as)| (word, read_as, false)),
+            .map(|(word, read_as)| (word, sanitize_response(&read_as), false)),
     );
 
     Ok(CommandResponse::Embed(embed))
