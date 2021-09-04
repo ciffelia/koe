@@ -3,6 +3,8 @@ use crate::speech::{NewSpeechQueueOption, SpeechQueue};
 use crate::status::{VoiceConnectionStatus, VoiceConnectionStatusMap};
 use crate::voice_client::VoiceClient;
 use anyhow::{Context as _, Result};
+use koe_db::dict::{GetAllOption, InsertOption, InsertResponse, RemoveOption, RemoveResponse};
+use koe_db::redis;
 use koe_speech::SpeechProvider;
 use log::error;
 use serenity::{
@@ -10,7 +12,10 @@ use serenity::{
     model::{
         id::{ChannelId, GuildId, UserId},
         interactions::{
-            application_command::ApplicationCommandInteraction, InteractionResponseType,
+            application_command::{
+                ApplicationCommandInteraction, ApplicationCommandInteractionDataOptionValue,
+            },
+            InteractionResponseType,
         },
     },
 };
@@ -34,6 +39,7 @@ async fn execute_command(ctx: &Context, command: &ApplicationCommandInteraction)
     let res = match command.data.name.as_str() {
         "join" | "kjoin" => handle_join(ctx, command).await,
         "leave" | "kleave" => handle_leave(ctx, command).await,
+        "dict" => handle_dict(ctx, command).await,
         "help" => handle_help(ctx, command).await,
         _ => Ok("エラー: コマンドが登録されていません。".to_string()),
     };
@@ -102,6 +108,134 @@ async fn handle_leave(ctx: &Context, command: &ApplicationCommandInteraction) ->
     status_map.remove(&guild_id);
 
     Ok("切断しました。".to_string())
+}
+
+async fn handle_dict(ctx: &Context, command: &ApplicationCommandInteraction) -> Result<String> {
+    let option = match command.data.options.get(0) {
+        Some(option) => option,
+        None => return Ok("エラー: サブコマンドを認識できません。".to_string()),
+    };
+
+    match option.name.as_str() {
+        "add" => handle_dict_add(ctx, command).await,
+        "remove" => handle_dict_remove(ctx, command).await,
+        "view" => handle_dict_view(ctx, command).await,
+        _ => Ok("エラー: サブコマンドが登録されていません。".to_string()),
+    }
+}
+
+async fn handle_dict_add(ctx: &Context, command: &ApplicationCommandInteraction) -> Result<String> {
+    let guild_id = match command.guild_id {
+        Some(id) => id,
+        None => return Ok("`/dict add` はサーバー内でのみ使えます。".to_string()),
+    };
+
+    let option_word = match command.data.options[0].options.get(0) {
+        Some(option) => option,
+        None => return Ok("エラー: 語句を認識できません。".to_string()),
+    };
+    let option_read_as = match command.data.options[0].options.get(1) {
+        Some(option) => option,
+        None => return Ok("エラー: 読み方を認識できません。".to_string()),
+    };
+
+    let word = match &option_word.resolved {
+        Some(ApplicationCommandInteractionDataOptionValue::String(val)) => val,
+        _ => return Ok("エラー: 語句が文字列として入力されていません。".to_string()),
+    };
+    let read_as = match &option_read_as.resolved {
+        Some(ApplicationCommandInteractionDataOptionValue::String(val)) => val,
+        _ => return Ok("エラー: 読み方が文字列として入力されていません。".to_string()),
+    };
+
+    let client = context_store::extract::<redis::Client>(ctx).await?;
+    let mut conn = client.get_async_connection().await?;
+
+    let resp = koe_db::dict::insert(
+        &mut conn,
+        InsertOption {
+            guild_id: guild_id.to_string(),
+            word: word.clone(),
+            read_as: read_as.clone(),
+        },
+    )
+    .await?;
+
+    match resp {
+        InsertResponse::Success => Ok(format!(
+            "{}の読み方を{}として辞書に登録しました。",
+            word, read_as
+        )),
+        InsertResponse::WordAlreadyExists => {
+            Ok(format!("すでに{}は辞書に登録されています。", word,))
+        }
+    }
+}
+
+async fn handle_dict_remove(
+    ctx: &Context,
+    command: &ApplicationCommandInteraction,
+) -> Result<String> {
+    let guild_id = match command.guild_id {
+        Some(id) => id,
+        None => return Ok("`/dict remove` はサーバー内でのみ使えます。".to_string()),
+    };
+
+    let option_word = match command.data.options[0].options.get(0) {
+        Some(option) => option,
+        None => return Ok("エラー: 語句を認識できません。".to_string()),
+    };
+
+    let word = match &option_word.resolved {
+        Some(ApplicationCommandInteractionDataOptionValue::String(val)) => val,
+        _ => return Ok("エラー: 語句が文字列として入力されていません。".to_string()),
+    };
+
+    let client = context_store::extract::<redis::Client>(ctx).await?;
+    let mut conn = client.get_async_connection().await?;
+
+    let resp = koe_db::dict::remove(
+        &mut conn,
+        RemoveOption {
+            guild_id: guild_id.to_string(),
+            word: word.clone(),
+        },
+    )
+    .await?;
+
+    match resp {
+        RemoveResponse::Success => Ok(format!("辞書から{}を削除しました。", word)),
+        RemoveResponse::WordDoesNotExist => Ok(format!("{}は辞書に登録されていません。", word,)),
+    }
+}
+
+async fn handle_dict_view(
+    ctx: &Context,
+    command: &ApplicationCommandInteraction,
+) -> Result<String> {
+    let guild_id = match command.guild_id {
+        Some(id) => id,
+        None => return Ok("`/dict view` はサーバー内でのみ使えます。".to_string()),
+    };
+
+    let client = context_store::extract::<redis::Client>(ctx).await?;
+    let mut conn = client.get_async_connection().await?;
+
+    let dict = koe_db::dict::get_all(
+        &mut conn,
+        GetAllOption {
+            guild_id: guild_id.to_string(),
+        },
+    )
+    .await?;
+
+    let dict_str = dict
+        .into_iter()
+        .map(|(word, read_as)| format!("{}: {}", &word, &read_as))
+        .collect::<Vec<_>>()
+        .join("\n");
+
+    Ok(format!("**サーバー辞書**\n{}", dict_str))
 }
 
 async fn handle_help(_ctx: &Context, _command: &ApplicationCommandInteraction) -> Result<String> {

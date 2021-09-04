@@ -8,6 +8,8 @@ pub struct Config {
 
     pub discord_client_id: u64,
     pub discord_bot_token: String,
+
+    pub redis_url: String,
 }
 
 pub fn load() -> Result<Config> {

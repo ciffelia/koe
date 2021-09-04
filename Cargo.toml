@@ -3,5 +3,6 @@ members = [
     "koe",
     "koe-audio",
     "koe-config",
+    "koe-db",
     "koe-speech"
 ]

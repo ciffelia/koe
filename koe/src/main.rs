@@ -1,6 +1,7 @@
 use crate::status::VoiceConnectionStatusMap;
 use crate::voice_client::VoiceClient;
 use anyhow::{Context, Result};
+use koe_db::redis;
 use koe_speech::SpeechProvider;
 use log::info;
 use serenity::Client;
@@ -21,6 +22,7 @@ async fn main() -> Result<()> {
     let config = koe_config::load()?;
     info!("Config loaded");
 
+    let redis_client = redis::Client::open(config.redis_url)?;
     let speech_provider = SpeechProvider::new(config.google_application_credentials).await?;
     let voice_client = VoiceClient::new();
     let status_map = VoiceConnectionStatusMap::new();
@@ -32,6 +34,7 @@ async fn main() -> Result<()> {
         .await
         .context("Failed to build serenity client")?;
 
+    context_store::insert(&client, redis_client).await;
     context_store::insert(&client, speech_provider).await;
     context_store::insert(&client, voice_client).await;
     context_store::insert(&client, status_map).await;
