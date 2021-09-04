@@ -13,14 +13,14 @@ pub struct ContextStore<T> {
 
 impl<T> TypeMapKey for ContextStore<T>
 where
-    T: 'static + std::marker::Send + std::marker::Sync,
+    T: 'static + Send + Sync,
 {
     type Value = Arc<T>;
 }
 
 pub async fn insert<T>(client: &Client, value: T)
 where
-    T: 'static + std::marker::Send + std::marker::Sync,
+    T: 'static + Send + Sync,
 {
     let mut data = client.data.write().await;
     data.insert::<ContextStore<T>>(Arc::new(value));
@@ -28,7 +28,7 @@ where
 
 pub async fn extract<T>(ctx: &Context) -> Result<Arc<T>>
 where
-    T: 'static + std::marker::Send + std::marker::Sync,
+    T: 'static + Send + Sync,
 {
     let data = ctx.data.read().await;
 
