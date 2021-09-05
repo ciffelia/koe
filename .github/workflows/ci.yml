@@ -53,3 +53,28 @@ jobs:
 
       - name: Run lint
         run: cargo clippy --all-targets --all-features -- -D warnings
+
+  docker-build-push:
+    needs: [check, format]
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Login to GitHub Container Registry
+        if: github.ref == 'refs/heads/main'
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build (and Push)
+        uses: docker/build-push-action@v2
+        with:
+          tags: ghcr.io/ciffelia/koe:latest
+          platforms: linux/amd64,linux/arm64
+          push: ${{ github.ref == 'refs/heads/main' }}
