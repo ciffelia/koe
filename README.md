@@ -1,14 +1,16 @@
 # <img src="./icon/icon.png" height="24"> Koe
 
+[![CI Status](https://github.com/ciffelia/koe/workflows/CI/badge.svg?branch=main)](https://github.com/ciffelia/koe/actions?query=workflow%3ACI+branch%3Amain)
 [![MIT License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat)](LICENSE)
 
 指定されたテキストチャンネルに送信されたメッセージをボイスチャンネルで読み上げる Discord Bot です。
-マイクをミュートにしている、いわゆる「聞き専」メンバーも会話に参加しやすくなります。
+マイクをミュートにしている聞き専メンバーも会話に参加しやすくなります。
 
 ## 特徴
 
 - Google Text-to-Speech API を使った流暢な発音
 - 日本語テキストチャットの読み上げに特化
+- 特定の語句の読み方を設定する辞書機能を搭載
 - Slash Commands に対応
 
 ## 使い方
@@ -77,7 +79,7 @@ Koe はテキストチャンネルで送信されたコマンドによって動�
 #### 1-2. Text-to-Speech API のセットアップ
 
 1. [公式ガイド](https://cloud.google.com/text-to-speech/docs/before-you-begin) にしたがって Text-to-Speech API を有効化し、JSON キーをダウンロードします。
-2. ダウンロードした JSON キーをファイルシステム上の安全な場所に配置し、ファイルパスを控えておきます。
+2. ダウンロードした JSON キーは後ほど使うため、ファイルシステム上の安全な場所に保存しておきます。
 
 ### 2. Discord Bot の登録
 
@@ -113,9 +115,15 @@ https://discord.com/api/oauth2/authorize?client_id=CLIENT_ID&permissions=3146752
 
 ### 3. Bot を起動
 
-#### 3-1. 環境変数の設定
+#### 3-1. 設定ファイルの構成
 
-以下の環境変数をそれぞれ設定します。
+1. リポジトリを[ダウンロード](https://github.com/ciffelia/koe/archive/refs/heads/main.zip)し、適当な場所に展開します。以後、このディレクトリの中で作業を行います。
+2. `secret` ディレクトリを作成し、その中に 1-2 でダウンロードした JSON キーを保存します。
+3. `config` ディレクトリの `example.redis.conf` をテキストエディタで開いて Redis の設定を編集し、 `redis.conf` として保存します。
+
+#### 3-2. 環境変数の設定
+
+`config` ディレクトリの `example.env` をテキストエディタで開いて、以下に示す環境変数を編集し、`.env` として保存します。
 
 - `GOOGLE_APPLICATION_CREDENTIALS`（必須）: JSON キーのファイルパスを設定します。絶対パス・相対パスどちらも使えます。
 - `DISCORD_CLIENT_ID`（必須）: 2-1 で控えた Client ID を設定します。
@@ -125,7 +133,9 @@ https://discord.com/api/oauth2/authorize?client_id=CLIENT_ID&permissions=3146752
   - 詳細は https://docs.rs/redis#connection-parameters もご確認ください。
 - `RUST_LOG`（任意）: `koe`に設定すると、詳細なログが出力されます。
 
-#### 3-2. 起動
+#### 3-3. 起動
 
-1. Redis を起動します。
-2. Bot を起動します。
+- `docker compose up --detach` でアプリケーションを起動します。
+- `docker compose logs` でログを確認できます。
+- `docker compose down` でアプリケーションを停止します。
+- `docker compose down --volumes` でアプリケーションを停止し、Redis に保存されている設定をすべて削除します。
