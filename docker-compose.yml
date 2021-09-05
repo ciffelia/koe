@@ -4,6 +4,8 @@ services:
   app:
     image: "ghcr.io/ciffelia/koe:latest"
     init: true
+    depends_on:
+      - redis
     restart: unless-stopped
     env_file: ./config/.env
     volumes:
