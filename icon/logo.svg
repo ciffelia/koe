@@ -1,0 +1,58 @@
+<svg
+  width="1024"
+  height="512"
+  viewBox="0 0 3200 1600"
+  xmlns="http://www.w3.org/2000/svg"
+>
+  <!-- Background generated in haikei.app -->
+  <path fill="#931C1C" d="M0 0h3200v1600H0z" />
+  <path
+    d="M0 294l457 327 457-238 457 313 458-319 457-89 457-24 457 345v992H0z"
+    fill="#f5730a"
+  />
+  <path
+    d="M0 769l457-208 457-150 457 168 458-93 457 105 457 147 457-11v874H0z"
+    fill="#e7670a"
+  />
+  <path
+    d="M0 684l457 20 457 168 457-316 458 233 457 16 457-82 457-202v1080H0z"
+    fill="#da5b09"
+  />
+  <path
+    d="M0 769l457 30 457 36 457 91 458-182h457l457 150 457-207v914H0z"
+    fill="#cc4f08"
+  />
+  <path
+    d="M0 989l457-7 457-173 457 54 458 42 457 63 457 64 457-27v596H0z"
+    fill="#be4407"
+  />
+  <path
+    d="M0 1193l457-98 457 53 457 68 458-93 457 33 457-202 457 169v478H0z"
+    fill="#b03806"
+  />
+  <path
+    d="M0 1311l457-230 457 182 457-164 458 152 457-145 457 196 457-16v315H0z"
+    fill="#a32d04"
+  />
+  <path
+    d="M0 1321l457-58 457-32 457 68 458 81 457-95 457-60 457 48v328H0z"
+    fill="#952103"
+  />
+  <path
+    d="M0 1499l457-17 457 37 457-104 458-24 457 95 457-11 457-36v162H0z"
+    fill="#871400"
+  />
+  <!-- Font: Rampart One, SIL Open Font License -->
+  <text
+    x="50%"
+    y="45%"
+    font-family="Rampart One"
+    font-size="1000"
+    font-weight="700"
+    dominant-baseline="central"
+    text-anchor="middle"
+    fill="#fdfdfd"
+  >
+    Koe
+  </text>
+</svg>
