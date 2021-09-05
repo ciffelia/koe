@@ -55,7 +55,7 @@ jobs:
         run: cargo clippy --all-targets --all-features -- -D warnings
 
   docker-build-push:
-    needs: [check, format]
+    needs: [check, format, lint]
     runs-on: ubuntu-20.04
     steps:
       - name: Set up QEMU
