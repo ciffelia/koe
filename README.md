@@ -1,7 +1,15 @@
-# <img src="./icon/icon.png" height="24"> Koe
+<h1 align="center">
+  <img src="./icon/logo.png" alt="Koe" height="128">
+</h1>
 
-[![CI Status](https://github.com/ciffelia/koe/workflows/CI/badge.svg?branch=main)](https://github.com/ciffelia/koe/actions?query=workflow%3ACI+branch%3Amain)
-[![MIT License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat)](LICENSE)
+<p align="center">
+  <a href="https://github.com/ciffelia/koe/actions?query=workflow%3ACI+branch%3Amain">
+    <img src="https://github.com/ciffelia/koe/workflows/CI/badge.svg?branch=main" alt="CI status">
+  </a>
+  <a href="./LICENSE">
+    <img src="https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat" alt="MIT License">
+  </a>
+</p>
 
 指定されたテキストチャンネルに送信されたメッセージをボイスチャンネルで読み上げる Discord Bot です。
 マイクをミュートにしている聞き専メンバーも会話に参加しやすくなります。
