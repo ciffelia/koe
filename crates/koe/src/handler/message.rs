@@ -9,7 +9,7 @@ use discord_md::generate::MarkdownToString;
 use koe_db::dict::GetAllOption;
 use koe_db::redis;
 use koe_speech::SpeechRequest;
-use log::trace;
+use log::{error, trace};
 use serenity::{
     client::Context,
     model::{
@@ -52,7 +52,17 @@ pub async fn handle_message(ctx: &Context, msg: Message) -> Result<()> {
 
         let text =
             build_read_text(ctx, &mut conn, guild_id, &msg, &status.last_message_read).await?;
-        trace!("Queue reading {:?}", &text);
+        trace!("Built text: {:?}", &text);
+
+        let text_length = text.chars().clone().count();
+        let chars_used_today =
+            koe_db::usage::add_and_get_chars_used_today(&mut conn, text_length).await?;
+
+        trace!("{} chars used today", chars_used_today);
+        if chars_used_today > 15000 {
+            error!("Usage limit exceeded");
+            return Ok(());
+        }
 
         let request = build_speech_request(&mut conn, text, msg.author.id).await?;
         status.speech_queue.push(request)?;
