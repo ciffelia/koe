@@ -1,0 +1,23 @@
+version: '3.7'
+
+services:
+  app:
+    image: "ghcr.io/ciffelia/koe:latest"
+    init: true
+    restart: unless-stopped
+    env_file: ./config/.env
+    volumes:
+      - "./secret:/home/koe/secret:ro"
+
+  redis:
+    image: "redis:6.2.5"
+    command: /usr/local/etc/redis/redis.conf
+    restart: unless-stopped
+    expose:
+      - 6379
+    volumes:
+      - "./config/redis.conf:/usr/local/etc/redis/redis.conf:ro"
+      - "redis-data:/data"
+
+volumes:
+  redis-data:

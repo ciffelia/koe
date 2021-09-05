@@ -1,12 +1,15 @@
+.git
+.github
+
 # Rust build output
-/target
+target
 
 # Config files
-/config/*
-!/config/example.*
+config/*
+!config/example.*
 
 # Secret files
-/secret
+secret
 
 # CLion
-/.idea
+.idea
