@@ -19,7 +19,7 @@ log = "0.4.14"
 env_logger = "0.9.0"
 
 # Discord
-serenity = { version = "0.10.9", default-features = false, features = ["cache", "client", "model", "voice", "unstable_discord_api", "rustls_backend"] }
+serenity = { version = "0.10.9", default-features = false, features = ["cache", "client", "utils", "voice", "unstable_discord_api", "rustls_backend"] }
 songbird = { version = "0.2.0", features = ["builtin-queue"] }
 discord-md = "1.0.0"
 
