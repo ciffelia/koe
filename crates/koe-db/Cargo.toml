@@ -4,6 +4,6 @@ version = "0.1.0"
 edition = "2018"
 
 [dependencies]
-anyhow = "1.0.43"
-redis = { version = "0.21.2", default-features = false, features = ["aio", "tokio-comp"] }
-chrono = "0.4.19"
+anyhow = "1"
+redis = { version = "0.21", default-features = false, features = ["aio", "tokio-comp"] }
+chrono = "0.4"

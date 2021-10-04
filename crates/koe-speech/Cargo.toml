@@ -6,10 +6,10 @@ publish = false
 
 [dependencies]
 koe-audio = { path = "../koe-audio" }
-anyhow = "1.0.43"
-tokio = "1.10.1"
-google-texttospeech1 = "2.0.4"
-hyper = "0.14.12"
-hyper-rustls = "0.22.1"
-yup-oauth2 = "5.1.0"
-base64 = "0.13.0"
+anyhow = "1"
+tokio = "1"
+google-texttospeech1 = "2"
+hyper = "0.14"
+hyper-rustls = "0.22"
+yup-oauth2 = "5"
+base64 = "0.13"

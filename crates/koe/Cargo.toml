@@ -11,21 +11,21 @@ koe-db = { path = "../koe-db" }
 koe-speech = { path = "../koe-speech" }
 
 # Basics
-anyhow = "1.0.43"
-tokio = { version = "1.10.1", features = ["rt-multi-thread", "macros", "sync"] }
+anyhow = "1"
+tokio = { version = "1", features = ["rt-multi-thread", "macros", "sync"] }
 
 # Logging
-log = "0.4.14"
-env_logger = "0.9.0"
+log = "0.4"
+env_logger = "0.9"
 
 # Discord
-serenity = { version = "0.10.9", default-features = false, features = ["cache", "client", "utils", "voice", "unstable_discord_api", "rustls_backend"] }
-songbird = { version = "0.2.0", features = ["builtin-queue"] }
-discord-md = "1.0.0"
+serenity = { version = "0.10", default-features = false, features = ["cache", "client", "utils", "voice", "unstable_discord_api", "rustls_backend"] }
+songbird = { version = "0.2", features = ["builtin-queue"] }
+discord-md = "1"
 
 # Utilities
-dashmap = "4.0.2"
-chrono = "0.4.19"
-once_cell = "1.8.0"
+dashmap = "4"
+chrono = "0.4"
+once_cell = "1"
 aho-corasick = "0.7"
-regex = "1.5.4"
+regex = "1"
