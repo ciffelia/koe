@@ -4,7 +4,7 @@ FROM rust:1.56.0-bullseye as builder
 RUN useradd --create-home --user-group koe
 USER koe
 
-WORKDIR /home/koe/koe
+WORKDIR /home/koe/app
 COPY --chown=koe:koe . .
 
 RUN cargo build --release --bin koe
@@ -22,6 +22,6 @@ RUN useradd --create-home --user-group koe
 USER koe
 WORKDIR /home/koe
 
-COPY --from=builder --chown=koe:koe /home/koe/koe/target/release/koe ./
+COPY --from=builder --chown=koe:koe /home/koe/app/target/release/koe ./
 
 ENTRYPOINT ["./koe"]
