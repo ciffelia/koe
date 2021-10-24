@@ -77,4 +77,6 @@ jobs:
         with:
           tags: ghcr.io/ciffelia/koe:latest
           platforms: linux/amd64,linux/arm64
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
           push: ${{ github.ref == 'refs/heads/main' }}
