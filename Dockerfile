@@ -1,4 +1,4 @@
-FROM rust:1.54.0-bullseye as builder
+FROM rust:1.56.0-bullseye as builder
 
 # Switch to non-root user
 RUN useradd --create-home --user-group koe
