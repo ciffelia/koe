@@ -7,7 +7,7 @@ USER koe
 WORKDIR /home/koe/koe
 COPY --chown=koe:koe . .
 
-RUN cargo build --release --bins
+RUN cargo build --release --bin koe
 
 ###
 
