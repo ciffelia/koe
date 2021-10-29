@@ -45,6 +45,16 @@ pub async fn setup_guild_commands(ctx: &Context, guild_id: GuildId) -> Result<()
                 })
                 .create_application_command(|command| {
                     command
+                        .name("skip")
+                        .description("読み上げ中のメッセージをスキップ")
+                })
+                .create_application_command(|command| {
+                    command
+                        .name("kskip")
+                        .description("読み上げ中のメッセージをスキップ")
+                })
+                .create_application_command(|command| {
+                    command
                         .name("dict")
                         .description("読み上げ辞書の閲覧と編集")
                         .create_option(|option| {

@@ -40,6 +40,14 @@ impl SpeechQueue {
 
         Ok(())
     }
+
+    pub fn skip(&self) -> Result<()> {
+        self.command_sender
+            .send(SpeechQueueWorkerCommand::Skip)
+            .context("Failed to send skip command to SpeechQueueWorker")?;
+
+        Ok(())
+    }
 }
 
 impl Drop for SpeechQueue {
@@ -95,8 +103,17 @@ impl SpeechQueueWorker {
         loop {
             tokio::select! {
                 biased;
-                Some(SpeechQueueWorkerCommand::Terminate) = self.command_receiver.recv() => {
-                    break;
+                Some(command) = self.command_receiver.recv() => {
+                    match command {
+                        SpeechQueueWorkerCommand::Skip => {
+                            if let Err(err) = self.skip().await {
+                                error!("Failed to skip current track: {:?}", err);
+                            }
+                        }
+                        SpeechQueueWorkerCommand::Terminate => {
+                            break;
+                        }
+                    }
                 }
                 Some(request) = self.request_receiver.recv() => {
                     if let Err(err) = self.speak(request).await {
@@ -134,6 +151,17 @@ impl SpeechQueueWorker {
 
         Ok(())
     }
+
+    async fn skip(&self) -> Result<()> {
+        let handler = self.call.lock().await;
+        let current_track = handler.queue().current();
+
+        if let Some(track) = current_track {
+            track.stop().context("Failed to stop current track")?;
+        }
+
+        Ok(())
+    }
 }
 
 struct NewSpeechQueueWorkerOption {
@@ -146,5 +174,6 @@ struct NewSpeechQueueWorkerOption {
 
 #[derive(Debug)]
 enum SpeechQueueWorkerCommand {
+    Skip,
     Terminate,
 }

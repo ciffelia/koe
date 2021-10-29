@@ -27,6 +27,7 @@ use serenity::{
 enum CommandKind {
     Join,
     Leave,
+    Skip,
     DictAdd(DictAddOption),
     DictRemove(DictRemoveOption),
     DictView,
@@ -83,6 +84,7 @@ impl From<&ApplicationCommandInteraction> for CommandKind {
         match cmd.data.name.as_str() {
             "join" | "kjoin" => CommandKind::Join,
             "leave" | "kleave" => CommandKind::Leave,
+            "skip" | "kskip" => CommandKind::Skip,
             "dict" => {
                 let option_dict = match cmd.data.options.get(0) {
                     Some(option) => option,
@@ -208,6 +210,7 @@ async fn execute_command(
     let res = match command_kind {
         CommandKind::Join => handle_join(ctx, command).await,
         CommandKind::Leave => handle_leave(ctx, command).await,
+        CommandKind::Skip => handle_skip(ctx, command).await,
         CommandKind::DictAdd(option) => handle_dict_add(ctx, command, option).await,
         CommandKind::DictRemove(option) => handle_dict_remove(ctx, command, option).await,
         CommandKind::DictView => handle_dict_view(ctx, command).await,
@@ -291,6 +294,32 @@ async fn handle_leave(
     status_map.remove(&guild_id);
 
     Ok("切断しました。".into())
+}
+
+async fn handle_skip(
+    ctx: &Context,
+    command: &ApplicationCommandInteraction,
+) -> Result<CommandResponse> {
+    let guild_id = match command.guild_id {
+        Some(id) => id,
+        None => return Ok("`/skip`, `/kskip` はサーバー内でのみ使えます。".into()),
+    };
+
+    let voice_client = context_store::extract::<VoiceClient>(ctx).await?;
+
+    if !voice_client.is_connected(ctx, guild_id).await? {
+        return Ok("どのボイスチャンネルにも接続していません。".into());
+    }
+
+    let status_map = context_store::extract::<VoiceConnectionStatusMap>(ctx).await?;
+    let status = match status_map.get_mut(&guild_id) {
+        Some(status) => status,
+        None => return Ok("どのボイスチャンネルにも接続していません。".into()),
+    };
+
+    status.speech_queue.skip()?;
+
+    Ok("読み上げ中のメッセージをスキップしました。".into())
 }
 
 async fn handle_dict_add(
