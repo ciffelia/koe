@@ -33,7 +33,7 @@ impl SpeechQueue {
         }
     }
 
-    pub fn push(&mut self, request: SpeechRequest) -> Result<()> {
+    pub fn push(&self, request: SpeechRequest) -> Result<()> {
         self.request_sender
             .send(request)
             .context("Failed to send request to SpeechQueueWorker")?;
