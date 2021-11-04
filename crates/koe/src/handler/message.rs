@@ -54,6 +54,11 @@ pub async fn handle_message(ctx: &Context, msg: Message) -> Result<()> {
             build_read_text(ctx, &mut conn, guild_id, &msg, &status.last_message_read).await?;
         trace!("Built text: {:?}", &text);
 
+        if text.is_empty() {
+            trace!("Text is empty");
+            return Ok(());
+        }
+
         let text_length = text.chars().clone().count();
         let chars_used_today =
             koe_db::usage::add_and_get_chars_used_today(&mut conn, text_length).await?;
