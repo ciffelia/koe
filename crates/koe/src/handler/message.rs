@@ -5,7 +5,7 @@ use crate::voice_client::VoiceClient;
 use aho_corasick::{AhoCorasickBuilder, MatchKind};
 use anyhow::Result;
 use chrono::Duration;
-use discord_md::generate::MarkdownToString;
+use discord_md::generate::{ToMarkdownString, ToMarkdownStringOption};
 use koe_db::dict::GetAllOption;
 use koe_db::redis;
 use koe_speech::SpeechRequest;
@@ -84,7 +84,10 @@ async fn build_read_text(
 
     let content = replace_entities(ctx, guild_id, &msg.content).await;
     let content = replace_custom_emojis(&content);
-    let content = discord_md::parse(&content).to_plain_string();
+    let content = discord_md::parse(&content).to_markdown_string(&ToMarkdownStringOption {
+        omit_format: true,
+        omit_spoiler: true,
+    });
     let content = remove_url(&content);
 
     let text = if should_read_author_name(msg, last_msg) {

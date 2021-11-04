@@ -21,7 +21,7 @@ env_logger = "0.9"
 # Discord
 serenity = { version = "0.10", default-features = false, features = ["cache", "client", "utils", "voice", "unstable_discord_api", "rustls_backend"] }
 songbird = { version = "0.2", features = ["builtin-queue"] }
-discord-md = "1"
+discord-md = "2"
 
 # Utilities
 dashmap = "4"
