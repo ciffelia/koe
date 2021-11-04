@@ -1,6 +1,6 @@
 use crate::connection_status::VoiceConnectionStatusMap;
 use crate::context_store;
-use crate::regex::url_regex;
+use crate::regex::{custom_emoji_regex, url_regex};
 use crate::voice_client::VoiceClient;
 use aho_corasick::{AhoCorasickBuilder, MatchKind};
 use anyhow::Result;
@@ -83,6 +83,7 @@ async fn build_read_text(
     let author_name = build_author_name(ctx, msg).await;
 
     let content = replace_entities(ctx, guild_id, &msg.content).await;
+    let content = replace_custom_emojis(&content);
     let content = discord_md::parse(&content).to_plain_string();
     let content = remove_url(&content);
 
@@ -129,6 +130,11 @@ async fn replace_entities(ctx: &Context, guild_id: GuildId, text: &str) -> Strin
         .clean_everyone(false);
 
     serenity::utils::content_safe(&ctx.cache, &text, &options).await
+}
+
+/// カスタム絵文字を読める形に置き換える
+fn replace_custom_emojis(text: &str) -> String {
+    custom_emoji_regex().replace_all(text, "$1").into()
 }
 
 async fn replace_words_on_dict(
