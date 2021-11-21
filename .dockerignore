@@ -1,15 +1,18 @@
-.git
-.github
-
 # Rust build output
 target
-
-# Config files
-config/*
-!config/example.*
 
 # Secret files
 secret
 
 # CLion
 .idea
+
+# Files not required for Docker build
+.git
+.github
+config
+icon
+.gitignore
+docker-compose.yml
+LICENSE
+README.md
