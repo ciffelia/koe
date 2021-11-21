@@ -9,7 +9,7 @@ use discord_md::generate::{ToMarkdownString, ToMarkdownStringOption};
 use koe_db::dict::GetAllOption;
 use koe_db::redis;
 use koe_speech::SpeechRequest;
-use log::{error, trace};
+use log::{trace, warn};
 use serenity::{
     client::Context,
     model::{
@@ -65,7 +65,7 @@ pub async fn handle_message(ctx: &Context, msg: Message) -> Result<()> {
 
         trace!("{} chars used today", chars_used_today);
         if chars_used_today > 15000 {
-            error!("Usage limit exceeded");
+            warn!("Usage limit exceeded");
             return Ok(());
         }
 
