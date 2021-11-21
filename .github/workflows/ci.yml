@@ -80,3 +80,19 @@ jobs:
           build-args: |
             SENTRY_RELEASE=${{ github.sha }}
           push: ${{ github.ref == 'refs/heads/main' }}
+
+  sentry-release:
+    if: github.ref == 'refs/heads/main'
+    needs: [docker-build-push]
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Create Sentry release
+        uses: getsentry/action-release@v1
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
+          SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
+        with:
+          environment: production
