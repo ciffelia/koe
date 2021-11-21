@@ -3,7 +3,7 @@ use crate::context_store;
 use crate::sanitize::sanitize_response;
 use crate::speech::{NewSpeechQueueOption, SpeechQueue};
 use crate::voice_client::VoiceClient;
-use anyhow::{Context as _, Result};
+use anyhow::{bail, Context as _, Result};
 use koe_db::dict::{GetAllOption, InsertOption, InsertResponse, RemoveOption, RemoveResponse};
 use koe_db::redis;
 use koe_db::voice::{SetKindOption, SetPitchOption, SetSpeedOption};
@@ -184,7 +184,13 @@ impl From<&ApplicationCommandInteraction> for CommandKind {
 }
 
 pub async fn handle_command(ctx: &Context, command: &ApplicationCommandInteraction) -> Result<()> {
-    let response = execute_command(ctx, command).await;
+    let response = match execute_command(ctx, command).await {
+        Ok(resp) => resp,
+        Err(err) => {
+            error!("Error while executing command: {:?}", err);
+            CommandResponse::Text("内部エラーが発生しました。".to_string())
+        }
+    };
 
     command
         .create_interaction_response(&ctx.http, |create_response| {
@@ -204,31 +210,42 @@ pub async fn handle_command(ctx: &Context, command: &ApplicationCommandInteracti
 async fn execute_command(
     ctx: &Context,
     command: &ApplicationCommandInteraction,
-) -> CommandResponse {
+) -> Result<CommandResponse> {
     let command_kind = CommandKind::from(command);
 
-    let res = match command_kind {
-        CommandKind::Join => handle_join(ctx, command).await,
-        CommandKind::Leave => handle_leave(ctx, command).await,
-        CommandKind::Skip => handle_skip(ctx, command).await,
-        CommandKind::DictAdd(option) => handle_dict_add(ctx, command, option).await,
-        CommandKind::DictRemove(option) => handle_dict_remove(ctx, command, option).await,
-        CommandKind::DictView => handle_dict_view(ctx, command).await,
-        CommandKind::VoiceKind(option) => handle_voice_kind(ctx, command, option).await,
-        CommandKind::VoiceSpeed(option) => handle_voice_speed(ctx, command, option).await,
-        CommandKind::VoicePitch(option) => handle_voice_pitch(ctx, command, option).await,
-        CommandKind::Help => handle_help(ctx, command).await,
+    match command_kind {
+        CommandKind::Join => handle_join(ctx, command)
+            .await
+            .context("Failed to execute /join"),
+        CommandKind::Leave => handle_leave(ctx, command)
+            .await
+            .context("Failed to execute /leave"),
+        CommandKind::Skip => handle_skip(ctx, command)
+            .await
+            .context("Failed to execute /skip"),
+        CommandKind::DictAdd(option) => handle_dict_add(ctx, command, option)
+            .await
+            .context("Failed to execute /dict add"),
+        CommandKind::DictRemove(option) => handle_dict_remove(ctx, command, option)
+            .await
+            .context("Failed to execute /dict remove"),
+        CommandKind::DictView => handle_dict_view(ctx, command)
+            .await
+            .context("Failed to execute /dict view"),
+        CommandKind::VoiceKind(option) => handle_voice_kind(ctx, command, option)
+            .await
+            .context("Failed to execute /voice kind"),
+        CommandKind::VoiceSpeed(option) => handle_voice_speed(ctx, command, option)
+            .await
+            .context("Failed to execute /voice speed"),
+        CommandKind::VoicePitch(option) => handle_voice_pitch(ctx, command, option)
+            .await
+            .context("Failed to execute /voice pitch"),
+        CommandKind::Help => handle_help(ctx, command)
+            .await
+            .context("Failed to execute /help"),
         CommandKind::Unknown => {
-            error!("Failed to parse command: {:?}", command);
-            Ok("エラー: コマンドを認識できません。".into())
-        }
-    };
-
-    match res {
-        Ok(message) => message,
-        Err(err) => {
-            error!("Error while executing command: {}", err);
-            "内部エラーが発生しました。".into()
+            bail!("Unknown command: {:?}", command);
         }
     }
 }
