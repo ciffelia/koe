@@ -1,11 +1,10 @@
-version: '3.7'
-
 services:
   app:
     image: "ghcr.io/ciffelia/koe:latest"
     init: true
     depends_on:
-      - redis
+      redis:
+        condition: service_healthy
     restart: unless-stopped
     env_file: ./config/.env
     volumes:
@@ -14,6 +13,11 @@ services:
   redis:
     image: "redis:6.2.6"
     command: /usr/local/etc/redis/redis.conf
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 4
     restart: unless-stopped
     expose:
       - 6379
