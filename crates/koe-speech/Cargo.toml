@@ -6,7 +6,7 @@ publish = false
 
 [dependencies]
 koe-audio = { path = "../koe-audio" }
-anyhow = "1"
+anyhow = { version = "1", features = ["backtrace"] }
 tokio = "1"
 google-texttospeech1 = "2"
 hyper = "0.14"

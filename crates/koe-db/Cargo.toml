@@ -4,6 +4,6 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-anyhow = "1"
+anyhow = { version = "1", features = ["backtrace"] }
 redis = { version = "0.21", default-features = false, features = ["aio", "tokio-comp"] }
 chrono = "0.4"
