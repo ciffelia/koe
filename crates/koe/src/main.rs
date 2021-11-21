@@ -10,6 +10,7 @@ use songbird::SerenityInit;
 mod command_setup;
 mod connection_status;
 mod context_store;
+mod error;
 mod handler;
 mod regex;
 mod sanitize;

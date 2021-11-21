@@ -1,6 +1,7 @@
-use anyhow::{Context as _, Result};
+use crate::error::report_error;
+use anyhow::{anyhow, Context as _, Result};
 use koe_speech::{SpeechProvider, SpeechRequest};
-use log::{debug, error};
+use log::debug;
 use serenity::model::id::GuildId;
 use songbird::input::{Codec, Container, Input, Reader};
 use songbird::Call;
@@ -55,11 +56,9 @@ impl Drop for SpeechQueue {
         if let Err(err) = self
             .command_sender
             .send(SpeechQueueWorkerCommand::Terminate)
+            .context("Failed to send terminate command to SpeechQueueWorker")
         {
-            error!(
-                "Failed to send terminate command to SpeechQueueWorker: {:?}",
-                err
-            );
+            report_error(err);
         }
     }
 }
@@ -106,8 +105,12 @@ impl SpeechQueueWorker {
                 Some(command) = self.command_receiver.recv() => {
                     match command {
                         SpeechQueueWorkerCommand::Skip => {
-                            if let Err(err) = self.skip().await {
-                                error!("Failed to skip current track: {:?}", err);
+                            if let Err(err) = self
+                                .skip()
+                                .await
+                                .context("Failed to skip current track")
+                            {
+                                report_error(err);
                             }
                         }
                         SpeechQueueWorkerCommand::Terminate => {
@@ -116,12 +119,16 @@ impl SpeechQueueWorker {
                     }
                 }
                 Some(request) = self.request_receiver.recv() => {
-                    if let Err(err) = self.speak(request).await {
-                        error!("Failed to speak: {:?}", err);
+                    if let Err(err) = self
+                        .speak(request)
+                        .await
+                        .context("Failed to speak")
+                    {
+                        report_error(err);
                     }
                 }
                 else => {
-                    error!("Both mpsc channels are closed");
+                    report_error(anyhow!("Both mpsc channels are closed"));
                     break;
                 }
             };

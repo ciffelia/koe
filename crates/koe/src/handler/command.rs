@@ -1,5 +1,6 @@
 use crate::connection_status::{VoiceConnectionStatus, VoiceConnectionStatusMap};
 use crate::context_store;
+use crate::error::report_error;
 use crate::sanitize::sanitize_response;
 use crate::speech::{NewSpeechQueueOption, SpeechQueue};
 use crate::voice_client::VoiceClient;
@@ -8,7 +9,6 @@ use koe_db::dict::{GetAllOption, InsertOption, InsertResponse, RemoveOption, Rem
 use koe_db::redis;
 use koe_db::voice::{SetKindOption, SetPitchOption, SetSpeedOption};
 use koe_speech::SpeechProvider;
-use log::error;
 use serenity::builder::CreateEmbed;
 use serenity::{
     client::Context,
@@ -184,10 +184,13 @@ impl From<&ApplicationCommandInteraction> for CommandKind {
 }
 
 pub async fn handle_command(ctx: &Context, command: &ApplicationCommandInteraction) -> Result<()> {
-    let response = match execute_command(ctx, command).await {
+    let response = match execute_command(ctx, command)
+        .await
+        .context("Failed to execute command")
+    {
         Ok(resp) => resp,
         Err(err) => {
-            error!("Error while executing command: {:?}", err);
+            report_error(err);
             CommandResponse::Text("内部エラーが発生しました。".to_string())
         }
     };
