@@ -18,6 +18,10 @@ tokio = { version = "1", features = ["rt-multi-thread", "macros", "sync"] }
 log = "0.4"
 env_logger = "0.9"
 
+# Error reporting
+sentry = "0.23"
+sentry-anyhow = { version = "0.23", features = ["backtrace"] }
+
 # Discord
 serenity = { version = "0.10", default-features = false, features = ["cache", "client", "utils", "voice", "unstable_discord_api", "rustls_backend"] }
 songbird = { version = "0.2", features = ["builtin-queue"] }

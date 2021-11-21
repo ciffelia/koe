@@ -18,6 +18,15 @@ mod voice_client;
 
 #[tokio::main]
 async fn main() -> Result<()> {
+    let _guard = sentry::init(());
+
+    run().await.map_err(|err| {
+        sentry_anyhow::capture_anyhow(&err);
+        err
+    })
+}
+
+async fn run() -> Result<()> {
     env_logger::init();
 
     let config = koe_config::load()?;
