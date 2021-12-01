@@ -16,7 +16,7 @@ tokio = { version = "1", features = ["rt-multi-thread", "macros", "sync"] }
 
 # Logging
 log = "0.4"
-env_logger = "0.9"
+ecs-logger = "1.0.0-rc.2"
 
 # Error reporting
 sentry = "0.23"

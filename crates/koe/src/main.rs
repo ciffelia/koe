@@ -28,7 +28,7 @@ async fn main() -> Result<()> {
 }
 
 async fn run() -> Result<()> {
-    env_logger::init();
+    ecs_logger::init();
 
     let config = koe_config::load()?;
     info!("Config loaded");
