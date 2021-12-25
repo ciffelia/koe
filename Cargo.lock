@@ -312,6 +312,17 @@ dependencies = [
 ]
 
 [[package]]
+name = "dashmap"
+version = "5.0.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "b799062aaf67eb976af3bdca031ee6f846d2f0a5710ddbb0d2efee33f3cc4760"
+dependencies = [
+ "cfg-if 1.0.0",
+ "num_cpus",
+ "parking_lot",
+]
+
+[[package]]
 name = "debugid"
 version = "0.7.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -881,7 +892,7 @@ dependencies = [
  "aho-corasick",
  "anyhow",
  "chrono",
- "dashmap",
+ "dashmap 5.0.0",
  "discord-md",
  "ecs-logger",
  "koe-audio",
@@ -1944,7 +1955,7 @@ dependencies = [
  "async-tungstenite 0.14.0",
  "audiopus",
  "byteorder",
- "dashmap",
+ "dashmap 4.0.2",
  "discortp",
  "flume",
  "futures",

@@ -28,7 +28,7 @@ songbird = { version = "0.2", features = ["builtin-queue"] }
 discord-md = "2"
 
 # Utilities
-dashmap = "4"
+dashmap = "5"
 chrono = "0.4"
 once_cell = "1"
 aho-corasick = "0.7"
