@@ -19,7 +19,7 @@ log = "0.4"
 ecs-logger = "1"
 
 # Error reporting
-sentry = "0.23"
+sentry = "0.24"
 sentry-anyhow = { version = "0.23", features = ["backtrace"] }
 
 # Discord
