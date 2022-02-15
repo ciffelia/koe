@@ -19,8 +19,7 @@ log = "0.4"
 ecs-logger = "1"
 
 # Error reporting
-sentry = "0.23"
-sentry-anyhow = { version = "0.23", features = ["backtrace"] }
+sentry = { version = "0.24", features = ["anyhow"] }
 
 # Discord
 serenity = { version = "0.10", default-features = false, features = ["cache", "client", "utils", "voice", "unstable_discord_api", "rustls_backend"] }

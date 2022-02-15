@@ -4,6 +4,7 @@ use anyhow::{Context, Result};
 use koe_db::redis;
 use koe_speech::SpeechProvider;
 use log::info;
+use sentry::integrations::anyhow::capture_anyhow;
 use serenity::Client;
 use songbird::SerenityInit;
 
@@ -22,7 +23,7 @@ async fn main() -> Result<()> {
     let _guard = sentry::init(());
 
     run().await.map_err(|err| {
-        sentry_anyhow::capture_anyhow(&err);
+        capture_anyhow(&err);
         err
     })
 }
