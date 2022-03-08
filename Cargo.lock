@@ -644,9 +644,9 @@ checksum = "78cc372d058dcf6d5ecd98510e7fbc9e5aec4d21de70f65fea8fecebcd881bd4"
 
 [[package]]
 name = "google-texttospeech1"
-version = "2.0.8+20210326"
+version = "3.0.0+20220228"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1043151351fdb8a5675037df5a34cbfbb263be7d6fe9df2b1fb9b69a7cfd4677"
+checksum = "e5c96b3db467a740d151340c64af1f37adcc9b03a97e024211541e22541c47e4"
 dependencies = [
  "hyper",
  "hyper-rustls 0.22.1",
@@ -656,7 +656,7 @@ dependencies = [
  "serde_derive",
  "serde_json",
  "url 1.7.2",
- "yup-oauth2",
+ "yup-oauth2 6.3.1",
 ]
 
 [[package]]
@@ -968,7 +968,7 @@ dependencies = [
  "hyper-rustls 0.22.1",
  "koe-audio",
  "tokio",
- "yup-oauth2",
+ "yup-oauth2 5.1.0",
 ]
 
 [[package]]
@@ -2693,6 +2693,31 @@ dependencies = [
  "http",
  "hyper",
  "hyper-rustls 0.22.1",
+ "log 0.4.14",
+ "percent-encoding 2.1.0",
+ "rustls 0.19.1",
+ "seahash",
+ "serde",
+ "serde_json",
+ "tokio",
+ "url 2.2.2",
+]
+
+[[package]]
+name = "yup-oauth2"
+version = "6.3.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "df0647712324d99fab8977022a015feeab311cecd8630ce2cd1e74643b651cf1"
+dependencies = [
+ "anyhow",
+ "async-trait",
+ "base64 0.13.0",
+ "chrono",
+ "futures",
+ "http",
+ "hyper",
+ "hyper-rustls 0.22.1",
+ "itertools",
  "log 0.4.14",
  "percent-encoding 2.1.0",
  "rustls 0.19.1",

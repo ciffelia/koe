@@ -8,7 +8,7 @@ publish = false
 koe-audio = { path = "../koe-audio" }
 anyhow = { version = "1", features = ["backtrace"] }
 tokio = "1"
-google-texttospeech1 = "2"
+google-texttospeech1 = "3"
 hyper = "0.14"
 hyper-rustls = "0.22"
 yup-oauth2 = "5"
