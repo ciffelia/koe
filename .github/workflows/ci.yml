@@ -3,7 +3,7 @@ name: CI
 on: [push, pull_request]
 
 env:
-  RUST_VERSION: 1.58.1
+  RUST_VERSION: 1.59.0
   CARGO_TERM_COLOR: always
 
 jobs:
