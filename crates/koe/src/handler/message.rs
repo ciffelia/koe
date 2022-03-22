@@ -12,10 +12,7 @@ use koe_speech::SpeechRequest;
 use log::{trace, warn};
 use serenity::{
     client::Context,
-    model::{
-        channel::Message,
-        id::{GuildId, UserId},
-    },
+    model::{channel::Message, id::GuildId},
     utils::ContentSafeOptions,
 };
 
@@ -69,7 +66,7 @@ pub async fn handle_message(ctx: &Context, msg: Message) -> Result<()> {
             return Ok(());
         }
 
-        let request = build_speech_request(&mut conn, text, msg.author.id).await?;
+        let request = build_speech_request(text);
         status.speech_queue.push(request)?;
 
         status.last_message_read = Some(msg);
@@ -177,30 +174,11 @@ fn remove_url(text: &str) -> String {
     url_regex().replace_all(text, "、").into()
 }
 
-async fn build_speech_request(
-    conn: &mut redis::aio::Connection,
-    text: String,
-    author_id: UserId,
-) -> Result<SpeechRequest> {
-    let voice_name = format!(
-        "ja-JP-Wavenet-{}",
-        koe_db::voice::get_kind(conn, author_id.to_string())
-            .await?
-            .unwrap_or_else(|| "B".to_string())
-    );
-
-    let speaking_rate = koe_db::voice::get_speed(conn, author_id.to_string())
-        .await?
-        .unwrap_or(1.3);
-
-    let pitch = koe_db::voice::get_pitch(conn, author_id.to_string())
-        .await?
-        .unwrap_or(0.0);
-
-    Ok(SpeechRequest {
+fn build_speech_request(text: String) -> SpeechRequest {
+    SpeechRequest {
         text,
-        voice_name,
-        speaking_rate,
-        pitch,
-    })
+        voice_name: "ja-JP-Wavenet-B".to_string(),
+        speaking_rate: 1.3,
+        pitch: 0.0,
+    }
 }

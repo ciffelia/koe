@@ -7,7 +7,6 @@ use crate::voice_client::VoiceClient;
 use anyhow::{bail, Context as _, Result};
 use koe_db::dict::{GetAllOption, InsertOption, InsertResponse, RemoveOption, RemoveResponse};
 use koe_db::redis;
-use koe_db::voice::{SetKindOption, SetPitchOption, SetSpeedOption};
 use koe_speech::SpeechProvider;
 use serenity::builder::CreateEmbed;
 use serenity::{
@@ -31,9 +30,6 @@ enum CommandKind {
     DictAdd(DictAddOption),
     DictRemove(DictRemoveOption),
     DictView,
-    VoiceKind(VoiceKindOption),
-    VoiceSpeed(VoiceSpeedOption),
-    VoicePitch(VoicePitchOption),
     Help,
     Unknown,
 }
@@ -47,21 +43,6 @@ struct DictAddOption {
 #[derive(Debug, Clone)]
 struct DictRemoveOption {
     pub word: String,
-}
-
-#[derive(Debug, Clone)]
-struct VoiceKindOption {
-    pub kind: String,
-}
-
-#[derive(Debug, Clone)]
-struct VoiceSpeedOption {
-    pub speed: f64,
-}
-
-#[derive(Debug, Clone)]
-struct VoicePitchOption {
-    pub pitch: f64,
 }
 
 #[derive(Debug, Clone)]
@@ -131,52 +112,6 @@ impl From<&ApplicationCommandInteraction> for CommandKind {
                     _ => CommandKind::Unknown,
                 }
             }
-            "voice" => {
-                let option_voice = match cmd.data.options.get(0) {
-                    Some(option) => option,
-                    None => return CommandKind::Unknown,
-                };
-
-                match option_voice.name.as_str() {
-                    "kind" => {
-                        let option_kind = match option_voice.options.get(0) {
-                            Some(x) => x,
-                            None => return CommandKind::Unknown,
-                        };
-                        let kind = match &option_kind.resolved {
-                            Some(ApplicationCommandInteractionDataOptionValue::String(x)) => x,
-                            _ => return CommandKind::Unknown,
-                        };
-
-                        CommandKind::VoiceKind(VoiceKindOption { kind: kind.clone() })
-                    }
-                    "speed" => {
-                        let option_speed = match option_voice.options.get(0) {
-                            Some(x) => x,
-                            None => return CommandKind::Unknown,
-                        };
-                        let speed = match &option_speed.resolved {
-                            Some(ApplicationCommandInteractionDataOptionValue::Number(x)) => x,
-                            _ => return CommandKind::Unknown,
-                        };
-
-                        CommandKind::VoiceSpeed(VoiceSpeedOption { speed: *speed })
-                    }
-                    "pitch" => {
-                        let option_pitch = match option_voice.options.get(0) {
-                            Some(x) => x,
-                            None => return CommandKind::Unknown,
-                        };
-                        let pitch = match &option_pitch.resolved {
-                            Some(ApplicationCommandInteractionDataOptionValue::Number(x)) => x,
-                            _ => return CommandKind::Unknown,
-                        };
-
-                        CommandKind::VoicePitch(VoicePitchOption { pitch: *pitch })
-                    }
-                    _ => CommandKind::Unknown,
-                }
-            }
             "help" => CommandKind::Help,
             _ => CommandKind::Unknown,
         }
@@ -235,15 +170,6 @@ async fn execute_command(
         CommandKind::DictView => handle_dict_view(ctx, command)
             .await
             .context("Failed to execute /dict view"),
-        CommandKind::VoiceKind(option) => handle_voice_kind(ctx, command, option)
-            .await
-            .context("Failed to execute /voice kind"),
-        CommandKind::VoiceSpeed(option) => handle_voice_speed(ctx, command, option)
-            .await
-            .context("Failed to execute /voice speed"),
-        CommandKind::VoicePitch(option) => handle_voice_pitch(ctx, command, option)
-            .await
-            .context("Failed to execute /voice pitch"),
         CommandKind::Help => handle_help(ctx, command)
             .await
             .context("Failed to execute /help"),
@@ -450,83 +376,6 @@ async fn handle_dict_view(
     );
 
     Ok(CommandResponse::Embed(embed))
-}
-
-async fn handle_voice_kind(
-    ctx: &Context,
-    command: &ApplicationCommandInteraction,
-    option: VoiceKindOption,
-) -> Result<CommandResponse> {
-    let client = context_store::extract::<redis::Client>(ctx).await?;
-    let mut conn = client.get_async_connection().await?;
-
-    match option.kind.as_str() {
-        "A" | "B" | "C" | "D" => {}
-        _ => return Ok("声の種類を認識できません。".into()),
-    }
-
-    koe_db::voice::set_kind(
-        &mut conn,
-        SetKindOption {
-            user_id: command.user.id.to_string(),
-            kind: option.kind.clone(),
-        },
-    )
-    .await?;
-
-    Ok(format!(
-        "声の種類を{}に設定しました。",
-        sanitize_response(&option.kind)
-    )
-    .into())
-}
-
-async fn handle_voice_speed(
-    ctx: &Context,
-    command: &ApplicationCommandInteraction,
-    option: VoiceSpeedOption,
-) -> Result<CommandResponse> {
-    let client = context_store::extract::<redis::Client>(ctx).await?;
-    let mut conn = client.get_async_connection().await?;
-
-    if option.speed < 0.25 || 4.0 < option.speed {
-        return Ok("速度は 0.25 以上 4.0 以下の値を指定してください。".into());
-    }
-
-    koe_db::voice::set_speed(
-        &mut conn,
-        SetSpeedOption {
-            user_id: command.user.id.to_string(),
-            speed: option.speed,
-        },
-    )
-    .await?;
-
-    Ok(format!("声の速度を{}に設定しました。", option.speed).into())
-}
-
-async fn handle_voice_pitch(
-    ctx: &Context,
-    command: &ApplicationCommandInteraction,
-    option: VoicePitchOption,
-) -> Result<CommandResponse> {
-    let client = context_store::extract::<redis::Client>(ctx).await?;
-    let mut conn = client.get_async_connection().await?;
-
-    if option.pitch < -20.0 || 20.0 < option.pitch {
-        return Ok("ピッチは -20.0 以上 20.0 以下の値を指定してください。".into());
-    }
-
-    koe_db::voice::set_pitch(
-        &mut conn,
-        SetPitchOption {
-            user_id: command.user.id.to_string(),
-            pitch: option.pitch,
-        },
-    )
-    .await?;
-
-    Ok(format!("声のピッチを{}に設定しました。", option.pitch).into())
 }
 
 async fn handle_help(
