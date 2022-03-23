@@ -143,14 +143,14 @@ impl SpeechQueueWorker {
             .context("Failed to execute Text-to-Speech")?;
 
         let decoded_audio = encoded_audio
-            .into_decoded()
+            .decode()
             .await
             .context("Failed to decode audio")?;
 
         let mut handler = self.call.lock().await;
         handler.enqueue_source(Input::new(
             false,
-            Reader::from_memory(decoded_audio.data()),
+            Reader::from_memory(decoded_audio.into()),
             Codec::Pcm,
             Container::Raw,
             None,
