@@ -9,7 +9,7 @@ use discord_md::generate::{ToMarkdownString, ToMarkdownStringOption};
 use koe_db::dict::GetAllOption;
 use koe_db::redis;
 use koe_speech::SpeechRequest;
-use log::{trace, warn};
+use log::trace;
 use serenity::{
     client::Context,
     model::{channel::Message, id::GuildId},
@@ -53,16 +53,6 @@ pub async fn handle_message(ctx: &Context, msg: Message) -> Result<()> {
 
         if text.is_empty() {
             trace!("Text is empty");
-            return Ok(());
-        }
-
-        let text_length = text.chars().clone().count();
-        let chars_used_today =
-            koe_db::usage::add_and_get_chars_used_today(&mut conn, text_length).await?;
-
-        trace!("{} chars used today", chars_used_today);
-        if chars_used_today > 15000 {
-            warn!("Usage limit exceeded");
             return Ok(());
         }
 
