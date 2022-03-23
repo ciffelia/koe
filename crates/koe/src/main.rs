@@ -35,7 +35,7 @@ async fn run() -> Result<()> {
     info!("Config loaded");
 
     let redis_client = redis::Client::open(config.redis_url)?;
-    let speech_provider = SpeechProvider::new(config.google_application_credentials).await?;
+    let speech_provider = SpeechProvider::new(config.voicevox_api_base);
     let voice_client = VoiceClient::new();
     let status_map = VoiceConnectionStatusMap::new();
 

@@ -1,75 +1,40 @@
-use crate::google_cloud;
-use anyhow::{anyhow, Context, Result};
-use google_texttospeech1::api::{
-    AudioConfig, SynthesisInput, SynthesizeSpeechRequest, SynthesizeSpeechResponse,
-    VoiceSelectionParams,
-};
-use google_texttospeech1::Texttospeech;
+use crate::voicevox::{GenerateQueryParams, SynthesisParams, VoicevoxClient};
+use anyhow::Result;
 use koe_audio::EncodedAudio;
-use std::path::Path;
 
 pub struct SpeechProvider {
-    hub: Texttospeech,
+    client: VoicevoxClient,
 }
 
 impl SpeechProvider {
-    pub async fn new(service_account_key_path: impl AsRef<Path>) -> Result<Self> {
-        let auth = google_cloud::auth(service_account_key_path).await?;
-        let client =
-            hyper::Client::builder().build(hyper_rustls::HttpsConnector::with_native_roots());
-
-        let hub = Texttospeech::new(client, auth);
-
-        Ok(Self { hub })
+    pub fn new(api_base: String) -> Self {
+        Self {
+            client: VoicevoxClient::new(api_base),
+        }
     }
 
     pub async fn make_speech(&self, option: SpeechRequest) -> Result<EncodedAudio> {
-        let (_, resp) = self
-            .hub
-            .text()
-            .synthesize(SynthesizeSpeechRequest {
-                input: Some(SynthesisInput {
-                    text: Some(option.text),
-                    ..Default::default()
-                }),
-                voice: Some(VoiceSelectionParams {
-                    language_code: Some("ja-JP".to_string()),
-                    name: Some(option.voice_name),
-                    ..Default::default()
-                }),
-                audio_config: Some(AudioConfig {
-                    audio_encoding: Some("OGG_OPUS".to_string()),
-                    speaking_rate: Some(option.speaking_rate),
-                    pitch: Some(option.pitch),
-                    ..Default::default()
-                }),
+        let query = self
+            .client
+            .generate_query(GenerateQueryParams {
+                style_id: "1".to_string(),
+                text: option.text,
             })
-            .doit()
-            .await
-            .context("Failed to make text.synthesize request")?;
+            .await?;
 
-        let speech = SpeechProvider::parse_resp(resp)?;
+        let audio = self
+            .client
+            .synthesis(SynthesisParams {
+                style_id: "1".to_string(),
+                query,
+            })
+            .await?;
 
-        Ok(speech)
-    }
-
-    fn parse_resp(resp: SynthesizeSpeechResponse) -> Result<EncodedAudio> {
-        let speech_base64 = resp.audio_content.ok_or_else(|| {
-            anyhow!("No audio_content found in the response from Text-to-Speech API")
-        })?;
-
-        let speech_bytes =
-            base64::decode(speech_base64).context("Failed to decode base64 audio_content")?;
-        let speech = EncodedAudio::from(speech_bytes);
-
-        Ok(speech)
+        Ok(audio)
     }
 }
 
 #[derive(Debug, Clone)]
 pub struct SpeechRequest {
     pub text: String,
-    pub voice_name: String,
-    pub speaking_rate: f64,
-    pub pitch: f64,
 }

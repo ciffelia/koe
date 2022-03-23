@@ -1,4 +1,4 @@
-mod google_cloud;
 mod speech;
+mod voicevox;
 
 pub use speech::{SpeechProvider, SpeechRequest};

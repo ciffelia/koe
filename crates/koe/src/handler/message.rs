@@ -175,10 +175,5 @@ fn remove_url(text: &str) -> String {
 }
 
 fn build_speech_request(text: String) -> SpeechRequest {
-    SpeechRequest {
-        text,
-        voice_name: "ja-JP-Wavenet-B".to_string(),
-        speaking_rate: 1.3,
-        pitch: 0.0,
-    }
+    SpeechRequest { text }
 }

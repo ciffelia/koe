@@ -7,9 +7,5 @@ publish = false
 [dependencies]
 koe-audio = { path = "../koe-audio" }
 anyhow = { version = "1", features = ["backtrace"] }
-tokio = "1"
-google-texttospeech1 = "2"
-hyper = "0.14"
-hyper-rustls = "0.22"
-yup-oauth2 = "5"
-base64 = "0.13"
+url = "2"
+reqwest = "0.11"
