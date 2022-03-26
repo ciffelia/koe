@@ -1,6 +1,5 @@
-use crate::connection_status::VoiceConnectionStatusMap;
-use crate::voice_client::VoiceClient;
 use anyhow::{Context, Result};
+use dashmap::DashMap;
 use koe_db::redis;
 use koe_speech::SpeechProvider;
 use log::info;
@@ -8,15 +7,14 @@ use sentry::integrations::anyhow::capture_anyhow;
 use serenity::Client;
 use songbird::SerenityInit;
 
+mod app_state;
+mod audio_queue;
 mod command_setup;
-mod connection_status;
-mod context_store;
 mod error;
 mod handler;
 mod regex;
 mod sanitize;
-mod speech;
-mod voice_client;
+mod songbird_util;
 
 #[tokio::main]
 async fn main() -> Result<()> {
@@ -34,11 +32,6 @@ async fn run() -> Result<()> {
     let config = koe_config::load()?;
     info!("Config loaded");
 
-    let redis_client = redis::Client::open(config.redis_url)?;
-    let speech_provider = SpeechProvider::new(config.voicevox_api_base);
-    let voice_client = VoiceClient::new();
-    let status_map = VoiceConnectionStatusMap::new();
-
     let mut client = Client::builder(config.discord_bot_token)
         .event_handler(handler::Handler)
         .application_id(config.discord_client_id)
@@ -46,10 +39,15 @@ async fn run() -> Result<()> {
         .await
         .context("Failed to build serenity client")?;
 
-    context_store::insert(&client, redis_client).await;
-    context_store::insert(&client, speech_provider).await;
-    context_store::insert(&client, voice_client).await;
-    context_store::insert(&client, status_map).await;
+    app_state::initialize(
+        &client,
+        app_state::AppState {
+            redis_client: redis::Client::open(config.redis_url)?,
+            speech_provider: SpeechProvider::new(config.voicevox_api_base),
+            connected_guild_states: DashMap::new(),
+        },
+    )
+    .await;
 
     info!("Starting client...");
     client.start().await.context("Client error occurred")?;

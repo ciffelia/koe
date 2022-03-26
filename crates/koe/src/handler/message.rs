@@ -1,9 +1,7 @@
-use crate::connection_status::VoiceConnectionStatusMap;
-use crate::context_store;
 use crate::regex::{custom_emoji_regex, url_regex};
-use crate::voice_client::VoiceClient;
+use crate::{app_state, audio_queue, songbird_util};
 use aho_corasick::{AhoCorasickBuilder, MatchKind};
-use anyhow::Result;
+use anyhow::{Context as _, Result};
 use chrono::Duration;
 use discord_md::generate::{ToMarkdownString, ToMarkdownStringOption};
 use koe_db::dict::GetAllOption;
@@ -22,18 +20,17 @@ pub async fn handle_message(ctx: &Context, msg: Message) -> Result<()> {
         None => return Ok(()),
     };
 
-    let voice_client = context_store::extract::<VoiceClient>(ctx).await?;
-    if !voice_client.is_connected(ctx, guild_id).await? {
+    if !songbird_util::is_connected(ctx, guild_id).await? {
         return Ok(());
     }
 
-    let status_map = context_store::extract::<VoiceConnectionStatusMap>(ctx).await?;
-    let mut status = match status_map.get_mut(&guild_id) {
+    let state = app_state::get(ctx).await?;
+    let mut guild_state = match state.connected_guild_states.get_mut(&guild_id) {
         Some(status) => status,
         None => return Ok(()),
     };
 
-    if status.bound_text_channel != msg.channel_id {
+    if guild_state.bound_text_channel != msg.channel_id {
         return Ok(());
     }
 
@@ -47,10 +44,16 @@ pub async fn handle_message(ctx: &Context, msg: Message) -> Result<()> {
         return Ok(());
     }
 
-    let client = context_store::extract::<redis::Client>(ctx).await?;
-    let mut conn = client.get_async_connection().await?;
+    let mut conn = state.redis_client.get_async_connection().await?;
 
-    let text = build_read_text(ctx, &mut conn, guild_id, &msg, &status.last_message_read).await?;
+    let text = build_read_text(
+        ctx,
+        &mut conn,
+        guild_id,
+        &msg,
+        &guild_state.last_message_read,
+    )
+    .await?;
     trace!("Built text: {:?}", &text);
 
     if text.is_empty() {
@@ -58,10 +61,18 @@ pub async fn handle_message(ctx: &Context, msg: Message) -> Result<()> {
         return Ok(());
     }
 
-    let request = build_speech_request(text);
-    status.speech_queue.push(request)?;
+    let call = songbird_util::get_call(ctx, guild_id).await?;
 
-    status.last_message_read = Some(msg);
+    let request = build_speech_request(text);
+    let audio = state
+        .speech_provider
+        .make_speech(request)
+        .await
+        .context("Failed to execute Text-to-Speech")?;
+
+    audio_queue::enqueue(call, audio).await?;
+
+    guild_state.last_message_read = Some(msg);
 
     Ok(())
 }
@@ -166,5 +177,5 @@ fn remove_url(text: &str) -> String {
 }
 
 fn build_speech_request(text: String) -> SpeechRequest {
-    SpeechRequest { text }
+    SpeechRequest { text, preset_id: 1 }
 }

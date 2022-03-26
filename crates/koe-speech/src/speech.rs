@@ -1,5 +1,5 @@
 use crate::voicevox::{GenerateQueryFromPresetParams, SynthesisParams, VoicevoxClient};
-use anyhow::Result;
+use anyhow::{anyhow, Result};
 use koe_audio::EncodedAudio;
 
 pub struct SpeechProvider {
@@ -15,7 +15,9 @@ impl SpeechProvider {
 
     pub async fn make_speech(&self, option: SpeechRequest) -> Result<EncodedAudio> {
         let preset_list = self.client.get_presets().await?;
-        let preset = &preset_list[0];
+        let preset = preset_list
+            .get(&option.preset_id)
+            .ok_or_else(|| anyhow!("Preset {} is not available", option.preset_id))?;
 
         let query = self
             .client
@@ -35,9 +37,16 @@ impl SpeechProvider {
 
         Ok(audio)
     }
+
+    pub async fn list_preset_ids(&self) -> Result<Vec<i64>> {
+        let preset_list = self.client.get_presets().await?;
+        let ids = preset_list.into_keys().collect();
+        Ok(ids)
+    }
 }
 
 #[derive(Debug, Clone)]
 pub struct SpeechRequest {
     pub text: String,
+    pub preset_id: i64,
 }

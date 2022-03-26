@@ -1,13 +1,8 @@
-use crate::connection_status::{VoiceConnectionStatus, VoiceConnectionStatusMap};
-use crate::context_store;
 use crate::error::report_error;
 use crate::sanitize::sanitize_response;
-use crate::speech::{NewSpeechQueueOption, SpeechQueue};
-use crate::voice_client::VoiceClient;
+use crate::{app_state, audio_queue, songbird_util};
 use anyhow::{bail, Context as _, Result};
 use koe_db::dict::{GetAllOption, InsertOption, InsertResponse, RemoveOption, RemoveResponse};
-use koe_db::redis;
-use koe_speech::SpeechProvider;
 use serenity::builder::CreateEmbed;
 use serenity::{
     client::Context,
@@ -197,22 +192,14 @@ async fn handle_join(
         }
     };
 
-    let voice_client = context_store::extract::<VoiceClient>(ctx).await?;
-    let call = voice_client.join(ctx, guild_id, voice_channel_id).await?;
+    songbird_util::join_deaf(ctx, guild_id, voice_channel_id).await?;
 
-    let speech_provider = context_store::extract::<SpeechProvider>(ctx).await?;
-
-    let status_map = context_store::extract::<VoiceConnectionStatusMap>(ctx).await?;
-    status_map.insert(
+    let state = app_state::get(ctx).await?;
+    state.connected_guild_states.insert(
         guild_id,
-        VoiceConnectionStatus {
+        app_state::ConnectedGuildState {
             bound_text_channel: text_channel_id,
             last_message_read: None,
-            speech_queue: SpeechQueue::new(NewSpeechQueueOption {
-                guild_id,
-                speech_provider,
-                call,
-            }),
         },
     );
 
@@ -228,16 +215,14 @@ async fn handle_leave(
         None => return Ok("`/leave`, `/kleave` はサーバー内でのみ使えます。".into()),
     };
 
-    let voice_client = context_store::extract::<VoiceClient>(ctx).await?;
-
-    if !voice_client.is_connected(ctx, guild_id).await? {
+    if !songbird_util::is_connected(ctx, guild_id).await? {
         return Ok("どのボイスチャンネルにも接続していません。".into());
     }
 
-    voice_client.leave(ctx, guild_id).await?;
+    songbird_util::leave(ctx, guild_id).await?;
 
-    let status_map = context_store::extract::<VoiceConnectionStatusMap>(ctx).await?;
-    status_map.remove(&guild_id);
+    let state = app_state::get(ctx).await?;
+    state.connected_guild_states.remove(&guild_id);
 
     Ok("切断しました。".into())
 }
@@ -251,19 +236,12 @@ async fn handle_skip(
         None => return Ok("`/skip`, `/kskip` はサーバー内でのみ使えます。".into()),
     };
 
-    let voice_client = context_store::extract::<VoiceClient>(ctx).await?;
-
-    if !voice_client.is_connected(ctx, guild_id).await? {
+    if !songbird_util::is_connected(ctx, guild_id).await? {
         return Ok("どのボイスチャンネルにも接続していません。".into());
     }
 
-    let status_map = context_store::extract::<VoiceConnectionStatusMap>(ctx).await?;
-    let status = match status_map.get_mut(&guild_id) {
-        Some(status) => status,
-        None => return Ok("どのボイスチャンネルにも接続していません。".into()),
-    };
-
-    status.speech_queue.skip()?;
+    let call = songbird_util::get_call(ctx, guild_id).await?;
+    audio_queue::skip(call).await?;
 
     Ok("読み上げ中のメッセージをスキップしました。".into())
 }
@@ -278,8 +256,8 @@ async fn handle_dict_add(
         None => return Ok("`/dict add` はサーバー内でのみ使えます。".into()),
     };
 
-    let client = context_store::extract::<redis::Client>(ctx).await?;
-    let mut conn = client.get_async_connection().await?;
+    let state = app_state::get(ctx).await?;
+    let mut conn = state.redis_client.get_async_connection().await?;
 
     let resp = koe_db::dict::insert(
         &mut conn,
@@ -316,8 +294,8 @@ async fn handle_dict_remove(
         None => return Ok("`/dict remove` はサーバー内でのみ使えます。".into()),
     };
 
-    let client = context_store::extract::<redis::Client>(ctx).await?;
-    let mut conn = client.get_async_connection().await?;
+    let state = app_state::get(ctx).await?;
+    let mut conn = state.redis_client.get_async_connection().await?;
 
     let resp = koe_db::dict::remove(
         &mut conn,
@@ -351,8 +329,8 @@ async fn handle_dict_view(
         None => return Ok("`/dict view` はサーバー内でのみ使えます。".into()),
     };
 
-    let client = context_store::extract::<redis::Client>(ctx).await?;
-    let mut conn = client.get_async_connection().await?;
+    let state = app_state::get(ctx).await?;
+    let mut conn = state.redis_client.get_async_connection().await?;
 
     let dict = koe_db::dict::get_all(
         &mut conn,
