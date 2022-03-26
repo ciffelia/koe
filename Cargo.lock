@@ -894,6 +894,7 @@ dependencies = [
  "anyhow",
  "koe-audio",
  "reqwest",
+ "serde",
  "url",
 ]
 
