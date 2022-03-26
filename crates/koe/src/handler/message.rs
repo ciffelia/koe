@@ -33,6 +33,10 @@ pub async fn handle_message(ctx: &Context, msg: Message) -> Result<()> {
         None => return Ok(()),
     };
 
+    if status.bound_text_channel != msg.channel_id {
+        return Ok(());
+    }
+
     // Skip message from Koe itself
     if msg.author.id == ctx.cache.current_user_id().await {
         return Ok(());
@@ -43,24 +47,21 @@ pub async fn handle_message(ctx: &Context, msg: Message) -> Result<()> {
         return Ok(());
     }
 
-    if status.bound_text_channel == msg.channel_id {
-        let client = context_store::extract::<redis::Client>(ctx).await?;
-        let mut conn = client.get_async_connection().await?;
+    let client = context_store::extract::<redis::Client>(ctx).await?;
+    let mut conn = client.get_async_connection().await?;
 
-        let text =
-            build_read_text(ctx, &mut conn, guild_id, &msg, &status.last_message_read).await?;
-        trace!("Built text: {:?}", &text);
+    let text = build_read_text(ctx, &mut conn, guild_id, &msg, &status.last_message_read).await?;
+    trace!("Built text: {:?}", &text);
 
-        if text.is_empty() {
-            trace!("Text is empty");
-            return Ok(());
-        }
-
-        let request = build_speech_request(text);
-        status.speech_queue.push(request)?;
-
-        status.last_message_read = Some(msg);
+    if text.is_empty() {
+        trace!("Text is empty");
+        return Ok(());
     }
+
+    let request = build_speech_request(text);
+    status.speech_queue.push(request)?;
+
+    status.last_message_read = Some(msg);
 
     Ok(())
 }
