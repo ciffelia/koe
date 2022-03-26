@@ -1,20 +1,8 @@
 use anyhow::{Context as _, Result};
-use serenity::model::interactions::application_command::ApplicationCommandOptionType;
 use serenity::{
     client::Context,
-    model::{id::GuildId, interactions::application_command::ApplicationCommand},
+    model::{id::GuildId, interactions::application_command::ApplicationCommandOptionType},
 };
-
-pub async fn setup_global_commands(ctx: &Context) -> Result<()> {
-    ApplicationCommand::set_global_application_commands(&ctx.http, |commands| {
-        // TODO: add global application commands
-        commands
-    })
-    .await
-    .context("Failed to set global application commands")?;
-
-    Ok(())
-}
 
 pub async fn setup_guild_commands(ctx: &Context, guild_id: GuildId) -> Result<()> {
     guild_id

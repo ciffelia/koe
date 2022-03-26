@@ -2,7 +2,7 @@ mod command;
 mod message;
 mod voice_state;
 
-use crate::command_setup::{setup_global_commands, setup_guild_commands};
+use crate::command_setup::setup_guild_commands;
 use crate::error::report_error;
 use crate::handler::voice_state::handle_voice_state_update;
 use anyhow::Context as _;
@@ -24,13 +24,6 @@ pub struct Handler;
 impl EventHandler for Handler {
     async fn ready(&self, ctx: Context, ready: Ready) {
         info!("Connected as {}", ready.user.name);
-
-        if let Err(err) = setup_global_commands(&ctx)
-            .await
-            .context("Failed to set global application commands")
-        {
-            report_error(err);
-        }
 
         for guild in &ready.guilds {
             if let Err(err) = setup_guild_commands(&ctx, guild.id())
