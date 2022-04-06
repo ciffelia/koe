@@ -16,8 +16,8 @@ impl SpeechProvider {
     pub async fn make_speech(&self, option: SpeechRequest) -> Result<EncodedAudio> {
         let preset_list = self.client.get_presets().await?;
         let preset = preset_list
-            .get(&option.preset_id)
-            .ok_or_else(|| anyhow!("Preset {} is not available", option.preset_id))?;
+            .get(&option.preset_id.0)
+            .ok_or_else(|| anyhow!("Preset {} is not available", option.preset_id.0))?;
 
         let query = self
             .client
@@ -38,9 +38,9 @@ impl SpeechProvider {
         Ok(audio)
     }
 
-    pub async fn list_preset_ids(&self) -> Result<Vec<i64>> {
+    pub async fn list_preset_ids(&self) -> Result<Vec<PresetId>> {
         let preset_list = self.client.get_presets().await?;
-        let ids = preset_list.into_keys().collect();
+        let ids = preset_list.into_keys().map(PresetId).collect();
         Ok(ids)
     }
 }
@@ -48,5 +48,8 @@ impl SpeechProvider {
 #[derive(Debug, Clone)]
 pub struct SpeechRequest {
     pub text: String,
-    pub preset_id: i64,
+    pub preset_id: PresetId,
 }
+
+#[derive(Debug, Copy, Clone, Eq, PartialEq, Hash)]
+pub struct PresetId(pub i64);

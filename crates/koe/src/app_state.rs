@@ -1,3 +1,4 @@
+use crate::voice_preset::VoicePresetRegistry;
 use anyhow::{anyhow, Result};
 use dashmap::DashMap;
 use koe_db::redis;
@@ -21,6 +22,7 @@ pub struct AppState {
 pub struct ConnectedGuildState {
     pub bound_text_channel: ChannelId,
     pub last_message_read: Option<Message>,
+    pub voice_preset_registry: VoicePresetRegistry,
 }
 
 impl TypeMapKey for AppState {

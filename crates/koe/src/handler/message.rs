@@ -1,7 +1,7 @@
 use crate::regex::{custom_emoji_regex, url_regex};
 use crate::{app_state, audio_queue, songbird_util};
 use aho_corasick::{AhoCorasickBuilder, MatchKind};
-use anyhow::{Context as _, Result};
+use anyhow::{anyhow, Context as _, Result};
 use chrono::Duration;
 use discord_md::generate::{ToMarkdownString, ToMarkdownStringOption};
 use koe_db::dict::GetAllOption;
@@ -61,12 +61,16 @@ pub async fn handle_message(ctx: &Context, msg: Message) -> Result<()> {
         return Ok(());
     }
 
+    let preset_id = guild_state
+        .voice_preset_registry
+        .get(msg.author.id)
+        .ok_or_else(|| anyhow!("Voice preset not found"))?;
+
     let call = songbird_util::get_call(ctx, guild_id).await?;
 
-    let request = build_speech_request(text);
     let audio = state
         .speech_provider
-        .make_speech(request)
+        .make_speech(SpeechRequest { text, preset_id })
         .await
         .context("Failed to execute Text-to-Speech")?;
 
@@ -174,8 +178,4 @@ async fn replace_words_on_dict(
 /// メッセージのURLを除去
 fn remove_url(text: &str) -> String {
     url_regex().replace_all(text, "、").into()
-}
-
-fn build_speech_request(text: String) -> SpeechRequest {
-    SpeechRequest { text, preset_id: 1 }
 }

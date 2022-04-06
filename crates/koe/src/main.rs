@@ -15,6 +15,7 @@ mod handler;
 mod regex;
 mod sanitize;
 mod songbird_util;
+mod voice_preset;
 
 #[tokio::main]
 async fn main() -> Result<()> {

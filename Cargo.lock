@@ -853,6 +853,7 @@ dependencies = [
  "koe-speech",
  "log",
  "once_cell",
+ "rand 0.8.5",
  "regex",
  "sentry",
  "serenity",

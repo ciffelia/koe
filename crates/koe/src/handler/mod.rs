@@ -71,12 +71,13 @@ impl EventHandler for Handler {
         &self,
         ctx: Context,
         guild_id: Option<GuildId>,
-        _old_voice_state: Option<VoiceState>,
-        _new_voice_state: VoiceState,
+        old_voice_state: Option<VoiceState>,
+        new_voice_state: VoiceState,
     ) {
-        if let Err(err) = handle_voice_state_update(&ctx, guild_id)
-            .await
-            .context("Failed to handle voice state update")
+        if let Err(err) =
+            handle_voice_state_update(&ctx, guild_id, old_voice_state, new_voice_state)
+                .await
+                .context("Failed to handle voice state update")
         {
             report_error(err);
         }
