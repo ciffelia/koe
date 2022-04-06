@@ -6,8 +6,6 @@ services:
       - redis
     restart: unless-stopped
     env_file: ./config/.env
-    volumes:
-      - "./secret:/home/koe/secret:ro"
 
   redis:
     image: "redis:6.2.6"
@@ -18,6 +16,14 @@ services:
     volumes:
       - "./config/redis.conf:/usr/local/etc/redis/redis.conf:ro"
       - "redis-data:/data"
+
+  voicevox:
+    image: voicevox/voicevox_engine:cpu-ubuntu20.04-0.11.4
+    restart: unless-stopped
+    expose:
+      - 50021
+    volumes:
+      - "./config/voicevox_presets.yaml:/opt/voicevox_engine/presets.yaml:ro"
 
 volumes:
   redis-data:

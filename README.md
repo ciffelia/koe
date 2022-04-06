@@ -16,7 +16,7 @@ Koe は、指定されたテキストチャンネルに送信されたメッセ�
 
 ## 特徴
 
-- Google Text-to-Speech API を使った流暢な発音
+- [VOICEVOX ENGINE](https://github.com/VOICEVOX/voicevox_engine) を使った流暢な発音
 - 日本語テキストチャットの読み上げに特化
 - 特定の語句の読み方を設定する辞書機能を搭載
 - Slash Commands に対応
@@ -71,27 +71,16 @@ Koe はテキストチャンネルで送信されたコマンドによって動�
 
 ## セットアップガイド
 
-### 1. Google Text-to-Speech API の登録
+### 1. Discord Bot の登録
 
-#### 1-1. プロジェクトの作成
-
-[Google Cloud Platform Console](https://console.cloud.google.com/) を開き、新しくプロジェクトを作成します。
-
-#### 1-2. Text-to-Speech API のセットアップ
-
-1. [公式ガイド](https://cloud.google.com/text-to-speech/docs/before-you-begin) にしたがって Text-to-Speech API を有効化し、JSON キーをダウンロードします。
-2. ダウンロードした JSON キーは後ほど使うため、ファイルシステム上の安全な場所に保存しておきます。
-
-### 2. Discord Bot の登録
-
-#### 2-1. アプリケーションの作成
+#### 1-1. アプリケーションの作成
 
 1. [Discord Developer Portal](https://discord.com/developers/applications) を開き、新しくアプリケーションを作成します。
 2. General Information の Client ID を控えておきます。
 3. 作成したアプリケーションで、Bot を有効にします。
 4. Bot の Token を控えておきます。
 
-#### 2-2. サーバーに Bot を追加
+#### 1-2. サーバーに Bot を追加
 
 以下の URL にアクセスして、サーバーに Bot を追加します。`CLIENT_ID`は、先ほど控えた Client ID に置き換えてください。
 
@@ -114,27 +103,28 @@ https://discord.com/api/oauth2/authorize?client_id=CLIENT_ID&permissions=3146752
   - Connect
   - Speak
 
-### 3. Bot を起動
+### 2. Bot を起動
 
-#### 3-1. 設定ファイルの構成
+#### 2-1. 設定ファイルの構成
 
 1. リポジトリを[ダウンロード](https://github.com/ciffelia/koe/archive/refs/heads/main.zip)し、適当な場所に展開します。以後、このディレクトリの中で作業を行います。
-2. `secret` ディレクトリを作成し、その中に 1-2 でダウンロードした JSON キーを保存します。
-3. `config` ディレクトリの `example.redis.conf` をテキストエディタで開いて Redis の設定を編集し、 `redis.conf` として保存します。
+2. `config` ディレクトリの `example.redis.conf` をテキストエディタで開いて Redis の設定を編集し、 `redis.conf` として保存します。
+3. `config` ディレクトリの `example.voicevox_presets.yaml` をテキストエディタで開いて VOICEVOX のプリセットを編集し、 `voicevox_presets.yaml` として保存します。
 
-#### 3-2. 環境変数の設定
+#### 2-2. 環境変数の設定
 
 `config` ディレクトリの `example.env` をテキストエディタで開いて、以下に示す環境変数を編集し、`.env` として保存します。
 
-- `GOOGLE_APPLICATION_CREDENTIALS`（必須）: JSON キーのファイルパスを設定します。絶対パス・相対パスどちらも使えます。
-- `DISCORD_CLIENT_ID`（必須）: 2-1 で控えた Client ID を設定します。
-- `DISCORD_BOT_TOKEN`（必須）: 2-1 で控えた Bot Token を設定します。
+- `DISCORD_CLIENT_ID`（必須）: 1-1 で控えた Client ID を設定します。
+- `DISCORD_BOT_TOKEN`（必須）: 1-1 で控えた Bot Token を設定します。
+- `VOICEVOX_API_BASE`（必須）: VOICEVOX ENGINE の URL を設定します。Composeを使用する場合はデフォルトのままで問題ありません。
 - `REDIS_URL`（必須）: Redis の URL を設定します。
   - 形式は `redis://[<username>][:<password>@]<hostname>[:port][/<db>]` です。
   - 詳細は https://docs.rs/redis#connection-parameters もご確認ください。
 - `RUST_LOG`（任意）: `koe`に設定すると、詳細なログが出力されます。
+- `SENTRY_DSN`（任意）: エラーをSentryに送信することができます。
 
-#### 3-3. 起動
+#### 2-3. 起動
 
 - `docker compose up --detach` でアプリケーションを起動します。
 - `docker compose logs` でログを確認できます。
