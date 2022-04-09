@@ -25,12 +25,6 @@ pub async fn handle_voice_state_update(
         None => return Ok(()),
     };
 
-    if old_voice_state.as_ref().and_then(|state| state.channel_id) != Some(current_voice_channel_id)
-        && new_voice_state.channel_id == Some(current_voice_channel_id)
-    {
-        handle_user_join(ctx, guild_id, new_voice_state.user_id).await?;
-    }
-
     if old_voice_state.and_then(|state| state.channel_id) == Some(current_voice_channel_id)
         && new_voice_state.channel_id != Some(current_voice_channel_id)
     {
@@ -53,26 +47,6 @@ pub async fn handle_voice_state_update(
 
         debug!("Automatically disconnected in guild {}", guild_id.as_u64());
     }
-
-    Ok(())
-}
-
-async fn handle_user_join(ctx: &Context, guild_id: GuildId, user_id: UserId) -> Result<()> {
-    let state = app_state::get(ctx).await?;
-    let mut guild_state = match state.connected_guild_states.get_mut(&guild_id) {
-        Some(status) => status,
-        None => return Ok(()),
-    };
-
-    let available_preset_ids = state.speech_provider.list_preset_ids().await?;
-    let preset_id = guild_state
-        .voice_preset_registry
-        .pick_least_used_preset(&available_preset_ids)
-        .await?;
-
-    guild_state
-        .voice_preset_registry
-        .insert(user_id, preset_id)?;
 
     Ok(())
 }

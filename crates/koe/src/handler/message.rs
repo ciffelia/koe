@@ -1,7 +1,7 @@
 use crate::regex::{custom_emoji_regex, url_regex};
 use crate::{app_state, audio_queue, songbird_util};
 use aho_corasick::{AhoCorasickBuilder, MatchKind};
-use anyhow::{anyhow, Context as _, Result};
+use anyhow::{Context as _, Result};
 use chrono::Duration;
 use discord_md::generate::{ToMarkdownString, ToMarkdownStringOption};
 use koe_db::dict::GetAllOption;
@@ -61,10 +61,20 @@ pub async fn handle_message(ctx: &Context, msg: Message) -> Result<()> {
         return Ok(());
     }
 
-    let preset_id = guild_state
-        .voice_preset_registry
-        .get(msg.author.id)
-        .ok_or_else(|| anyhow!("Voice preset not found"))?;
+    let preset_id = match guild_state.voice_preset_registry.get(msg.author.id) {
+        Some(id) => id,
+        None => {
+            let available_preset_ids = state.speech_provider.list_preset_ids().await?;
+            let preset_id = guild_state
+                .voice_preset_registry
+                .pick_least_used_preset(&available_preset_ids)
+                .await?;
+            guild_state
+                .voice_preset_registry
+                .insert(msg.author.id, preset_id)?;
+            preset_id
+        }
+    };
 
     let call = songbird_util::get_call(ctx, guild_id).await?;
 

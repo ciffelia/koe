@@ -1,5 +1,6 @@
 use anyhow::{anyhow, bail, Context as _, Result};
 use koe_speech::PresetId;
+use log::trace;
 use rand::seq::SliceRandom;
 use serenity::model::id::UserId;
 use std::collections::{hash_map::Entry, BTreeMap, HashMap};
@@ -29,6 +30,8 @@ impl VoicePresetRegistry {
         self.user_to_preset.insert(user_id, preset_id);
         self.preset_usage.increase(preset_id)?;
 
+        trace!("Assigned preset {} for user {}", preset_id.0, user_id);
+
         Ok(())
     }
 
@@ -39,6 +42,8 @@ impl VoicePresetRegistry {
         };
 
         self.preset_usage.decrease(preset_id)?;
+
+        trace!("Released preset {} from user {}", preset_id.0, user_id);
 
         Ok(())
     }
