@@ -76,13 +76,12 @@ pub async fn handle_message(ctx: &Context, msg: Message) -> Result<()> {
         }
     };
 
-    let audio = state
+    let encoded_audio = state
         .speech_provider
         .make_speech(SpeechRequest { text, preset_id })
         .await
         .context("Failed to execute Text-to-Speech")?;
-
-    let raw_audio = audio.decode().await?.into();
+    let raw_audio = encoded_audio.decode().await?.into();
 
     koe_call::enqueue(ctx, guild_id, raw_audio).await?;
 
