@@ -1,7 +1,7 @@
+use crate::app_state;
 use crate::error::report_error;
 use crate::sanitize::sanitize_response;
 use crate::voice_preset::VoicePresetRegistry;
-use crate::{app_state, audio_queue, songbird_util};
 use anyhow::{bail, Context as _, Result};
 use koe_db::dict::{GetAllOption, InsertOption, InsertResponse, RemoveOption, RemoveResponse};
 use serenity::builder::CreateEmbed;
@@ -193,7 +193,7 @@ async fn handle_join(
         }
     };
 
-    songbird_util::join_deaf(ctx, guild_id, voice_channel_id).await?;
+    koe_call::join_deaf(ctx, guild_id, voice_channel_id).await?;
 
     let state = app_state::get(ctx).await?;
     state.connected_guild_states.insert(
@@ -217,11 +217,11 @@ async fn handle_leave(
         None => return Ok("`/leave`, `/kleave` はサーバー内でのみ使えます。".into()),
     };
 
-    if !songbird_util::is_connected(ctx, guild_id).await? {
+    if !koe_call::is_connected(ctx, guild_id).await? {
         return Ok("どのボイスチャンネルにも接続していません。".into());
     }
 
-    songbird_util::leave(ctx, guild_id).await?;
+    koe_call::leave(ctx, guild_id).await?;
 
     let state = app_state::get(ctx).await?;
     state.connected_guild_states.remove(&guild_id);
@@ -238,12 +238,11 @@ async fn handle_skip(
         None => return Ok("`/skip`, `/kskip` はサーバー内でのみ使えます。".into()),
     };
 
-    if !songbird_util::is_connected(ctx, guild_id).await? {
+    if !koe_call::is_connected(ctx, guild_id).await? {
         return Ok("どのボイスチャンネルにも接続していません。".into());
     }
 
-    let call = songbird_util::get_call(ctx, guild_id).await?;
-    audio_queue::skip(call).await?;
+    koe_call::skip(ctx, guild_id).await?;
 
     Ok("読み上げ中のメッセージをスキップしました。".into())
 }

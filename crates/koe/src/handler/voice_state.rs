@@ -1,4 +1,4 @@
-use crate::{app_state, songbird_util};
+use crate::app_state;
 use anyhow::{Context as _, Result};
 use log::debug;
 use serenity::{
@@ -38,7 +38,7 @@ pub async fn handle_voice_state_update(
 
     // VCのメンバーがKoe自身のみになった場合は抜ける
     if current_channel_user_list.len() == 1 {
-        songbird_util::leave(ctx, guild_id)
+        koe_call::leave(ctx, guild_id)
             .await
             .context("Failed to leave voice channel")?;
 

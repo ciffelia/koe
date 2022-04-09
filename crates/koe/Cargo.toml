@@ -6,6 +6,7 @@ publish = false
 
 [dependencies]
 koe-audio = { path = "../koe-audio" }
+koe-call = { path = "../koe-call" }
 koe-config = { path = "../koe-config" }
 koe-db = { path = "../koe-db" }
 koe-speech = { path = "../koe-speech" }
@@ -23,7 +24,7 @@ sentry = { version = "0.25", features = ["anyhow"] }
 
 # Discord
 serenity = { version = "0.10", default-features = false, features = ["cache", "client", "utils", "voice", "unstable_discord_api", "rustls_backend"] }
-songbird = { version = "0.2", features = ["builtin-queue"] }
+songbird = "0.2"
 discord-md = "2"
 
 # Utilities

@@ -1,5 +1,5 @@
+use crate::app_state;
 use crate::regex::{custom_emoji_regex, url_regex};
-use crate::{app_state, audio_queue, songbird_util};
 use aho_corasick::{AhoCorasickBuilder, MatchKind};
 use anyhow::{Context as _, Result};
 use chrono::Duration;
@@ -20,7 +20,7 @@ pub async fn handle_message(ctx: &Context, msg: Message) -> Result<()> {
         None => return Ok(()),
     };
 
-    if !songbird_util::is_connected(ctx, guild_id).await? {
+    if !koe_call::is_connected(ctx, guild_id).await? {
         return Ok(());
     }
 
@@ -76,15 +76,15 @@ pub async fn handle_message(ctx: &Context, msg: Message) -> Result<()> {
         }
     };
 
-    let call = songbird_util::get_call(ctx, guild_id).await?;
-
     let audio = state
         .speech_provider
         .make_speech(SpeechRequest { text, preset_id })
         .await
         .context("Failed to execute Text-to-Speech")?;
 
-    audio_queue::enqueue(call, audio).await?;
+    let raw_audio = audio.decode().await?.into();
+
+    koe_call::enqueue(ctx, guild_id, raw_audio).await?;
 
     guild_state.last_message_read = Some(msg);
 

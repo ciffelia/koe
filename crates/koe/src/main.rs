@@ -8,13 +8,11 @@ use serenity::Client;
 use songbird::SerenityInit;
 
 mod app_state;
-mod audio_queue;
 mod command_setup;
 mod error;
 mod handler;
 mod regex;
 mod sanitize;
-mod songbird_util;
 mod voice_preset;
 
 #[tokio::main]

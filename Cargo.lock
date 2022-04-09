@@ -848,6 +848,7 @@ dependencies = [
  "discord-md",
  "ecs-logger",
  "koe-audio",
+ "koe-call",
  "koe-config",
  "koe-db",
  "koe-speech",
@@ -867,6 +868,16 @@ version = "0.1.0"
 dependencies = [
  "anyhow",
  "log",
+ "tokio",
+]
+
+[[package]]
+name = "koe-call"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "serenity",
+ "songbird",
  "tokio",
 ]
 

@@ -1,7 +1,8 @@
-use anyhow::{anyhow, Result};
+use anyhow::{anyhow, Context as _, Result};
 use serenity::client::Context;
 use songbird::{
     id::{ChannelId, GuildId},
+    input::{Codec, Container, Input, Reader},
     join::Join,
     Call, Songbird,
 };
@@ -44,17 +45,6 @@ pub async fn leave(ctx: &Context, guild_id: impl Into<GuildId>) -> Result<()> {
     Ok(())
 }
 
-pub async fn get_call(ctx: &Context, guild_id: impl Into<GuildId>) -> Result<Arc<Mutex<Call>>> {
-    let manager = extract_songbird(ctx).await?;
-    let guild_id = guild_id.into();
-
-    let call = manager
-        .get(guild_id)
-        .ok_or_else(|| anyhow!("Failed to retrieve call for guild {}", guild_id))?;
-
-    Ok(call)
-}
-
 pub async fn is_connected(ctx: &Context, guild_id: impl Into<GuildId>) -> Result<bool> {
     let manager = extract_songbird(ctx).await?;
     let guild_id = guild_id.into();
@@ -64,10 +54,57 @@ pub async fn is_connected(ctx: &Context, guild_id: impl Into<GuildId>) -> Result
     Ok(is_connected)
 }
 
+pub async fn enqueue(
+    ctx: &Context,
+    guild_id: impl Into<GuildId>,
+    raw_audio: Vec<u8>,
+) -> Result<()> {
+    let manager = extract_songbird(ctx).await?;
+    let call = get_call(manager, guild_id).await?;
+
+    let mut handler = call.lock().await;
+    handler.enqueue_source(Input::new(
+        false,
+        Reader::from_memory(raw_audio),
+        Codec::Pcm,
+        Container::Raw,
+        None,
+    ));
+
+    Ok(())
+}
+
+pub async fn skip(ctx: &Context, guild_id: impl Into<GuildId>) -> Result<()> {
+    let manager = extract_songbird(ctx).await?;
+    let call = get_call(manager, guild_id).await?;
+
+    let handler = call.lock().await;
+    let current_track = handler.queue().current();
+
+    if let Some(track) = current_track {
+        track.stop().context("Failed to stop current track")?;
+    }
+
+    Ok(())
+}
+
 async fn extract_songbird(ctx: &Context) -> Result<Arc<Songbird>> {
     let songbird = songbird::get(ctx)
         .await
         .ok_or_else(|| anyhow!("Songbird voice client is not initialized"))?;
 
     Ok(songbird)
+}
+
+async fn get_call(
+    manager: Arc<Songbird>,
+    guild_id: impl Into<GuildId>,
+) -> Result<Arc<Mutex<Call>>> {
+    let guild_id = guild_id.into();
+
+    let call = manager
+        .get(guild_id)
+        .ok_or_else(|| anyhow!("Failed to retrieve call for guild {}", guild_id))?;
+
+    Ok(call)
 }
