@@ -61,20 +61,11 @@ pub async fn handle_message(ctx: &Context, msg: Message) -> Result<()> {
         return Ok(());
     }
 
-    let preset_id = match guild_state.voice_preset_registry.get(msg.author.id) {
-        Some(id) => id,
-        None => {
-            let available_preset_ids = state.speech_provider.list_preset_ids().await?;
-            let preset_id = guild_state
-                .voice_preset_registry
-                .pick_least_used_preset(&available_preset_ids)
-                .await?;
-            guild_state
-                .voice_preset_registry
-                .insert(msg.author.id, preset_id)?;
-            preset_id
-        }
-    };
+    let available_preset_ids = state.speech_provider.list_preset_ids().await?;
+    let preset_id = guild_state
+        .voice_preset_registry
+        .get(msg.author.id, &available_preset_ids)
+        .await?;
 
     let encoded_audio = state
         .speech_provider

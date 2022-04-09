@@ -1,4 +1,4 @@
-use anyhow::{anyhow, bail, Context as _, Result};
+use anyhow::{anyhow, bail, Result};
 use koe_speech::PresetId;
 use log::trace;
 use rand::seq::SliceRandom;
@@ -18,16 +18,25 @@ impl VoicePresetRegistry {
         }
     }
 
-    pub fn get(&self, user_id: UserId) -> Option<PresetId> {
-        self.user_to_preset.get(&user_id).cloned()
+    pub async fn get(
+        &mut self,
+        user_id: UserId,
+        available_preset_ids: &[PresetId],
+    ) -> Result<PresetId> {
+        match self.user_to_preset.get(&user_id) {
+            Some(preset_id) => Ok(*preset_id),
+            None => {
+                let preset_id = self.pick_least_used_preset(available_preset_ids).await?;
+                self.insert(user_id, preset_id)?;
+                Ok(preset_id)
+            }
+        }
     }
 
-    pub fn insert(&mut self, user_id: UserId, preset_id: PresetId) -> Result<()> {
-        if self.user_to_preset.contains_key(&user_id) {
-            self.remove(user_id).context("Failed to remove item")?;
+    fn insert(&mut self, user_id: UserId, preset_id: PresetId) -> Result<()> {
+        if self.user_to_preset.insert(user_id, preset_id).is_some() {
+            bail!("user_to_preset[{}] already exists", user_id)
         }
-
-        self.user_to_preset.insert(user_id, preset_id);
         self.preset_usage.increase(preset_id)?;
 
         trace!("Assigned preset {} for user {}", preset_id.0, user_id);
@@ -48,7 +57,7 @@ impl VoicePresetRegistry {
         Ok(())
     }
 
-    pub async fn pick_least_used_preset(&self, preset_list: &[PresetId]) -> Result<PresetId> {
+    async fn pick_least_used_preset(&self, preset_list: &[PresetId]) -> Result<PresetId> {
         self.preset_usage
             .pick_least_used(preset_list)
             .ok_or_else(|| anyhow!("No preset found"))
