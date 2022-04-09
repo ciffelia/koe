@@ -5,8 +5,5 @@
 /config/*
 !/config/example.*
 
-# Secret files
-/secret
-
 # CLion
 /.idea
