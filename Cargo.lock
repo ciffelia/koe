@@ -877,7 +877,6 @@ dependencies = [
  "anyhow",
  "envy",
  "serde",
- "serde_derive",
 ]
 
 [[package]]
@@ -896,7 +895,6 @@ dependencies = [
  "koe-audio",
  "reqwest",
  "serde",
- "url",
 ]
 
 [[package]]
