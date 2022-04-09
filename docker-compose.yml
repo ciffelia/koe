@@ -4,6 +4,7 @@ services:
     init: true
     depends_on:
       - redis
+      - voicevox
     restart: unless-stopped
     env_file: ./config/.env
 
