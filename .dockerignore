@@ -1,9 +1,6 @@
 # Rust build output
 target
 
-# Secret files
-secret
-
 # CLion
 .idea
 
