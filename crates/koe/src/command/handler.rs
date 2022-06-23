@@ -1,120 +1,23 @@
-use crate::app_state;
-use crate::error::report_error;
-use crate::sanitize::sanitize_response;
+use super::{
+    model::{Command, CommandResponse, DictAddOption, DictRemoveOption},
+    parser::parse,
+};
+use crate::{app_state, error::report_error, sanitize::sanitize_response};
 use anyhow::{bail, Context as _, Result};
 use koe_db::dict::{GetAllOption, InsertOption, InsertResponse, RemoveOption, RemoveResponse};
-use serenity::builder::CreateEmbed;
 use serenity::{
+    builder::CreateEmbed,
     client::Context,
     model::{
         id::{ChannelId, GuildId, UserId},
         interactions::{
-            application_command::{
-                ApplicationCommandInteraction, ApplicationCommandInteractionDataOptionValue,
-            },
-            InteractionResponseType,
+            application_command::ApplicationCommandInteraction, InteractionResponseType,
         },
     },
 };
 
-#[derive(Debug, Clone)]
-enum CommandKind {
-    Join,
-    Leave,
-    Skip,
-    DictAdd(DictAddOption),
-    DictRemove(DictRemoveOption),
-    DictView,
-    Help,
-    Unknown,
-}
-
-#[derive(Debug, Clone)]
-struct DictAddOption {
-    pub word: String,
-    pub read_as: String,
-}
-
-#[derive(Debug, Clone)]
-struct DictRemoveOption {
-    pub word: String,
-}
-
-#[derive(Debug, Clone)]
-enum CommandResponse {
-    Text(String),
-    Embed(CreateEmbed),
-}
-
-impl<T> From<T> for CommandResponse
-where
-    T: ToString,
-{
-    fn from(value: T) -> Self {
-        CommandResponse::Text(value.to_string())
-    }
-}
-
-impl From<&ApplicationCommandInteraction> for CommandKind {
-    fn from(cmd: &ApplicationCommandInteraction) -> Self {
-        match cmd.data.name.as_str() {
-            "join" | "kjoin" => CommandKind::Join,
-            "leave" | "kleave" => CommandKind::Leave,
-            "skip" | "kskip" => CommandKind::Skip,
-            "dict" => {
-                let option_dict = match cmd.data.options.get(0) {
-                    Some(option) => option,
-                    None => return CommandKind::Unknown,
-                };
-
-                match option_dict.name.as_str() {
-                    "add" => {
-                        let option_word = match option_dict.options.get(0) {
-                            Some(x) => x,
-                            None => return CommandKind::Unknown,
-                        };
-                        let option_read_as = match option_dict.options.get(1) {
-                            Some(x) => x,
-                            None => return CommandKind::Unknown,
-                        };
-                        let word = match &option_word.resolved {
-                            Some(ApplicationCommandInteractionDataOptionValue::String(x)) => x,
-                            _ => return CommandKind::Unknown,
-                        };
-                        let read_as = match &option_read_as.resolved {
-                            Some(ApplicationCommandInteractionDataOptionValue::String(x)) => x,
-                            _ => return CommandKind::Unknown,
-                        };
-
-                        CommandKind::DictAdd(DictAddOption {
-                            word: word.clone(),
-                            read_as: read_as.clone(),
-                        })
-                    }
-                    "remove" => {
-                        let option_word = match option_dict.options.get(0) {
-                            Some(x) => x,
-                            None => return CommandKind::Unknown,
-                        };
-                        let word = match &option_word.resolved {
-                            Some(ApplicationCommandInteractionDataOptionValue::String(x)) => x,
-                            _ => return CommandKind::Unknown,
-                        };
-
-                        CommandKind::DictRemove(DictRemoveOption { word: word.clone() })
-                    }
-                    "view" => CommandKind::DictView,
-                    _ => CommandKind::Unknown,
-                }
-            }
-            "help" => CommandKind::Help,
-            _ => CommandKind::Unknown,
-        }
-    }
-}
-
-pub async fn handle_command(ctx: &Context, command: &ApplicationCommandInteraction) -> Result<()> {
-    let response = match execute_command(ctx, command)
+pub async fn handle(ctx: &Context, command: &ApplicationCommandInteraction) -> Result<()> {
+    let response = match execute(ctx, command)
         .await
         .context("Failed to execute command")
     {
@@ -140,35 +43,35 @@ pub async fn handle_command(ctx: &Context, command: &ApplicationCommandInteracti
     Ok(())
 }
 
-async fn execute_command(
+async fn execute(
     ctx: &Context,
     command: &ApplicationCommandInteraction,
 ) -> Result<CommandResponse> {
-    let command_kind = CommandKind::from(command);
+    let command_kind = parse(command);
 
     match command_kind {
-        CommandKind::Join => handle_join(ctx, command)
+        Command::Join => handle_join(ctx, command)
             .await
             .context("Failed to execute /join"),
-        CommandKind::Leave => handle_leave(ctx, command)
+        Command::Leave => handle_leave(ctx, command)
             .await
             .context("Failed to execute /leave"),
-        CommandKind::Skip => handle_skip(ctx, command)
+        Command::Skip => handle_skip(ctx, command)
             .await
             .context("Failed to execute /skip"),
-        CommandKind::DictAdd(option) => handle_dict_add(ctx, command, option)
+        Command::DictAdd(option) => handle_dict_add(ctx, command, option)
             .await
             .context("Failed to execute /dict add"),
-        CommandKind::DictRemove(option) => handle_dict_remove(ctx, command, option)
+        Command::DictRemove(option) => handle_dict_remove(ctx, command, option)
             .await
             .context("Failed to execute /dict remove"),
-        CommandKind::DictView => handle_dict_view(ctx, command)
+        Command::DictView => handle_dict_view(ctx, command)
             .await
             .context("Failed to execute /dict view"),
-        CommandKind::Help => handle_help(ctx, command)
+        Command::Help => handle_help(ctx, command)
             .await
             .context("Failed to execute /help"),
-        CommandKind::Unknown => {
+        Command::Unknown => {
             bail!("Unknown command: {:?}", command);
         }
     }

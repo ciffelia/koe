@@ -1,12 +1,11 @@
-mod command;
 mod message;
 mod voice_state;
 
+use crate::command;
 use crate::command_setup::setup_guild_commands;
 use crate::error::report_error;
 use crate::handler::voice_state::handle_voice_state_update;
 use anyhow::Context as _;
-use command::handle_command;
 use log::info;
 use message::handle_message;
 use serenity::{
@@ -50,7 +49,7 @@ impl EventHandler for Handler {
             _ => return,
         };
 
-        if let Err(err) = handle_command(&ctx, &command)
+        if let Err(err) = command::handler::handle(&ctx, &command)
             .await
             .context("Failed to respond to slash command")
         {

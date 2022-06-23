@@ -13,6 +13,7 @@ mod error;
 mod handler;
 mod regex;
 mod sanitize;
+mod command;
 
 #[tokio::main]
 async fn main() -> Result<()> {
