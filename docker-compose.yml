@@ -1,6 +1,6 @@
 services:
   app:
-    image: "ghcr.io/ciffelia/koe:latest"
+    image: ghcr.io/ciffelia/koe:latest
     init: true
     depends_on:
       - redis
@@ -9,7 +9,7 @@ services:
     env_file: ./config/.env
 
   redis:
-    image: "redis:6.2.6"
+    image: redis:6.2.6
     command: /usr/local/etc/redis/redis.conf
     restart: unless-stopped
     expose:
