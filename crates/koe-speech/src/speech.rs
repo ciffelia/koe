@@ -1,12 +1,9 @@
-use crate::voicevox::{GenerateQueryFromPresetParams, SynthesisParams, VoicevoxClient};
+use crate::voicevox::{GenerateQueryFromPresetParams, Preset, SynthesisParams, VoicevoxClient};
 use anyhow::{anyhow, Result};
 use koe_audio::EncodedAudio;
 
 pub async fn make_speech(client: &VoicevoxClient, option: SpeechRequest) -> Result<EncodedAudio> {
-    let preset_list = client.get_presets().await?;
-    let preset = preset_list
-        .get(&option.preset_id.0)
-        .ok_or_else(|| anyhow!("Preset {} is not available", option.preset_id.0))?;
+    let preset = get_preset(client, option.preset_id).await?;
 
     let query = client
         .generate_query_from_preset(GenerateQueryFromPresetParams {
@@ -29,6 +26,24 @@ pub async fn list_preset_ids(client: &VoicevoxClient) -> Result<Vec<PresetId>> {
     let preset_list = client.get_presets().await?;
     let ids = preset_list.into_keys().map(PresetId).collect();
     Ok(ids)
+}
+
+pub async fn initialize_speakers(client: &VoicevoxClient) -> Result<()> {
+    let preset_list = client.get_presets().await?;
+    for preset in preset_list.values() {
+        client.initialize_speaker(preset.style_id).await?;
+    }
+    Ok(())
+}
+
+async fn get_preset(client: &VoicevoxClient, id: PresetId) -> Result<Preset> {
+    let preset_list = client.get_presets().await?;
+
+    let preset = preset_list
+        .get(&id.0)
+        .ok_or_else(|| anyhow!("Preset {} is not available", &id.0))?;
+
+    Ok(preset.clone())
 }
 
 #[derive(Debug, Clone)]

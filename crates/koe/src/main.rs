@@ -1,7 +1,8 @@
+use crate::error::report_error;
 use anyhow::{Context, Result};
 use dashmap::DashMap;
 use koe_db::redis;
-use koe_speech::voicevox::VoicevoxClient;
+use koe_speech::{speech::initialize_speakers, voicevox::VoicevoxClient};
 use log::info;
 use sentry::integrations::anyhow::capture_anyhow;
 use serenity::Client;
@@ -47,6 +48,19 @@ async fn run() -> Result<()> {
         },
     )
     .await;
+
+    {
+        let d = client.data.clone();
+        tokio::spawn(async move {
+            info!("Initializing speakers...");
+            let data = d.read().await;
+            let state = data.get::<app_state::AppState>().unwrap();
+
+            if let Err(err) = initialize_speakers(&state.voicevox_client).await {
+                report_error(err);
+            }
+        });
+    }
 
     info!("Starting client...");
     client.start().await.context("Client error occurred")?;

@@ -81,6 +81,17 @@ impl VoicevoxClient {
         Ok(map)
     }
 
+    pub async fn initialize_speaker(&self, speaker_id: i64) -> Result<()> {
+        let url = Url::parse_with_params(
+            &self.get_endpoint("/initialize_speaker"),
+            &[("speaker", speaker_id.to_string())],
+        )?;
+
+        self.client.post(url).send().await?.error_for_status()?;
+
+        Ok(())
+    }
+
     fn get_endpoint(&self, path: impl AsRef<str>) -> String {
         self.api_base.clone() + path.as_ref()
     }
