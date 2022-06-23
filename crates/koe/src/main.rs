@@ -10,7 +10,7 @@ use songbird::SerenityInit;
 mod app_state;
 mod command;
 mod error;
-mod handler;
+mod event_handler;
 mod message;
 mod regex;
 mod voice_state;
@@ -32,7 +32,7 @@ async fn run() -> Result<()> {
     info!("Config loaded");
 
     let mut client = Client::builder(config.discord_bot_token)
-        .event_handler(handler::Handler)
+        .event_handler(event_handler::Handler)
         .application_id(config.discord_client_id)
         .register_songbird()
         .await
