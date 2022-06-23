@@ -2,7 +2,7 @@ use super::{
     model::{Command, CommandResponse, DictAddOption, DictRemoveOption},
     parser::parse,
 };
-use crate::{app_state, error::report_error, sanitize::sanitize_response};
+use crate::{app_state, error::report_error};
 use anyhow::{bail, Context as _, Result};
 use koe_db::dict::{GetAllOption, InsertOption, InsertResponse, RemoveOption, RemoveResponse};
 use serenity::{
@@ -281,4 +281,8 @@ async fn get_user_voice_channel(
         .and_then(|voice_state| voice_state.channel_id);
 
     Ok(channel_id)
+}
+
+pub fn sanitize_response(text: &str) -> String {
+    format!("`{}`", text.replace('`', ""))
 }
