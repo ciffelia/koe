@@ -1,12 +1,11 @@
-mod message;
 mod voice_state;
 
 use crate::command;
 use crate::error::report_error;
 use crate::handler::voice_state::handle_voice_state_update;
+use crate::message;
 use anyhow::Context as _;
 use log::info;
-use message::handle_message;
 use serenity::{
     async_trait,
     client::{Context, EventHandler},
@@ -57,7 +56,7 @@ impl EventHandler for Handler {
     }
 
     async fn message(&self, ctx: Context, msg: Message) {
-        if let Err(err) = handle_message(&ctx, msg)
+        if let Err(err) = message::handler::handle(&ctx, msg)
             .await
             .context("Failed to handle message")
         {

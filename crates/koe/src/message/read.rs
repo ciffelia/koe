@@ -1,97 +1,16 @@
-use crate::app_state;
 use crate::regex::{custom_emoji_regex, url_regex};
 use aho_corasick::{AhoCorasickBuilder, MatchKind};
-use anyhow::{anyhow, Context as _, Result};
+use anyhow::Result;
 use chrono::Duration;
 use discord_md::generate::{ToMarkdownString, ToMarkdownStringOption};
-use koe_db::{dict::GetAllOption, redis, voice::GetOption};
-use koe_speech::SpeechRequest;
-use log::trace;
-use rand::seq::SliceRandom;
+use koe_db::{dict::GetAllOption, redis};
 use serenity::{
     client::Context,
     model::{channel::Message, id::GuildId},
     utils::ContentSafeOptions,
 };
 
-pub async fn handle_message(ctx: &Context, msg: Message) -> Result<()> {
-    let guild_id = match msg.guild_id {
-        Some(id) => id,
-        None => return Ok(()),
-    };
-
-    if !koe_call::is_connected(ctx, guild_id).await? {
-        return Ok(());
-    }
-
-    let state = app_state::get(ctx).await?;
-    let mut guild_state = match state.connected_guild_states.get_mut(&guild_id) {
-        Some(status) => status,
-        None => return Ok(()),
-    };
-
-    if guild_state.bound_text_channel != msg.channel_id {
-        return Ok(());
-    }
-
-    // Skip message from Koe itself
-    if msg.author.id == ctx.cache.current_user_id().await {
-        return Ok(());
-    }
-
-    // Skip message that starts with semicolon
-    if msg.content.starts_with(';') {
-        return Ok(());
-    }
-
-    let mut conn = state.redis_client.get_async_connection().await?;
-
-    let text = build_read_text(
-        ctx,
-        &mut conn,
-        guild_id,
-        &msg,
-        &guild_state.last_message_read,
-    )
-    .await?;
-    trace!("Built text: {:?}", &text);
-
-    if text.is_empty() {
-        trace!("Text is empty");
-        return Ok(());
-    }
-
-    let available_preset_ids = state.speech_provider.list_preset_ids().await?;
-    let fallback_preset_id = available_preset_ids
-        .choose(&mut rand::thread_rng())
-        .ok_or_else(|| anyhow!("No presets available"))?
-        .into();
-    let preset_id = koe_db::voice::get(
-        &mut conn,
-        GetOption {
-            guild_id: guild_id.to_string(),
-            user_id: msg.author.id.to_string(),
-            fallback: fallback_preset_id,
-        },
-    )
-    .await?
-    .into();
-
-    let encoded_audio = state
-        .speech_provider
-        .make_speech(SpeechRequest { text, preset_id })
-        .await
-        .context("Failed to execute Text-to-Speech")?;
-    let raw_audio = encoded_audio.decode().await?.into();
-
-    koe_call::enqueue(ctx, guild_id, raw_audio).await?;
-
-    guild_state.last_message_read = Some(msg);
-
-    Ok(())
-}
-
-async fn build_read_text(
+pub async fn build_read_text(
     ctx: &Context,
     conn: &mut redis::aio::Connection,
     guild_id: GuildId,
