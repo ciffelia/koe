@@ -3,18 +3,10 @@ use anyhow::{Context as _, Result};
 use log::debug;
 use serenity::{
     client::Context,
-    model::{
-        id::{ChannelId, GuildId, UserId},
-        voice::VoiceState,
-    },
+    model::id::{ChannelId, GuildId, UserId},
 };
 
-pub async fn handle_voice_state_update(
-    ctx: &Context,
-    guild_id: Option<GuildId>,
-    old_voice_state: Option<VoiceState>,
-    new_voice_state: VoiceState,
-) -> Result<()> {
+pub async fn handle_voice_state_update(ctx: &Context, guild_id: Option<GuildId>) -> Result<()> {
     let guild_id = match guild_id {
         Some(id) => id,
         None => return Ok(()),
@@ -24,12 +16,6 @@ pub async fn handle_voice_state_update(
         Some(id) => id,
         None => return Ok(()),
     };
-
-    if old_voice_state.and_then(|state| state.channel_id) == Some(current_voice_channel_id)
-        && new_voice_state.channel_id != Some(current_voice_channel_id)
-    {
-        handle_user_leave(ctx, guild_id, new_voice_state.user_id).await?;
-    }
 
     let current_channel_user_list =
         list_users_in_voice_channel(ctx, guild_id, current_voice_channel_id)
@@ -47,18 +33,6 @@ pub async fn handle_voice_state_update(
 
         debug!("Automatically disconnected in guild {}", guild_id.as_u64());
     }
-
-    Ok(())
-}
-
-async fn handle_user_leave(ctx: &Context, guild_id: GuildId, user_id: UserId) -> Result<()> {
-    let state = app_state::get(ctx).await?;
-    let mut guild_state = match state.connected_guild_states.get_mut(&guild_id) {
-        Some(status) => status,
-        None => return Ok(()),
-    };
-
-    guild_state.voice_preset_registry.remove(user_id)?;
 
     Ok(())
 }

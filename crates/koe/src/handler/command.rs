@@ -1,7 +1,6 @@
 use crate::app_state;
 use crate::error::report_error;
 use crate::sanitize::sanitize_response;
-use crate::voice_preset::VoicePresetRegistry;
 use anyhow::{bail, Context as _, Result};
 use koe_db::dict::{GetAllOption, InsertOption, InsertResponse, RemoveOption, RemoveResponse};
 use serenity::builder::CreateEmbed;
@@ -201,7 +200,6 @@ async fn handle_join(
         app_state::ConnectedGuildState {
             bound_text_channel: text_channel_id,
             last_message_read: None,
-            voice_preset_registry: VoicePresetRegistry::new(),
         },
     );
 

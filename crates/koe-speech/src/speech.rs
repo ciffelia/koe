@@ -53,3 +53,27 @@ pub struct SpeechRequest {
 
 #[derive(Debug, Copy, Clone, Eq, PartialEq, Hash)]
 pub struct PresetId(pub i64);
+
+impl From<i64> for PresetId {
+    fn from(x: i64) -> Self {
+        Self(x)
+    }
+}
+
+impl From<&i64> for PresetId {
+    fn from(x: &i64) -> Self {
+        Self(*x)
+    }
+}
+
+impl From<PresetId> for i64 {
+    fn from(x: PresetId) -> Self {
+        x.0
+    }
+}
+
+impl From<&PresetId> for i64 {
+    fn from(x: &PresetId) -> Self {
+        x.0
+    }
+}

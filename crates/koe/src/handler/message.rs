@@ -1,13 +1,13 @@
 use crate::app_state;
 use crate::regex::{custom_emoji_regex, url_regex};
 use aho_corasick::{AhoCorasickBuilder, MatchKind};
-use anyhow::{Context as _, Result};
+use anyhow::{anyhow, Context as _, Result};
 use chrono::Duration;
 use discord_md::generate::{ToMarkdownString, ToMarkdownStringOption};
-use koe_db::dict::GetAllOption;
-use koe_db::redis;
+use koe_db::{dict::GetAllOption, redis, voice::GetOption};
 use koe_speech::SpeechRequest;
 use log::trace;
+use rand::seq::SliceRandom;
 use serenity::{
     client::Context,
     model::{channel::Message, id::GuildId},
@@ -62,10 +62,20 @@ pub async fn handle_message(ctx: &Context, msg: Message) -> Result<()> {
     }
 
     let available_preset_ids = state.speech_provider.list_preset_ids().await?;
-    let preset_id = guild_state
-        .voice_preset_registry
-        .get(msg.author.id, &available_preset_ids)
-        .await?;
+    let fallback_preset_id = available_preset_ids
+        .choose(&mut rand::thread_rng())
+        .ok_or_else(|| anyhow!("No presets available"))?
+        .into();
+    let preset_id = koe_db::voice::get(
+        &mut conn,
+        GetOption {
+            guild_id: guild_id.to_string(),
+            user_id: msg.author.id.to_string(),
+            fallback: fallback_preset_id,
+        },
+    )
+    .await?
+    .into();
 
     let encoded_audio = state
         .speech_provider
