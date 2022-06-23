@@ -2,7 +2,6 @@ mod message;
 mod voice_state;
 
 use crate::command;
-use crate::command_setup::setup_guild_commands;
 use crate::error::report_error;
 use crate::handler::voice_state::handle_voice_state_update;
 use anyhow::Context as _;
@@ -25,7 +24,7 @@ impl EventHandler for Handler {
         info!("Connected as {}", ready.user.name);
 
         for guild in &ready.guilds {
-            if let Err(err) = setup_guild_commands(&ctx, guild.id())
+            if let Err(err) = command::setup::setup_guild_commands(&ctx, guild.id())
                 .await
                 .context("Failed to set guild application commands")
             {
@@ -35,7 +34,7 @@ impl EventHandler for Handler {
     }
 
     async fn guild_create(&self, ctx: Context, guild: Guild, _is_new: bool) {
-        if let Err(err) = setup_guild_commands(&ctx, guild.id)
+        if let Err(err) = command::setup::setup_guild_commands(&ctx, guild.id)
             .await
             .context("Failed to set guild application commands")
         {

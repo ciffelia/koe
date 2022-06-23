@@ -8,12 +8,11 @@ use serenity::Client;
 use songbird::SerenityInit;
 
 mod app_state;
-mod command_setup;
+mod command;
 mod error;
 mod handler;
 mod regex;
 mod sanitize;
-mod command;
 
 #[tokio::main]
 async fn main() -> Result<()> {
