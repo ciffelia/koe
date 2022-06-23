@@ -13,6 +13,7 @@ mod error;
 mod handler;
 mod message;
 mod regex;
+mod voice_state;
 
 #[tokio::main]
 async fn main() -> Result<()> {

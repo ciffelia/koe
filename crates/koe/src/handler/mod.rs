@@ -1,9 +1,6 @@
-mod voice_state;
-
-use crate::command;
 use crate::error::report_error;
-use crate::handler::voice_state::handle_voice_state_update;
 use crate::message;
+use crate::{command, voice_state};
 use anyhow::Context as _;
 use log::info;
 use serenity::{
@@ -71,7 +68,7 @@ impl EventHandler for Handler {
         _old_voice_state: Option<VoiceState>,
         _new_voice_state: VoiceState,
     ) {
-        if let Err(err) = handle_voice_state_update(&ctx, guild_id)
+        if let Err(err) = voice_state::handler::handle_update(&ctx, guild_id)
             .await
             .context("Failed to handle voice state update")
         {

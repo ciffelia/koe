@@ -6,7 +6,7 @@ use serenity::{
     model::id::{ChannelId, GuildId, UserId},
 };
 
-pub async fn handle_voice_state_update(ctx: &Context, guild_id: Option<GuildId>) -> Result<()> {
+pub async fn handle_update(ctx: &Context, guild_id: Option<GuildId>) -> Result<()> {
     let guild_id = match guild_id {
         Some(id) => id,
         None => return Ok(()),
