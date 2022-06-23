@@ -1,7 +1,7 @@
 use anyhow::{anyhow, Result};
 use dashmap::DashMap;
 use koe_db::redis;
-use koe_speech::SpeechProvider;
+use koe_speech::voicevox::VoicevoxClient;
 use serenity::{
     client::{Client, Context},
     model::{
@@ -14,7 +14,7 @@ use std::sync::Arc;
 
 pub struct AppState {
     pub redis_client: redis::Client,
-    pub speech_provider: SpeechProvider,
+    pub voicevox_client: VoicevoxClient,
     pub connected_guild_states: DashMap<GuildId, ConnectedGuildState>,
 }
 

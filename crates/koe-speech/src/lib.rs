@@ -1,4 +1,2 @@
-mod speech;
-mod voicevox;
-
-pub use speech::{PresetId, SpeechProvider, SpeechRequest};
+pub mod speech;
+pub mod voicevox;

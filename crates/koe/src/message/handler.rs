@@ -2,7 +2,7 @@ use super::read::build_read_text;
 use crate::app_state;
 use anyhow::{anyhow, Context as _, Result};
 use koe_db::voice::GetOption;
-use koe_speech::SpeechRequest;
+use koe_speech::speech::{list_preset_ids, make_speech, SpeechRequest};
 use log::trace;
 use rand::seq::SliceRandom;
 use serenity::{client::Context, model::channel::Message};
@@ -54,7 +54,7 @@ pub async fn handle(ctx: &Context, msg: Message) -> Result<()> {
         return Ok(());
     }
 
-    let available_preset_ids = state.speech_provider.list_preset_ids().await?;
+    let available_preset_ids = list_preset_ids(&state.voicevox_client).await?;
     let fallback_preset_id = available_preset_ids
         .choose(&mut rand::thread_rng())
         .ok_or_else(|| anyhow!("No presets available"))?
@@ -70,9 +70,7 @@ pub async fn handle(ctx: &Context, msg: Message) -> Result<()> {
     .await?
     .into();
 
-    let encoded_audio = state
-        .speech_provider
-        .make_speech(SpeechRequest { text, preset_id })
+    let encoded_audio = make_speech(&state.voicevox_client, SpeechRequest { text, preset_id })
         .await
         .context("Failed to execute Text-to-Speech")?;
     let raw_audio = encoded_audio.decode().await?.into();

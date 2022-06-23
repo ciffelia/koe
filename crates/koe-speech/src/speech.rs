@@ -2,47 +2,33 @@ use crate::voicevox::{GenerateQueryFromPresetParams, SynthesisParams, VoicevoxCl
 use anyhow::{anyhow, Result};
 use koe_audio::EncodedAudio;
 
-pub struct SpeechProvider {
-    client: VoicevoxClient,
+pub async fn make_speech(client: &VoicevoxClient, option: SpeechRequest) -> Result<EncodedAudio> {
+    let preset_list = client.get_presets().await?;
+    let preset = preset_list
+        .get(&option.preset_id.0)
+        .ok_or_else(|| anyhow!("Preset {} is not available", option.preset_id.0))?;
+
+    let query = client
+        .generate_query_from_preset(GenerateQueryFromPresetParams {
+            preset_id: preset.id,
+            text: option.text,
+        })
+        .await?;
+
+    let audio = client
+        .synthesis(SynthesisParams {
+            style_id: preset.style_id,
+            query,
+        })
+        .await?;
+
+    Ok(audio)
 }
 
-impl SpeechProvider {
-    pub fn new(api_base: String) -> Self {
-        Self {
-            client: VoicevoxClient::new(api_base),
-        }
-    }
-
-    pub async fn make_speech(&self, option: SpeechRequest) -> Result<EncodedAudio> {
-        let preset_list = self.client.get_presets().await?;
-        let preset = preset_list
-            .get(&option.preset_id.0)
-            .ok_or_else(|| anyhow!("Preset {} is not available", option.preset_id.0))?;
-
-        let query = self
-            .client
-            .generate_query_from_preset(GenerateQueryFromPresetParams {
-                preset_id: preset.id,
-                text: option.text,
-            })
-            .await?;
-
-        let audio = self
-            .client
-            .synthesis(SynthesisParams {
-                style_id: preset.style_id,
-                query,
-            })
-            .await?;
-
-        Ok(audio)
-    }
-
-    pub async fn list_preset_ids(&self) -> Result<Vec<PresetId>> {
-        let preset_list = self.client.get_presets().await?;
-        let ids = preset_list.into_keys().map(PresetId).collect();
-        Ok(ids)
-    }
+pub async fn list_preset_ids(client: &VoicevoxClient) -> Result<Vec<PresetId>> {
+    let preset_list = client.get_presets().await?;
+    let ids = preset_list.into_keys().map(PresetId).collect();
+    Ok(ids)
 }
 
 #[derive(Debug, Clone)]

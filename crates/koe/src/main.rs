@@ -1,7 +1,7 @@
 use anyhow::{Context, Result};
 use dashmap::DashMap;
 use koe_db::redis;
-use koe_speech::SpeechProvider;
+use koe_speech::voicevox::VoicevoxClient;
 use log::info;
 use sentry::integrations::anyhow::capture_anyhow;
 use serenity::Client;
@@ -42,7 +42,7 @@ async fn run() -> Result<()> {
         &client,
         app_state::AppState {
             redis_client: redis::Client::open(config.redis_url)?,
-            speech_provider: SpeechProvider::new(config.voicevox_api_base),
+            voicevox_client: VoicevoxClient::new(config.voicevox_api_base),
             connected_guild_states: DashMap::new(),
         },
     )
