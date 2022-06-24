@@ -115,8 +115,9 @@ https://discord.com/api/oauth2/authorize?client_id=CLIENT_ID&permissions=3146752
 #### 2-1. 設定ファイルの構成
 
 1. リポジトリを[ダウンロード](https://github.com/ciffelia/koe/archive/refs/heads/main.zip)し、適当な場所に展開します。以後、このディレクトリの中で作業を行います。
-2. `config` ディレクトリの `example.redis.conf` をテキストエディタで開いて Redis の設定を編集し、 `redis.conf` として保存します。
-3. `config` ディレクトリの `example.voicevox_presets.yaml` をテキストエディタで開いて VOICEVOX のプリセットを編集し、 `voicevox_presets.yaml` として保存します。
+2. `config` ディレクトリと `docker-compose.yml` を残して、他のディレクトリやファイルは削除します。
+3. `config` ディレクトリの `example.redis.conf` をテキストエディタで開いて Redis の設定を編集し、 `redis.conf` として保存します。
+4. `config` ディレクトリの `example.voicevox_presets.yaml` をテキストエディタで開いて VOICEVOX のプリセットを編集し、 `voicevox_presets.yaml` として保存します。
 
 #### 2-2. 環境変数の設定
 
@@ -135,5 +136,6 @@ https://discord.com/api/oauth2/authorize?client_id=CLIENT_ID&permissions=3146752
 
 - `docker compose up --detach` でアプリケーションを起動します。
 - `docker compose logs` でログを確認できます。
+- `docker compose pull` でアプリケーションを更新します。ただし `docker-compose.yml` や設定ファイルが更新された場合は、手動でダウンロードする必要があります。
 - `docker compose down` でアプリケーションを停止します。
 - `docker compose down --volumes` でアプリケーションを停止し、Redis に保存されている設定をすべて削除します。
