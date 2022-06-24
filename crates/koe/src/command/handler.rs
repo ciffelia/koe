@@ -153,14 +153,14 @@ async fn handle_voice(ctx: &Context, cmd: &ApplicationCommandInteraction) -> Res
     };
 
     let state = app_state::get(ctx).await?;
-    let mut conn = state.redis_client.get_async_connection().await?;
 
     let available_presets = state.voicevox_client.presets().await?;
-
     let fallback_preset_id = available_presets
         .choose(&mut rand::thread_rng())
         .map(|p| p.id)
         .ok_or_else(|| anyhow!("No presets available"))?;
+
+    let mut conn = state.redis_client.get_async_connection().await?;
     let current_preset = koe_db::voice::get(
         &mut conn,
         GetOption {
