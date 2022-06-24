@@ -17,7 +17,8 @@ use serenity::{
     model::{
         id::{ChannelId, GuildId, UserId},
         interactions::{
-            application_command::ApplicationCommandInteraction, InteractionResponseType,
+            application_command::ApplicationCommandInteraction,
+            InteractionApplicationCommandCallbackDataFlags, InteractionResponseType,
         },
     },
 };
@@ -197,7 +198,9 @@ async fn handle_voice(ctx: &Context, cmd: &ApplicationCommandInteraction) -> Res
             create_response
                 .kind(InteractionResponseType::ChannelMessageWithSource)
                 .interaction_response_data(|create_message| {
-                    create_message.set_components(components)
+                    create_message
+                        .flags(InteractionApplicationCommandCallbackDataFlags::EPHEMERAL)
+                        .set_components(components)
                 })
         })
         .await
