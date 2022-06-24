@@ -2,6 +2,14 @@ use crate::voicevox::{GenerateQueryFromPresetParams, Preset, SynthesisParams, Vo
 use anyhow::{anyhow, Result};
 use koe_audio::EncodedAudio;
 
+pub async fn initialize_speakers(client: &VoicevoxClient) -> Result<()> {
+    let preset_list = client.presets().await?;
+    for preset in preset_list {
+        client.initialize_speaker(preset.style_id).await?;
+    }
+    Ok(())
+}
+
 pub async fn make_speech(client: &VoicevoxClient, option: SpeechRequest) -> Result<EncodedAudio> {
     let preset = get_preset(client, option.preset_id).await?;
 
@@ -26,14 +34,6 @@ pub async fn list_preset_ids(client: &VoicevoxClient) -> Result<Vec<PresetId>> {
     let preset_list = client.presets().await?;
     let ids = preset_list.into_iter().map(|p| PresetId(p.id)).collect();
     Ok(ids)
-}
-
-pub async fn initialize_speakers(client: &VoicevoxClient) -> Result<()> {
-    let preset_list = client.presets().await?;
-    for preset in preset_list {
-        client.initialize_speaker(preset.style_id).await?;
-    }
-    Ok(())
 }
 
 async fn get_preset(client: &VoicevoxClient, id: PresetId) -> Result<Preset> {
