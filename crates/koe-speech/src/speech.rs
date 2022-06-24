@@ -23,27 +23,28 @@ pub async fn make_speech(client: &VoicevoxClient, option: SpeechRequest) -> Resu
 }
 
 pub async fn list_preset_ids(client: &VoicevoxClient) -> Result<Vec<PresetId>> {
-    let preset_list = client.get_presets().await?;
-    let ids = preset_list.into_keys().map(PresetId).collect();
+    let preset_list = client.presets().await?;
+    let ids = preset_list.into_iter().map(|p| PresetId(p.id)).collect();
     Ok(ids)
 }
 
 pub async fn initialize_speakers(client: &VoicevoxClient) -> Result<()> {
-    let preset_list = client.get_presets().await?;
-    for preset in preset_list.values() {
+    let preset_list = client.presets().await?;
+    for preset in preset_list {
         client.initialize_speaker(preset.style_id).await?;
     }
     Ok(())
 }
 
 async fn get_preset(client: &VoicevoxClient, id: PresetId) -> Result<Preset> {
-    let preset_list = client.get_presets().await?;
+    let preset_list = client.presets().await?;
 
     let preset = preset_list
-        .get(&id.0)
-        .ok_or_else(|| anyhow!("Preset {} is not available", &id.0))?;
+        .into_iter()
+        .find(|p| PresetId(p.id) == id)
+        .ok_or_else(|| anyhow!("Preset {} is not available", id.0))?;
 
-    Ok(preset.clone())
+    Ok(preset)
 }
 
 #[derive(Debug, Clone)]

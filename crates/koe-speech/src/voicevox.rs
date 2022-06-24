@@ -2,7 +2,6 @@ use anyhow::Result;
 use koe_audio::EncodedAudio;
 use reqwest::Url;
 use serde::Deserialize;
-use std::collections::HashMap;
 
 pub struct VoicevoxClient {
     client: reqwest::Client,
@@ -61,7 +60,7 @@ impl VoicevoxClient {
         Ok(EncodedAudio::from(resp.to_vec()))
     }
 
-    pub async fn get_presets(&self) -> Result<HashMap<i64, Preset>> {
+    pub async fn presets(&self) -> Result<Vec<Preset>> {
         let url = Url::parse(&self.get_endpoint("/presets"))?;
 
         let resp = self
@@ -70,15 +69,10 @@ impl VoicevoxClient {
             .send()
             .await?
             .error_for_status()?
-            .json::<Vec<Preset>>()
+            .json()
             .await?;
 
-        let map = resp
-            .into_iter()
-            .map(|preset| (preset.id, preset))
-            .collect::<HashMap<i64, Preset>>();
-
-        Ok(map)
+        Ok(resp)
     }
 
     pub async fn initialize_speaker(&self, speaker_id: i64) -> Result<()> {
