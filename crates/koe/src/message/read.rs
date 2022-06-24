@@ -37,7 +37,7 @@ pub async fn build_read_text(
 
     // 文字数を60文字に制限
     if text.chars().count() > 60 {
-        Ok(text.chars().take(60 - 5).collect::<String>() + "、以下 略")
+        Ok(text.chars().take(60 - 4).collect::<String>() + "、以下略")
     } else {
         Ok(text)
     }
