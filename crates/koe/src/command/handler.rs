@@ -2,7 +2,7 @@ use super::{
     model::{Command, DictAddOption, DictRemoveOption},
     parser::parse,
 };
-use crate::app_state;
+use crate::{app_state, component_interaction::custom_id};
 use anyhow::{anyhow, bail, Context as _, Result};
 use koe_db::{
     dict::{GetAllOption, InsertOption, InsertResponse, RemoveOption, RemoveResponse},
@@ -185,7 +185,7 @@ async fn handle_voice(ctx: &Context, cmd: &ApplicationCommandInteraction) -> Res
             .collect::<Vec<_>>();
 
         let mut select = CreateSelectMenu::default();
-        select.custom_id("voice");
+        select.custom_id(custom_id::CUSTOM_ID_VOICE);
         select.options(|create_options| create_options.set_options(option_list));
 
         let mut action_row = CreateActionRow::default();

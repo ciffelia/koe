@@ -1,3 +1,4 @@
+use super::custom_id;
 use crate::app_state;
 use anyhow::{anyhow, bail, Context as _, Result};
 use koe_db::voice::SetOption;
@@ -9,7 +10,7 @@ use serenity::{
 };
 
 pub async fn handle(ctx: &Context, interaction: &MessageComponentInteraction) -> Result<()> {
-    if interaction.data.custom_id == "voice" {
+    if interaction.data.custom_id == custom_id::CUSTOM_ID_VOICE {
         handle_voice(ctx, interaction)
             .await
             .context(r#"Failed to handle "voice" message component interaction"#)?;
