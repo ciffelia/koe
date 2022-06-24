@@ -3,10 +3,8 @@ services:
     image: ghcr.io/ciffelia/koe:latest
     init: true
     depends_on:
-      redis:
-        condition: service_started
-      voicevox:
-        condition: service_healthy
+      - redis
+      - voicevox
     restart: unless-stopped
     env_file: ./config/.env
 
@@ -23,10 +21,6 @@ services:
   voicevox:
     image: voicevox/voicevox_engine:cpu-ubuntu20.04-0.12.2
     restart: unless-stopped
-    healthcheck:
-      test: wget --tries=1 -O - http://localhost:50021/version || exit 1
-      interval: 5s
-      timeout: 10s
     expose:
       - 50021
     volumes:
