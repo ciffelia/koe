@@ -1,6 +1,6 @@
 use crate::error::report_error;
-use crate::message;
 use crate::{command, voice_state};
+use crate::{component_interaction, message};
 use anyhow::Context as _;
 use log::info;
 use serenity::{
@@ -39,17 +39,26 @@ impl EventHandler for Handler {
     }
 
     async fn interaction_create(&self, ctx: Context, interaction: Interaction) {
-        let command = match interaction {
-            Interaction::ApplicationCommand(command) => command,
-            _ => return,
+        match interaction {
+            Interaction::ApplicationCommand(command) => {
+                if let Err(err) = command::handler::handle(&ctx, &command)
+                    .await
+                    .context("Failed to respond to slash command")
+                {
+                    report_error(err);
+                }
+            }
+            Interaction::MessageComponent(component_interaction) => {
+                if let Err(err) =
+                    component_interaction::handler::handle(&ctx, &component_interaction)
+                        .await
+                        .context("Failed to respond to message components interaction")
+                {
+                    report_error(err);
+                }
+            }
+            _ => {}
         };
-
-        if let Err(err) = command::handler::handle(&ctx, &command)
-            .await
-            .context("Failed to respond to slash command")
-        {
-            report_error(err);
-        }
     }
 
     async fn message(&self, ctx: Context, msg: Message) {

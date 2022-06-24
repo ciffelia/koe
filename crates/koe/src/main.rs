@@ -10,6 +10,7 @@ use songbird::SerenityInit;
 
 mod app_state;
 mod command;
+mod component_interaction;
 mod error;
 mod event_handler;
 mod message;

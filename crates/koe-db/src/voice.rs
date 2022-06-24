@@ -1,5 +1,6 @@
 use anyhow::Result;
 use redis::aio::Connection;
+use redis::AsyncCommands;
 
 #[derive(Debug, Clone)]
 pub struct GetOption {
@@ -21,6 +22,20 @@ pub async fn get(connection: &mut Connection, option: GetOption) -> Result<i64> 
         .await?;
 
     Ok(resp)
+}
+
+#[derive(Debug, Clone)]
+pub struct SetOption {
+    pub guild_id: String,
+    pub user_id: String,
+    pub value: i64,
+}
+
+/// ユーザーの声を設定する
+pub async fn set(connection: &mut Connection, option: SetOption) -> Result<()> {
+    let key = voice_key(&option.guild_id, &option.user_id);
+    connection.set(&key, option.value).await?;
+    Ok(())
 }
 
 fn voice_key(guild_id: &str, user_id: &str) -> String {
