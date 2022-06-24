@@ -164,8 +164,8 @@ async fn handle_voice(ctx: &Context, cmd: &ApplicationCommandInteraction) -> Res
     let current_preset = koe_db::voice::get(
         &mut conn,
         GetOption {
-            guild_id: guild_id.to_string(),
-            user_id: cmd.user.id.to_string(),
+            guild_id: guild_id.into(),
+            user_id: cmd.user.id.into(),
             fallback: fallback_preset_id,
         },
     )
@@ -229,7 +229,7 @@ async fn handle_dict_add(
     let resp = koe_db::dict::insert(
         &mut conn,
         InsertOption {
-            guild_id: guild_id.to_string(),
+            guild_id: guild_id.into(),
             word: option.word.clone(),
             read_as: option.read_as.clone(),
         },
@@ -270,7 +270,7 @@ async fn handle_dict_remove(
     let resp = koe_db::dict::remove(
         &mut conn,
         RemoveOption {
-            guild_id: guild_id.to_string(),
+            guild_id: guild_id.into(),
             word: option.word.clone(),
         },
     )
@@ -305,7 +305,7 @@ async fn handle_dict_view(ctx: &Context, cmd: &ApplicationCommandInteraction) ->
     let dict = koe_db::dict::get_all(
         &mut conn,
         GetAllOption {
-            guild_id: guild_id.to_string(),
+            guild_id: guild_id.into(),
         },
     )
     .await?;

@@ -85,7 +85,7 @@ async fn replace_words_on_dict(
     let dict = koe_db::dict::get_all(
         conn,
         GetAllOption {
-            guild_id: guild_id.to_string(),
+            guild_id: guild_id.into(),
         },
     )
     .await?;

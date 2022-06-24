@@ -62,8 +62,8 @@ pub async fn handle(ctx: &Context, msg: Message) -> Result<()> {
     let preset_id = koe_db::voice::get(
         &mut conn,
         GetOption {
-            guild_id: guild_id.to_string(),
-            user_id: msg.author.id.to_string(),
+            guild_id: guild_id.into(),
+            user_id: msg.author.id.into(),
             fallback: fallback_preset_id,
         },
     )

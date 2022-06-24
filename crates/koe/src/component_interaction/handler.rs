@@ -48,8 +48,8 @@ async fn handle_voice(ctx: &Context, interaction: &MessageComponentInteraction) 
     koe_db::voice::set(
         &mut conn,
         SetOption {
-            guild_id: guild_id.to_string(),
-            user_id: interaction.user.id.to_string(),
+            guild_id: guild_id.into(),
+            user_id: interaction.user.id.into(),
             value: selected_preset_id,
         },
     )

@@ -5,7 +5,7 @@ use std::collections::HashMap;
 
 #[derive(Debug, Clone)]
 pub struct InsertOption {
-    pub guild_id: String,
+    pub guild_id: u64,
     pub word: String,
     pub read_as: String,
 }
@@ -19,7 +19,7 @@ pub enum InsertResponse {
 /// 辞書に語句を追加する
 pub async fn insert(connection: &mut Connection, option: InsertOption) -> Result<InsertResponse> {
     let resp = connection
-        .hset_nx(dict_key(&option.guild_id), option.word, option.read_as)
+        .hset_nx(dict_key(option.guild_id), option.word, option.read_as)
         .await?;
 
     Ok(match resp {
@@ -31,7 +31,7 @@ pub async fn insert(connection: &mut Connection, option: InsertOption) -> Result
 
 #[derive(Debug, Clone)]
 pub struct RemoveOption {
-    pub guild_id: String,
+    pub guild_id: u64,
     pub word: String,
 }
 
@@ -44,7 +44,7 @@ pub enum RemoveResponse {
 /// 辞書から語句を削除する
 pub async fn remove(connection: &mut Connection, option: RemoveOption) -> Result<RemoveResponse> {
     let resp = connection
-        .hdel(dict_key(&option.guild_id), option.word)
+        .hdel(dict_key(option.guild_id), option.word)
         .await?;
 
     Ok(match resp {
@@ -56,7 +56,7 @@ pub async fn remove(connection: &mut Connection, option: RemoveOption) -> Result
 
 #[derive(Debug, Clone)]
 pub struct GetAllOption {
-    pub guild_id: String,
+    pub guild_id: u64,
 }
 
 /// 辞書を[`HashMap`]として返す
@@ -65,10 +65,10 @@ pub async fn get_all(
     connection: &mut Connection,
     option: GetAllOption,
 ) -> Result<HashMap<String, String>> {
-    let resp = connection.hgetall(dict_key(&option.guild_id)).await?;
+    let resp = connection.hgetall(dict_key(option.guild_id)).await?;
     Ok(resp)
 }
 
-fn dict_key(guild_id: &str) -> String {
+fn dict_key(guild_id: u64) -> String {
     format!("guild:{}:dict", guild_id)
 }
