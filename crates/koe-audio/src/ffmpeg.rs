@@ -8,7 +8,7 @@ use tokio::process::Command;
 pub async fn convert_to_pcm_s16le(source: Vec<u8>) -> Result<Vec<u8>> {
     let mut child = Command::new("ffmpeg")
         // input: stdin
-        .args(&["-i", "-"])
+        .args(&["-i", "pipe:"])
         // format: 16-bit signed little-endian
         .args(&["-f", "s16le"])
         // channels: 1 (mono)
@@ -26,14 +26,18 @@ pub async fn convert_to_pcm_s16le(source: Vec<u8>) -> Result<Vec<u8>> {
         .context("Failed to spawn ffmpeg")?;
     trace!("Spawned ffmpeg");
 
-    {
-        let mut stdin = child.stdin.take().unwrap();
+    // Write to stdin in another thread to avoid deadlock: https://doc.rust-lang.org/std/process/struct.Stdio.html#method.piped
+    let mut stdin = child
+        .stdin
+        .take()
+        .context("Failed to open ffmpeg's stdin")?;
+    tokio::spawn(async move {
         stdin
             .write_all(&source)
             .await
-            .context("Failed to write to ffmpeg's stdin")?;
-    }
-    trace!("Wrote to ffmpeg's stdin");
+            .expect("Failed to write to ffmpeg's stdin");
+        trace!("Wrote to ffmpeg's stdin");
+    });
 
     let out = child
         .wait_with_output()
