@@ -7,6 +7,7 @@ use log::info;
 use sentry::integrations::anyhow::capture_anyhow;
 use serenity::Client;
 use songbird::SerenityInit;
+use tokio::time::Duration;
 
 mod app_state;
 mod command;
@@ -53,7 +54,9 @@ async fn run() -> Result<()> {
     {
         let d = client.data.clone();
         tokio::spawn(async move {
+            tokio::time::sleep(Duration::from_secs(3)).await;
             info!("Initializing speakers...");
+
             let data = d.read().await;
             let state = data.get::<app_state::AppState>().unwrap();
 
