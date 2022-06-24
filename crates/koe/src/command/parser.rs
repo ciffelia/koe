@@ -8,6 +8,7 @@ pub fn parse(cmd: &ApplicationCommandInteraction) -> Command {
         "join" | "kjoin" => Command::Join,
         "leave" | "kleave" => Command::Leave,
         "skip" | "kskip" => Command::Skip,
+        "voice" => Command::Voice,
         "dict" => parse_dict(cmd),
         "help" => Command::Help,
         _ => Command::Unknown,

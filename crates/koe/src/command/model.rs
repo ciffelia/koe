@@ -1,10 +1,11 @@
-use serenity::builder::CreateEmbed;
+use serenity::builder::{CreateComponents, CreateEmbed};
 
 #[derive(Debug, Clone)]
 pub enum Command {
     Join,
     Leave,
     Skip,
+    Voice,
     DictAdd(DictAddOption),
     DictRemove(DictRemoveOption),
     DictView,
@@ -27,6 +28,7 @@ pub struct DictRemoveOption {
 pub enum CommandResponse {
     Text(String),
     Embed(CreateEmbed),
+    Components(CreateComponents),
 }
 
 impl<T> From<T> for CommandResponse

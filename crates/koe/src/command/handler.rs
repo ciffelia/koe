@@ -3,10 +3,16 @@ use super::{
     parser::parse,
 };
 use crate::{app_state, error::report_error};
-use anyhow::{bail, Context as _, Result};
-use koe_db::dict::{GetAllOption, InsertOption, InsertResponse, RemoveOption, RemoveResponse};
+use anyhow::{anyhow, bail, Context as _, Result};
+use koe_db::{
+    dict::{GetAllOption, InsertOption, InsertResponse, RemoveOption, RemoveResponse},
+    voice::GetOption,
+};
+use rand::seq::SliceRandom;
 use serenity::{
-    builder::CreateEmbed,
+    builder::{
+        CreateActionRow, CreateComponents, CreateEmbed, CreateSelectMenu, CreateSelectMenuOption,
+    },
     client::Context,
     model::{
         id::{ChannelId, GuildId, UserId},
@@ -35,6 +41,9 @@ pub async fn handle(ctx: &Context, command: &ApplicationCommandInteraction) -> R
                 .interaction_response_data(|create_message| match response {
                     CommandResponse::Text(text) => create_message.content(text),
                     CommandResponse::Embed(embed) => create_message.add_embed(embed),
+                    CommandResponse::Components(components) => {
+                        create_message.set_components(components)
+                    }
                 })
         })
         .await
@@ -59,6 +68,9 @@ async fn execute(
         Command::Skip => handle_skip(ctx, command)
             .await
             .context("Failed to execute /skip"),
+        Command::Voice => handle_voice(ctx, command)
+            .await
+            .context("Failed to execute /voice"),
         Command::DictAdd(option) => handle_dict_add(ctx, command, option)
             .await
             .context("Failed to execute /dict add"),
@@ -146,6 +158,62 @@ async fn handle_skip(
     koe_call::skip(ctx, guild_id).await?;
 
     Ok("読み上げ中のメッセージをスキップしました。".into())
+}
+
+async fn handle_voice(
+    ctx: &Context,
+    command: &ApplicationCommandInteraction,
+) -> Result<CommandResponse> {
+    let guild_id = match command.guild_id {
+        Some(id) => id,
+        None => return Ok("`/voice` はサーバー内でのみ使えます。".into()),
+    };
+
+    let state = app_state::get(ctx).await?;
+    let mut conn = state.redis_client.get_async_connection().await?;
+
+    let available_presets = state.voicevox_client.presets().await?;
+
+    let fallback_preset_id = available_presets
+        .choose(&mut rand::thread_rng())
+        .map(|p| p.id)
+        .ok_or_else(|| anyhow!("No presets available"))?;
+    let current_preset = koe_db::voice::get(
+        &mut conn,
+        GetOption {
+            guild_id: guild_id.to_string(),
+            user_id: command.user.id.to_string(),
+            fallback: fallback_preset_id,
+        },
+    )
+    .await?;
+
+    let components = {
+        let option_list = available_presets
+            .iter()
+            .map(|p| {
+                let mut option = CreateSelectMenuOption::default();
+                option
+                    .label(&p.name)
+                    .value(p.id)
+                    .default_selection(p.id == current_preset);
+                option
+            })
+            .collect::<Vec<_>>();
+
+        let mut select = CreateSelectMenu::default();
+        select.custom_id("voice");
+        select.options(|create_options| create_options.set_options(option_list));
+
+        let mut action_row = CreateActionRow::default();
+        action_row.add_select_menu(select);
+
+        let mut components = CreateComponents::default();
+        components.add_action_row(action_row);
+        components
+    };
+
+    Ok(CommandResponse::Components(components))
 }
 
 async fn handle_dict_add(

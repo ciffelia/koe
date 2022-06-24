@@ -42,6 +42,9 @@ pub async fn setup_guild_commands(ctx: &Context, guild_id: GuildId) -> Result<()
                         .description("読み上げ中のメッセージをスキップ")
                 })
                 .create_application_command(|command| {
+                    command.name("voice").description("話者の設定")
+                })
+                .create_application_command(|command| {
                     command
                         .name("dict")
                         .description("読み上げ辞書の閲覧と編集")
