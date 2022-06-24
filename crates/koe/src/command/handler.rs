@@ -1,8 +1,8 @@
 use super::{
-    model::{Command, CommandResponse, DictAddOption, DictRemoveOption},
+    model::{Command, DictAddOption, DictRemoveOption},
     parser::parse,
 };
-use crate::{app_state, error::report_error};
+use crate::app_state;
 use anyhow::{anyhow, bail, Context as _, Result};
 use koe_db::{
     dict::{GetAllOption, InsertOption, InsertResponse, RemoveOption, RemoveResponse},
@@ -22,88 +22,61 @@ use serenity::{
     },
 };
 
-pub async fn handle(ctx: &Context, command: &ApplicationCommandInteraction) -> Result<()> {
-    let response = match execute(ctx, command)
-        .await
-        .context("Failed to execute command")
-    {
-        Ok(resp) => resp,
-        Err(err) => {
-            report_error(err);
-            CommandResponse::Text("内部エラーが発生しました。".to_string())
+pub async fn handle(ctx: &Context, cmd: &ApplicationCommandInteraction) -> Result<()> {
+    match parse(cmd) {
+        Command::Join => handle_join(ctx, cmd)
+            .await
+            .context("Failed to execute /join")?,
+        Command::Leave => handle_leave(ctx, cmd)
+            .await
+            .context("Failed to execute /leave")?,
+        Command::Skip => handle_skip(ctx, cmd)
+            .await
+            .context("Failed to execute /skip")?,
+        Command::Voice => handle_voice(ctx, cmd)
+            .await
+            .context("Failed to execute /voice")?,
+        Command::DictAdd(option) => handle_dict_add(ctx, cmd, option)
+            .await
+            .context("Failed to execute /dict add")?,
+        Command::DictRemove(option) => handle_dict_remove(ctx, cmd, option)
+            .await
+            .context("Failed to execute /dict remove")?,
+        Command::DictView => handle_dict_view(ctx, cmd)
+            .await
+            .context("Failed to execute /dict view")?,
+        Command::Help => handle_help(ctx, cmd)
+            .await
+            .context("Failed to execute /help")?,
+        Command::Unknown => {
+            bail!("Unknown command: {:?}", cmd);
         }
     };
-
-    command
-        .create_interaction_response(&ctx.http, |create_response| {
-            create_response
-                .kind(InteractionResponseType::ChannelMessageWithSource)
-                .interaction_response_data(|create_message| match response {
-                    CommandResponse::Text(text) => create_message.content(text),
-                    CommandResponse::Embed(embed) => create_message.add_embed(embed),
-                    CommandResponse::Components(components) => {
-                        create_message.set_components(components)
-                    }
-                })
-        })
-        .await
-        .context("Failed to create interaction response")?;
 
     Ok(())
 }
 
-async fn execute(
-    ctx: &Context,
-    command: &ApplicationCommandInteraction,
-) -> Result<CommandResponse> {
-    let command_kind = parse(command);
-
-    match command_kind {
-        Command::Join => handle_join(ctx, command)
-            .await
-            .context("Failed to execute /join"),
-        Command::Leave => handle_leave(ctx, command)
-            .await
-            .context("Failed to execute /leave"),
-        Command::Skip => handle_skip(ctx, command)
-            .await
-            .context("Failed to execute /skip"),
-        Command::Voice => handle_voice(ctx, command)
-            .await
-            .context("Failed to execute /voice"),
-        Command::DictAdd(option) => handle_dict_add(ctx, command, option)
-            .await
-            .context("Failed to execute /dict add"),
-        Command::DictRemove(option) => handle_dict_remove(ctx, command, option)
-            .await
-            .context("Failed to execute /dict remove"),
-        Command::DictView => handle_dict_view(ctx, command)
-            .await
-            .context("Failed to execute /dict view"),
-        Command::Help => handle_help(ctx, command)
-            .await
-            .context("Failed to execute /help"),
-        Command::Unknown => {
-            bail!("Unknown command: {:?}", command);
-        }
-    }
-}
-
-async fn handle_join(
-    ctx: &Context,
-    command: &ApplicationCommandInteraction,
-) -> Result<CommandResponse> {
-    let guild_id = match command.guild_id {
+async fn handle_join(ctx: &Context, cmd: &ApplicationCommandInteraction) -> Result<()> {
+    let guild_id = match cmd.guild_id {
         Some(id) => id,
-        None => return Ok("`/join`, `/kjoin` はサーバー内でのみ使えます。".into()),
+        None => {
+            r(ctx, cmd, "`/join`, `/kjoin` はサーバー内でのみ使えます。").await?;
+            return Ok(());
+        }
     };
-    let user_id = command.user.id;
-    let text_channel_id = command.channel_id;
+    let user_id = cmd.user.id;
+    let text_channel_id = cmd.channel_id;
 
     let voice_channel_id = match get_user_voice_channel(ctx, &guild_id, &user_id).await? {
         Some(channel) => channel,
         None => {
-            return Ok("ボイスチャンネルに接続してから `/join` を送信してください。".into());
+            r(
+                ctx,
+                cmd,
+                "ボイスチャンネルに接続してから `/join` を送信してください。",
+            )
+            .await?;
+            return Ok(());
         }
     };
 
@@ -118,20 +91,24 @@ async fn handle_join(
         },
     );
 
-    Ok("接続しました。".into())
+    r(ctx, cmd, "接続しました。").await?;
+    Ok(())
 }
 
-async fn handle_leave(
-    ctx: &Context,
-    command: &ApplicationCommandInteraction,
-) -> Result<CommandResponse> {
-    let guild_id = match command.guild_id {
+async fn handle_leave(ctx: &Context, cmd: &ApplicationCommandInteraction) -> Result<()> {
+    let guild_id = match cmd.guild_id {
         Some(id) => id,
-        None => return Ok("`/leave`, `/kleave` はサーバー内でのみ使えます。".into()),
+        None => {
+            r(ctx, cmd, "`/leave`, `/kleave` はサーバー内でのみ使えます。").await?;
+            return Ok(());
+        }
     };
 
     if !koe_call::is_connected(ctx, guild_id).await? {
-        return Ok("どのボイスチャンネルにも接続していません。".into());
+        {
+            r(ctx, cmd, "どのボイスチャンネルにも接続していません。").await?;
+            return Ok(());
+        };
     }
 
     koe_call::leave(ctx, guild_id).await?;
@@ -139,34 +116,39 @@ async fn handle_leave(
     let state = app_state::get(ctx).await?;
     state.connected_guild_states.remove(&guild_id);
 
-    Ok("切断しました。".into())
+    r(ctx, cmd, "切断しました。").await?;
+    Ok(())
 }
 
-async fn handle_skip(
-    ctx: &Context,
-    command: &ApplicationCommandInteraction,
-) -> Result<CommandResponse> {
-    let guild_id = match command.guild_id {
+async fn handle_skip(ctx: &Context, cmd: &ApplicationCommandInteraction) -> Result<()> {
+    let guild_id = match cmd.guild_id {
         Some(id) => id,
-        None => return Ok("`/skip`, `/kskip` はサーバー内でのみ使えます。".into()),
+        None => {
+            r(ctx, cmd, "`/skip`, `/kskip` はサーバー内でのみ使えます。").await?;
+            return Ok(());
+        }
     };
 
     if !koe_call::is_connected(ctx, guild_id).await? {
-        return Ok("どのボイスチャンネルにも接続していません。".into());
+        {
+            r(ctx, cmd, "どのボイスチャンネルにも接続していません。").await?;
+            return Ok(());
+        };
     }
 
     koe_call::skip(ctx, guild_id).await?;
 
-    Ok("読み上げ中のメッセージをスキップしました。".into())
+    r(ctx, cmd, "読み上げ中のメッセージをスキップしました。").await?;
+    Ok(())
 }
 
-async fn handle_voice(
-    ctx: &Context,
-    command: &ApplicationCommandInteraction,
-) -> Result<CommandResponse> {
-    let guild_id = match command.guild_id {
+async fn handle_voice(ctx: &Context, cmd: &ApplicationCommandInteraction) -> Result<()> {
+    let guild_id = match cmd.guild_id {
         Some(id) => id,
-        None => return Ok("`/voice` はサーバー内でのみ使えます。".into()),
+        None => {
+            r(ctx, cmd, "`/voice` はサーバー内でのみ使えます。").await?;
+            return Ok(());
+        }
     };
 
     let state = app_state::get(ctx).await?;
@@ -182,13 +164,13 @@ async fn handle_voice(
         &mut conn,
         GetOption {
             guild_id: guild_id.to_string(),
-            user_id: command.user.id.to_string(),
+            user_id: cmd.user.id.to_string(),
             fallback: fallback_preset_id,
         },
     )
     .await?;
 
-    let components = {
+    {
         let option_list = available_presets
             .iter()
             .map(|p| {
@@ -210,20 +192,32 @@ async fn handle_voice(
 
         let mut components = CreateComponents::default();
         components.add_action_row(action_row);
-        components
+
+        cmd.create_interaction_response(&ctx.http, |create_response| {
+            create_response
+                .kind(InteractionResponseType::ChannelMessageWithSource)
+                .interaction_response_data(|create_message| {
+                    create_message.set_components(components)
+                })
+        })
+        .await
+        .context("Failed to create interaction response")?;
     };
 
-    Ok(CommandResponse::Components(components))
+    Ok(())
 }
 
 async fn handle_dict_add(
     ctx: &Context,
-    command: &ApplicationCommandInteraction,
+    cmd: &ApplicationCommandInteraction,
     option: DictAddOption,
-) -> Result<CommandResponse> {
-    let guild_id = match command.guild_id {
+) -> Result<()> {
+    let guild_id = match cmd.guild_id {
         Some(id) => id,
-        None => return Ok("`/dict add` はサーバー内でのみ使えます。".into()),
+        None => {
+            r(ctx, cmd, "`/dict add` はサーバー内でのみ使えます。").await?;
+            return Ok(());
+        }
     };
 
     let state = app_state::get(ctx).await?;
@@ -239,29 +233,32 @@ async fn handle_dict_add(
     )
     .await?;
 
-    match resp {
-        InsertResponse::Success => Ok(format!(
+    let msg = match resp {
+        InsertResponse::Success => format!(
             "{}の読み方を{}として辞書に登録しました。",
             sanitize_response(&option.word),
             sanitize_response(&option.read_as)
-        )
-        .into()),
-        InsertResponse::WordAlreadyExists => Ok(format!(
+        ),
+        InsertResponse::WordAlreadyExists => format!(
             "すでに{}は辞書に登録されています。",
             sanitize_response(&option.word)
-        )
-        .into()),
-    }
+        ),
+    };
+    r(ctx, cmd, msg).await?;
+    Ok(())
 }
 
 async fn handle_dict_remove(
     ctx: &Context,
-    command: &ApplicationCommandInteraction,
+    cmd: &ApplicationCommandInteraction,
     option: DictRemoveOption,
-) -> Result<CommandResponse> {
-    let guild_id = match command.guild_id {
+) -> Result<()> {
+    let guild_id = match cmd.guild_id {
         Some(id) => id,
-        None => return Ok("`/dict remove` はサーバー内でのみ使えます。".into()),
+        None => {
+            r(ctx, cmd, "`/dict remove` はサーバー内でのみ使えます。").await?;
+            return Ok(());
+        }
     };
 
     let state = app_state::get(ctx).await?;
@@ -276,27 +273,27 @@ async fn handle_dict_remove(
     )
     .await?;
 
-    match resp {
-        RemoveResponse::Success => Ok(format!(
+    let msg = match resp {
+        RemoveResponse::Success => format!(
             "辞書から{}を削除しました。",
             sanitize_response(&option.word)
-        )
-        .into()),
-        RemoveResponse::WordDoesNotExist => Ok(format!(
+        ),
+        RemoveResponse::WordDoesNotExist => format!(
             "{}は辞書に登録されていません。",
             sanitize_response(&option.word)
-        )
-        .into()),
-    }
+        ),
+    };
+    r(ctx, cmd, msg).await?;
+    Ok(())
 }
 
-async fn handle_dict_view(
-    ctx: &Context,
-    command: &ApplicationCommandInteraction,
-) -> Result<CommandResponse> {
-    let guild_id = match command.guild_id {
+async fn handle_dict_view(ctx: &Context, cmd: &ApplicationCommandInteraction) -> Result<()> {
+    let guild_id = match cmd.guild_id {
         Some(id) => id,
-        None => return Ok("`/dict view` はサーバー内でのみ使えます。".into()),
+        None => {
+            r(ctx, cmd, "`/dict view` はサーバー内でのみ使えます。").await?;
+            return Ok(());
+        }
     };
 
     let state = app_state::get(ctx).await?;
@@ -310,27 +307,40 @@ async fn handle_dict_view(
     )
     .await?;
 
-    let mut embed = CreateEmbed::default();
+    {
+        let mut embed = CreateEmbed::default();
 
-    let guild_name = guild_id
-        .name(&ctx.cache)
+        let guild_name = guild_id
+            .name(&ctx.cache)
+            .await
+            .unwrap_or_else(|| "サーバー".to_string());
+        embed.title(format!("📕 {}の辞書", guild_name));
+
+        embed.fields(
+            dict.into_iter()
+                .map(|(word, read_as)| (word, sanitize_response(&read_as), false)),
+        );
+
+        cmd.create_interaction_response(&ctx.http, |create_response| {
+            create_response
+                .kind(InteractionResponseType::ChannelMessageWithSource)
+                .interaction_response_data(|create_message| create_message.add_embed(embed))
+        })
         .await
-        .unwrap_or_else(|| "サーバー".to_string());
-    embed.title(format!("📕 {}の辞書", guild_name));
+        .context("Failed to create interaction response")?;
+    };
 
-    embed.fields(
-        dict.into_iter()
-            .map(|(word, read_as)| (word, sanitize_response(&read_as), false)),
-    );
-
-    Ok(CommandResponse::Embed(embed))
+    Ok(())
 }
 
-async fn handle_help(
-    _ctx: &Context,
-    _command: &ApplicationCommandInteraction,
-) -> Result<CommandResponse> {
-    Ok("使い方はこちらをご覧ください:\nhttps://github.com/ciffelia/koe/blob/main/README.md".into())
+async fn handle_help(ctx: &Context, cmd: &ApplicationCommandInteraction) -> Result<()> {
+    r(
+        ctx,
+        cmd,
+        "使い方はこちらをご覧ください:\nhttps://github.com/ciffelia/koe/blob/main/README.md",
+    )
+    .await?;
+    Ok(())
 }
 
 async fn get_user_voice_channel(
@@ -349,6 +359,19 @@ async fn get_user_voice_channel(
         .and_then(|voice_state| voice_state.channel_id);
 
     Ok(channel_id)
+}
+
+// Helper function to create text message response
+async fn r(ctx: &Context, cmd: &ApplicationCommandInteraction, text: impl ToString) -> Result<()> {
+    cmd.create_interaction_response(&ctx.http, |create_response| {
+        create_response
+            .kind(InteractionResponseType::ChannelMessageWithSource)
+            .interaction_response_data(|create_message| create_message.content(text))
+    })
+    .await
+    .context("Failed to create interaction response")?;
+
+    Ok(())
 }
 
 fn sanitize_response(text: &str) -> String {
