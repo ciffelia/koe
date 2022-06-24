@@ -351,6 +351,6 @@ async fn get_user_voice_channel(
     Ok(channel_id)
 }
 
-pub fn sanitize_response(text: &str) -> String {
+fn sanitize_response(text: &str) -> String {
     format!("`{}`", text.replace('`', ""))
 }
