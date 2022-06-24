@@ -1,7 +1,6 @@
 use anyhow::{bail, Result};
 use redis::aio::Connection;
 use redis::AsyncCommands;
-use std::collections::HashMap;
 
 #[derive(Debug, Clone)]
 pub struct InsertOption {
@@ -59,12 +58,12 @@ pub struct GetAllOption {
     pub guild_id: u64,
 }
 
-/// 辞書を[`HashMap`]として返す
-/// 辞書が存在しないときは空の[`HashMap`]を返す
+/// 辞書全体を返す
+/// 辞書が存在しないときは空の[`Vec`]を返す
 pub async fn get_all(
     connection: &mut Connection,
     option: GetAllOption,
-) -> Result<HashMap<String, String>> {
+) -> Result<Vec<(String, String)>> {
     let resp = connection.hgetall(dict_key(option.guild_id)).await?;
     Ok(resp)
 }

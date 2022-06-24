@@ -90,12 +90,8 @@ async fn replace_words_on_dict(
     )
     .await?;
 
-    let dict_list = dict.into_iter().collect::<Vec<_>>();
-    let word_list = dict_list.iter().map(|(word, _)| word).collect::<Vec<_>>();
-    let read_as_list = dict_list
-        .iter()
-        .map(|(_, read_as)| read_as)
-        .collect::<Vec<_>>();
+    let word_list = dict.iter().map(|(word, _)| word).collect::<Vec<_>>();
+    let read_as_list = dict.iter().map(|(_, read_as)| read_as).collect::<Vec<_>>();
 
     let ac = AhoCorasickBuilder::new()
         .match_kind(MatchKind::LeftmostLongest)
