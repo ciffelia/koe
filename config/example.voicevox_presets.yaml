@@ -2,7 +2,7 @@
   name: 四国めたん ノーマル
   speaker_uuid: 7ffcb7ce-00ec-4bdc-82cd-45a8889e43ff
   style_id: 2
-  speedScale: 1
+  speedScale: 1.2
   pitchScale: 0
   intonationScale: 1
   volumeScale: 1
@@ -13,7 +13,7 @@
   name: ずんだもん ノーマル
   speaker_uuid: 388f246b-8c41-4ac1-8e2d-5d79f3ff56d9
   style_id: 3
-  speedScale: 1
+  speedScale: 1.2
   pitchScale: 0
   intonationScale: 1
   volumeScale: 1
@@ -24,7 +24,7 @@
   name: 春日部つむぎ
   speaker_uuid: 35b2c544-660e-401e-b503-0e14c635303a
   style_id: 8
-  speedScale: 1
+  speedScale: 1.2
   pitchScale: 0
   intonationScale: 1
   volumeScale: 1
@@ -35,7 +35,7 @@
   name: 雨晴はう
   speaker_uuid: 3474ee95-c274-47f9-aa1a-8322163d96f1
   style_id: 10
-  speedScale: 1
+  speedScale: 1.2
   pitchScale: 0
   intonationScale: 1
   volumeScale: 1
@@ -46,7 +46,7 @@
   name: 波音リツ
   speaker_uuid: b1a81618-b27b-40d2-b0ea-27a9ad408c4b
   style_id: 9
-  speedScale: 1
+  speedScale: 1.2
   pitchScale: 0
   intonationScale: 1
   volumeScale: 1
@@ -57,7 +57,7 @@
   name: 玄野武宏
   speaker_uuid: c30dc15a-0992-4f8d-8bb8-ad3b314e6a6f
   style_id: 11
-  speedScale: 1
+  speedScale: 1.2
   pitchScale: 0
   intonationScale: 1
   volumeScale: 1
@@ -68,7 +68,7 @@
   name: 白上虎太郎
   speaker_uuid: e5020595-5c5d-4e87-b849-270a518d0dcf
   style_id: 12
-  speedScale: 1
+  speedScale: 1.2
   pitchScale: 0
   intonationScale: 1
   volumeScale: 1
@@ -79,7 +79,7 @@
   name: 青山龍星
   speaker_uuid: 4f51116a-d9ee-4516-925d-21f183e2afad
   style_id: 13
-  speedScale: 1
+  speedScale: 1.2
   pitchScale: 0
   intonationScale: 1
   volumeScale: 1
@@ -90,7 +90,7 @@
   name: 冥鳴ひまり
   speaker_uuid: 8eaad775-3119-417e-8cf4-2a10bfd592c8
   style_id: 14
-  speedScale: 1
+  speedScale: 1.2
   pitchScale: 0
   intonationScale: 1
   volumeScale: 1
@@ -101,7 +101,7 @@
   name: 九州そら ノーマル
   speaker_uuid: 481fb609-6446-4870-9f46-90c4dd623403
   style_id: 16
-  speedScale: 1
+  speedScale: 1.5
   pitchScale: 0
   intonationScale: 1
   volumeScale: 1
@@ -112,7 +112,7 @@
   name: もち子さん
   speaker_uuid: 9f3ee141-26ad-437e-97bd-d22298d02ad2
   style_id: 20
-  speedScale: 1
+  speedScale: 1.2
   pitchScale: 0
   intonationScale: 1
   volumeScale: 1
