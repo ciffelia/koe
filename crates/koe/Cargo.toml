@@ -24,7 +24,7 @@ sentry = { version = "0.27", features = ["anyhow"] }
 
 # Discord
 serenity = { version = "0.10", default-features = false, features = ["cache", "client", "utils", "voice", "unstable_discord_api", "rustls_backend"] }
-songbird = "0.2"
+songbird = "0.3"
 discord-md = "2"
 
 # Utilities
