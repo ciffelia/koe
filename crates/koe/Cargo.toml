@@ -23,8 +23,8 @@ ecs-logger = "1"
 sentry = { version = "0.27", features = ["anyhow"] }
 
 # Discord
-serenity = { version = "0.11", default-features = false, features = ["cache", "client", "utils", "voice", "unstable_discord_api", "rustls_backend"] }
-songbird = "0.3"
+serenity = { version = "0.11", default-features = false, features = ["cache", "client", "utils", "voice", "unstable_discord_api", "native_tls_backend"] }
+songbird = { version = "0.3", default-features = false, features = ["serenity-native", "driver"] }
 discord-md = "2"
 
 # Utilities
