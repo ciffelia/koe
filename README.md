@@ -85,7 +85,8 @@ Koe はテキストチャンネルで送信されたコマンドによって動�
 2. General Information の Client ID を控えておきます。
 3. DescriptionにVOICEVOXや各音源のクレジット、使用上の注意事項などを入力します。ここで記入した内容はBotのプロフィールに表示されます。
 4. 作成したアプリケーションで、Bot を有効にします。
-5. Bot の Token を控えておきます。
+5. Message Content Intent を有効にします。
+6. Bot の Token を控えておきます。
 
 #### 1-2. サーバーに Bot を追加
 
