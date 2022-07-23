@@ -12,14 +12,13 @@ pub async fn handle_update(ctx: &Context, guild_id: Option<GuildId>) -> Result<(
         None => return Ok(()),
     };
 
-    let current_voice_channel_id = match get_current_voice_channel_id(ctx, guild_id).await? {
+    let current_voice_channel_id = match get_current_voice_channel_id(ctx, guild_id)? {
         Some(id) => id,
         None => return Ok(()),
     };
 
     let current_channel_user_list =
         list_users_in_voice_channel(ctx, guild_id, current_voice_channel_id)
-            .await
             .context("Failed to count the number of users in the bot's channel")?;
 
     // VCのメンバーがKoe自身のみになった場合は抜ける
@@ -37,10 +36,7 @@ pub async fn handle_update(ctx: &Context, guild_id: Option<GuildId>) -> Result<(
     Ok(())
 }
 
-async fn get_current_voice_channel_id(
-    ctx: &Context,
-    guild_id: GuildId,
-) -> Result<Option<ChannelId>> {
+fn get_current_voice_channel_id(ctx: &Context, guild_id: GuildId) -> Result<Option<ChannelId>> {
     let current_user_id = ctx.cache.current_user_id();
 
     let voice_state_map = guild_id
@@ -56,7 +52,7 @@ async fn get_current_voice_channel_id(
     Ok(current_voice_state.channel_id)
 }
 
-async fn list_users_in_voice_channel(
+fn list_users_in_voice_channel(
     ctx: &Context,
     guild_id: GuildId,
     channel_id: ChannelId,

@@ -68,7 +68,7 @@ async fn handle_join(ctx: &Context, cmd: &ApplicationCommandInteraction) -> Resu
     let user_id = cmd.user.id;
     let text_channel_id = cmd.channel_id;
 
-    let voice_channel_id = match get_user_voice_channel(ctx, &guild_id, &user_id).await? {
+    let voice_channel_id = match get_user_voice_channel(ctx, &guild_id, &user_id)? {
         Some(channel) => channel,
         None => {
             r(
@@ -345,7 +345,7 @@ async fn handle_help(ctx: &Context, cmd: &ApplicationCommandInteraction) -> Resu
     Ok(())
 }
 
-async fn get_user_voice_channel(
+fn get_user_voice_channel(
     ctx: &Context,
     guild_id: &GuildId,
     user_id: &UserId,

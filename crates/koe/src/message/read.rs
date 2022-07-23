@@ -18,7 +18,7 @@ pub async fn build_read_text(
 ) -> Result<String> {
     let author_name = build_author_name(ctx, msg).await;
 
-    let content = plain_content(ctx, msg).await;
+    let content = plain_content(ctx, msg);
     let content = replace_custom_emojis(&content);
     let content = discord_md::parse(&content).to_markdown_string(&ToMarkdownStringOption {
         omit_format: true,
@@ -59,7 +59,7 @@ async fn build_author_name(ctx: &Context, msg: &Message) -> String {
 }
 
 /// [Message]の内容を返す。ID表記されたメンションやチャンネル名は読める形に書き換える。
-async fn plain_content(ctx: &Context, msg: &Message) -> String {
+fn plain_content(ctx: &Context, msg: &Message) -> String {
     let mut options = ContentSafeOptions::new()
         .clean_channel(true)
         .clean_role(true)
