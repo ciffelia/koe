@@ -15,11 +15,11 @@ use serenity::{
     },
     client::Context,
     model::{
-        id::{ChannelId, GuildId, UserId},
-        interactions::{
-            application_command::ApplicationCommandInteraction,
-            InteractionApplicationCommandCallbackDataFlags, InteractionResponseType,
+        application::interaction::{
+            application_command::ApplicationCommandInteraction, InteractionResponseType,
+            MessageFlags,
         },
+        id::{ChannelId, GuildId, UserId},
     },
 };
 
@@ -199,7 +199,7 @@ async fn handle_voice(ctx: &Context, cmd: &ApplicationCommandInteraction) -> Res
                 .kind(InteractionResponseType::ChannelMessageWithSource)
                 .interaction_response_data(|create_message| {
                     create_message
-                        .flags(InteractionApplicationCommandCallbackDataFlags::EPHEMERAL)
+                        .flags(MessageFlags::EPHEMERAL)
                         .set_components(components)
                 })
         })
@@ -315,7 +315,6 @@ async fn handle_dict_view(ctx: &Context, cmd: &ApplicationCommandInteraction) ->
 
         let guild_name = guild_id
             .name(&ctx.cache)
-            .await
             .unwrap_or_else(|| "サーバー".to_string());
         embed.title(format!("📕 {}の辞書", guild_name));
 
@@ -353,7 +352,6 @@ async fn get_user_voice_channel(
 ) -> Result<Option<ChannelId>> {
     let guild = guild_id
         .to_guild_cached(&ctx.cache)
-        .await
         .context("Failed to find guild in the cache")?;
 
     let channel_id = guild

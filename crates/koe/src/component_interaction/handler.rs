@@ -4,7 +4,7 @@ use anyhow::{anyhow, bail, Context as _, Result};
 use koe_db::voice::SetOption;
 use serenity::{
     client::Context,
-    model::interactions::{
+    model::application::interaction::{
         message_component::MessageComponentInteraction, InteractionResponseType,
     },
 };

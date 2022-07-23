@@ -1,6 +1,6 @@
 use super::model::{Command, DictAddOption, DictRemoveOption};
-use serenity::model::interactions::application_command::{
-    ApplicationCommandInteraction, ApplicationCommandInteractionDataOptionValue,
+use serenity::model::application::interaction::application_command::{
+    ApplicationCommandInteraction, CommandDataOptionValue,
 };
 
 pub fn parse(cmd: &ApplicationCommandInteraction) -> Command {
@@ -32,11 +32,11 @@ fn parse_dict(cmd: &ApplicationCommandInteraction) -> Command {
                 None => return Command::Unknown,
             };
             let word = match &option_word.resolved {
-                Some(ApplicationCommandInteractionDataOptionValue::String(x)) => x,
+                Some(CommandDataOptionValue::String(x)) => x,
                 _ => return Command::Unknown,
             };
             let read_as = match &option_read_as.resolved {
-                Some(ApplicationCommandInteractionDataOptionValue::String(x)) => x,
+                Some(CommandDataOptionValue::String(x)) => x,
                 _ => return Command::Unknown,
             };
 
@@ -51,7 +51,7 @@ fn parse_dict(cmd: &ApplicationCommandInteraction) -> Command {
                 None => return Command::Unknown,
             };
             let word = match &option_word.resolved {
-                Some(ApplicationCommandInteractionDataOptionValue::String(x)) => x,
+                Some(CommandDataOptionValue::String(x)) => x,
                 _ => return Command::Unknown,
             };
 

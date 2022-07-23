@@ -7,7 +7,7 @@ use serenity::{
     async_trait,
     client::{Context, EventHandler},
     model::{
-        channel::Message, gateway::Ready, guild::Guild, id::GuildId, interactions::Interaction,
+        application::interaction::Interaction, channel::Message, gateway::Ready, guild::Guild,
         voice::VoiceState,
     },
 };
@@ -20,7 +20,7 @@ impl EventHandler for Handler {
         info!("Connected as {}", ready.user.name);
 
         for guild in &ready.guilds {
-            if let Err(err) = command::setup::setup_guild_commands(&ctx, guild.id())
+            if let Err(err) = command::setup::setup_guild_commands(&ctx, guild.id)
                 .await
                 .context("Failed to set guild application commands")
             {
@@ -73,11 +73,10 @@ impl EventHandler for Handler {
     async fn voice_state_update(
         &self,
         ctx: Context,
-        guild_id: Option<GuildId>,
         _old_voice_state: Option<VoiceState>,
-        _new_voice_state: VoiceState,
+        new_voice_state: VoiceState,
     ) {
-        if let Err(err) = voice_state::handler::handle_update(&ctx, guild_id)
+        if let Err(err) = voice_state::handler::handle_update(&ctx, new_voice_state.guild_id)
             .await
             .context("Failed to handle voice state update")
         {

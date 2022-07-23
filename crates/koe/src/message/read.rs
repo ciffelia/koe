@@ -1,7 +1,6 @@
 use crate::regex::{custom_emoji_regex, url_regex};
 use aho_corasick::{AhoCorasickBuilder, MatchKind};
 use anyhow::Result;
-use chrono::Duration;
 use discord_md::generate::{ToMarkdownString, ToMarkdownStringOption};
 use koe_db::{dict::GetAllOption, redis};
 use serenity::{
@@ -19,7 +18,7 @@ pub async fn build_read_text(
 ) -> Result<String> {
     let author_name = build_author_name(ctx, msg).await;
 
-    let content = replace_entities(ctx, guild_id, &msg.content).await;
+    let content = plain_content(ctx, msg).await;
     let content = replace_custom_emojis(&content);
     let content = discord_md::parse(&content).to_markdown_string(&ToMarkdownStringOption {
         omit_format: true,
@@ -49,7 +48,8 @@ fn should_read_author_name(msg: &Message, last_msg: &Option<Message>) -> bool {
         None => return true,
     };
 
-    msg.author != last_msg.author || (msg.timestamp - last_msg.timestamp) > Duration::seconds(10)
+    msg.author != last_msg.author
+        || (msg.timestamp.unix_timestamp() - last_msg.timestamp.unix_timestamp()) > 10
 }
 
 async fn build_author_name(ctx: &Context, msg: &Message) -> String {
@@ -58,18 +58,21 @@ async fn build_author_name(ctx: &Context, msg: &Message) -> String {
         .unwrap_or_else(|| msg.author.name.clone())
 }
 
-/// ID表記されたメンションやチャンネル名を読める形に書き換える
-async fn replace_entities(ctx: &Context, guild_id: GuildId, text: &str) -> String {
-    let options = ContentSafeOptions::new()
+/// [Message]の内容を返す。ID表記されたメンションやチャンネル名は読める形に書き換える。
+async fn plain_content(ctx: &Context, msg: &Message) -> String {
+    let mut options = ContentSafeOptions::new()
         .clean_channel(true)
         .clean_role(true)
         .clean_user(true)
         .show_discriminator(false)
-        .display_as_member_from(guild_id)
         .clean_here(false)
         .clean_everyone(false);
 
-    serenity::utils::content_safe(&ctx.cache, &text, &options).await
+    if let Some(guild_id) = msg.guild_id {
+        options = options.display_as_member_from(guild_id);
+    }
+
+    serenity::utils::content_safe(&ctx.cache, &msg.content, &options, &msg.mentions)
 }
 
 /// カスタム絵文字を読める形に置き換える

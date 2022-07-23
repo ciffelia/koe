@@ -41,11 +41,10 @@ async fn get_current_voice_channel_id(
     ctx: &Context,
     guild_id: GuildId,
 ) -> Result<Option<ChannelId>> {
-    let current_user_id = ctx.cache.current_user_id().await;
+    let current_user_id = ctx.cache.current_user_id();
 
     let voice_state_map = guild_id
         .to_guild_cached(&ctx.cache)
-        .await
         .context("Failed to find guild in the cache")?
         .voice_states;
 
@@ -64,7 +63,6 @@ async fn list_users_in_voice_channel(
 ) -> Result<Vec<UserId>> {
     let voice_state_map = guild_id
         .to_guild_cached(&ctx.cache)
-        .await
         .context("Failed to find guild in the cache")?
         .voice_states;
 

@@ -1,7 +1,7 @@
 use anyhow::{Context as _, Result};
 use serenity::{
     client::Context,
-    model::{id::GuildId, interactions::application_command::ApplicationCommandOptionType},
+    model::{application::command::CommandOptionType, id::GuildId},
 };
 
 pub async fn setup_guild_commands(ctx: &Context, guild_id: GuildId) -> Result<()> {
@@ -52,19 +52,19 @@ pub async fn setup_guild_commands(ctx: &Context, guild_id: GuildId) -> Result<()
                             option
                                 .name("add")
                                 .description("辞書に項目を追加")
-                                .kind(ApplicationCommandOptionType::SubCommand)
+                                .kind(CommandOptionType::SubCommand)
                                 .create_sub_option(|option| {
                                     option
                                         .name("word")
                                         .description("読み方を指定したい語句")
-                                        .kind(ApplicationCommandOptionType::String)
+                                        .kind(CommandOptionType::String)
                                         .required(true)
                                 })
                                 .create_sub_option(|option| {
                                     option
                                         .name("read-as")
                                         .description("語句の読み方")
-                                        .kind(ApplicationCommandOptionType::String)
+                                        .kind(CommandOptionType::String)
                                         .required(true)
                                 })
                         })
@@ -72,12 +72,12 @@ pub async fn setup_guild_commands(ctx: &Context, guild_id: GuildId) -> Result<()
                             option
                                 .name("remove")
                                 .description("辞書から項目を削除")
-                                .kind(ApplicationCommandOptionType::SubCommand)
+                                .kind(CommandOptionType::SubCommand)
                                 .create_sub_option(|option| {
                                     option
                                         .name("word")
                                         .description("削除したい語句")
-                                        .kind(ApplicationCommandOptionType::String)
+                                        .kind(CommandOptionType::String)
                                         .required(true)
                                 })
                         })
@@ -85,7 +85,7 @@ pub async fn setup_guild_commands(ctx: &Context, guild_id: GuildId) -> Result<()
                             option
                                 .name("view")
                                 .description("辞書を表示")
-                                .kind(ApplicationCommandOptionType::SubCommand)
+                                .kind(CommandOptionType::SubCommand)
                         })
                 })
         })

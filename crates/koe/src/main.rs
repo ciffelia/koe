@@ -5,7 +5,7 @@ use koe_db::redis;
 use koe_speech::{speech::initialize_speakers, voicevox::VoicevoxClient};
 use log::info;
 use sentry::integrations::anyhow::capture_anyhow;
-use serenity::Client;
+use serenity::{model::gateway::GatewayIntents, Client};
 use songbird::SerenityInit;
 use tokio::time::Duration;
 
@@ -34,7 +34,9 @@ async fn run() -> Result<()> {
     let config = koe_config::load()?;
     info!("Config loaded");
 
-    let mut client = Client::builder(config.discord_bot_token)
+    let intents = GatewayIntents::non_privileged() | GatewayIntents::MESSAGE_CONTENT;
+
+    let mut client = Client::builder(config.discord_bot_token, intents)
         .event_handler(event_handler::Handler)
         .application_id(config.discord_client_id)
         .register_songbird()
