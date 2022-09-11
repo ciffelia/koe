@@ -9,10 +9,87 @@
   prePhonemeLength: 0.1
   postPhonemeLength: 0.1
 
+- id: 12
+  name: 四国めたん あまあま
+  speaker_uuid: 7ffcb7ce-00ec-4bdc-82cd-45a8889e43ff
+  style_id: 0
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+
+- id: 13
+  name: 四国めたん ツンツン
+  speaker_uuid: 7ffcb7ce-00ec-4bdc-82cd-45a8889e43ff
+  style_id: 6
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+
+- id: 14
+  name: 四国めたん セクシー
+  speaker_uuid: 7ffcb7ce-00ec-4bdc-82cd-45a8889e43ff
+  style_id: 4
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+
 - id: 1
   name: ずんだもん ノーマル
   speaker_uuid: 388f246b-8c41-4ac1-8e2d-5d79f3ff56d9
   style_id: 3
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+
+- id: 15
+  name: ずんだもん あまあま
+  speaker_uuid: 388f246b-8c41-4ac1-8e2d-5d79f3ff56d9
+  style_id: 1
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+
+- id: 16
+  name: ずんだもん ツンツン
+  speaker_uuid: 388f246b-8c41-4ac1-8e2d-5d79f3ff56d9
+  style_id: 7
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+
+- id: 17
+  name: ずんだもん セクシー
+  speaker_uuid: 388f246b-8c41-4ac1-8e2d-5d79f3ff56d9
+  style_id: 5
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+
+- id: 18
+  name: ずんだもん ささやき
+  speaker_uuid: 388f246b-8c41-4ac1-8e2d-5d79f3ff56d9
+  style_id: 22
   speedScale: 1.2
   pitchScale: 0
   intonationScale: 1
@@ -101,6 +178,50 @@
   name: 九州そら ノーマル
   speaker_uuid: 481fb609-6446-4870-9f46-90c4dd623403
   style_id: 16
+  speedScale: 1.5
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+
+- id: 19
+  name: 九州そら あまあま
+  speaker_uuid: 481fb609-6446-4870-9f46-90c4dd623403
+  style_id: 15
+  speedScale: 1.5
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+
+- id: 20
+  name: 九州そら ツンツン
+  speaker_uuid: 481fb609-6446-4870-9f46-90c4dd623403
+  style_id: 18
+  speedScale: 1.5
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+
+- id: 21
+  name: 九州そら セクシー
+  speaker_uuid: 481fb609-6446-4870-9f46-90c4dd623403
+  style_id: 17
+  speedScale: 1.5
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+
+- id: 22
+  name: 九州そら ささやき
+  speaker_uuid: 481fb609-6446-4870-9f46-90c4dd623403
+  style_id: 19
   speedScale: 1.5
   pitchScale: 0
   intonationScale: 1
