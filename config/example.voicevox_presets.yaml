@@ -118,3 +118,14 @@
   volumeScale: 1
   prePhonemeLength: 0.1
   postPhonemeLength: 0.1
+
+- id: 11
+  name: 剣崎雌雄
+  speaker_uuid: 1a17ca16-7ee5-4ea5-b191-2f02ace24d21
+  style_id: 21
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
