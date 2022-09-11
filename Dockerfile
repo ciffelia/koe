@@ -4,7 +4,7 @@ RUN apt-get update && \
     apt-get install -y libopus-dev && \
     rm -rf /var/lib/apt/lists/*
 
-# Switch to non-root user
+# Switch to unpriviledged user
 RUN useradd --create-home --user-group koe
 USER koe
 
@@ -21,7 +21,7 @@ RUN apt-get update && \
     apt-get install -y ca-certificates ffmpeg && \
     rm -rf /var/lib/apt/lists/*
 
-# Switch to non-root user
+# Switch to unpriviledged user
 RUN useradd --create-home --user-group koe
 USER koe
 WORKDIR /home/koe
