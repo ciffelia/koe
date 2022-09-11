@@ -7,7 +7,10 @@ use serenity::{
     async_trait,
     client::{Context, EventHandler},
     model::{
-        application::interaction::Interaction, channel::Message, gateway::Ready, guild::Guild,
+        application::interaction::Interaction,
+        channel::Message,
+        gateway::{Activity, Ready},
+        guild::Guild,
         voice::VoiceState,
     },
 };
@@ -18,6 +21,9 @@ pub struct Handler;
 impl EventHandler for Handler {
     async fn ready(&self, ctx: Context, ready: Ready) {
         info!("Connected as {}", ready.user.name);
+
+        ctx.set_activity(Activity::playing("テキストチャット 読み上げBot"))
+            .await;
 
         for guild in &ready.guilds {
             if let Err(err) = command::setup::setup_guild_commands(&ctx, guild.id)
