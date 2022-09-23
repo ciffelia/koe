@@ -9,7 +9,7 @@ services:
     env_file: ./config/.env
 
   redis:
-    image: redis:7.0.4
+    image: redis:7.0.5
     command: /usr/local/etc/redis/redis.conf
     restart: unless-stopped
     expose:
