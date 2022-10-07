@@ -16,7 +16,7 @@ Koe が使用している音声合成エンジンである VOICEVOX Engine で�
 - GPU モード: RTX 3070 (メモリ 32GB): 1 秒程度
 - CPU モード: Raspberry Pi 4 (メモリ 8GB): 15 秒程度
 
-### 0-1. ソフトウェア
+### 0-2. ソフトウェア
 
 Koe の実行には Docker および Docker Compose が必要です。あらかじめインストールしておいてください。なお、Koe が動作するには Redis と VOICEVOX Engine が必要ですが、これらは Docker Compose を用いて起動するため事前のインストールは不要です。
 
@@ -60,19 +60,19 @@ https://discord.com/api/oauth2/authorize?client_id=CLIENT_ID&permissions=3146752
 1. リポジトリを[ダウンロード](https://github.com/ciffelia/koe/archive/refs/heads/main.zip)し、適当な場所に展開します。以後、このディレクトリの中で作業を行います。
 2. `config` ディレクトリと `docker-compose.yml` を残して、他のディレクトリやファイルは削除します。
 
-### 2-1. Redis のパスワード設定
+### 2-2. Redis のパスワード設定
 
 1. `config` ディレクトリにある `example.redis.conf` の名前を `redis.conf` に変更します。
 2. `redis.conf`をテキストエディタで開きます。
 3. `YOUR_STRONG_PASSWORD` を適当なパスワードに変更します。
 
-### 2-2. VOICEVOX Engine のプリセット設定
+### 2-3. VOICEVOX Engine のプリセット設定
 
 1. `config` ディレクトリにある `example.voicevox_presets.yaml` の名前を `voicevox_presets.yaml` に変更します。
 2. `voicevox_presets.yaml`をテキストエディタで開きます。
 3. 必要に応じてプリセットを変更します。
 
-### 2-3. Koe の設定
+### 2-4. Koe の設定
 
 1. `config` ディレクトリにある `example.env` の名前を `.env` に変更します。
 2. `.env`をテキストエディタで開きます。
