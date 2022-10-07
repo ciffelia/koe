@@ -75,68 +75,14 @@ Koe はテキストチャンネルで送信されたコマンドによって動�
 5. 辞書に登録されている語句を読み替え
 6. 文字数が 60 文字を超えた場合、56 文字目以降は切り捨て、「以下略」を末尾に追加
 
-## セットアップガイド
+## インストール方法
 
-### 1. Discord Bot の登録
+[セットアップガイド](docs/setup_guide.md)をご覧ください。
 
-#### 1-1. アプリケーションの作成
+## 不具合の報告
 
-1. [Discord Developer Portal](https://discord.com/developers/applications) を開き、新しくアプリケーションを作成します。
-2. General Information の Client ID を控えておきます。
-3. DescriptionにVOICEVOXや各音源のクレジット、使用上の注意事項などを入力します。ここで記入した内容はBotのプロフィールに表示されます。
-4. 作成したアプリケーションで、Bot を有効にします。
-5. Message Content Intent を有効にします。
-6. Bot の Token を控えておきます。
+[Issues](https://github.com/ciffelia/koe/issues) から日本語または英語で報告をお願い致します。
 
-#### 1-2. サーバーに Bot を追加
+## 質問・相談
 
-以下の URL にアクセスして、サーバーに Bot を追加します。`CLIENT_ID`は、先ほど控えた Client ID に置き換えてください。
-
-```
-https://discord.com/api/oauth2/authorize?client_id=CLIENT_ID&permissions=3146752&scope=bot%20applications.commands
-```
-
-##### 補足: Koe が使用する権限
-
-###### OAuth2 Scopes
-
-- `application.commands`
-- `bot`
-
-###### Bot Permissions
-
-- General Permissions
-  - View Channels
-- Voice Permissions
-  - Connect
-  - Speak
-
-### 2. Bot を起動
-
-#### 2-1. 設定ファイルの構成
-
-1. リポジトリを[ダウンロード](https://github.com/ciffelia/koe/archive/refs/heads/main.zip)し、適当な場所に展開します。以後、このディレクトリの中で作業を行います。
-2. `config` ディレクトリと `docker-compose.yml` を残して、他のディレクトリやファイルは削除します。
-3. `config` ディレクトリの `example.redis.conf` をテキストエディタで開いて Redis の設定を編集し、 `redis.conf` として保存します。
-4. `config` ディレクトリの `example.voicevox_presets.yaml` をテキストエディタで開いて VOICEVOX のプリセットを編集し、 `voicevox_presets.yaml` として保存します。
-
-#### 2-2. 環境変数の設定
-
-`config` ディレクトリの `example.env` をテキストエディタで開いて、以下に示す環境変数を編集し、`.env` として保存します。
-
-- `DISCORD_CLIENT_ID`（必須）: 1-1 で控えた Client ID を設定します。
-- `DISCORD_BOT_TOKEN`（必須）: 1-1 で控えた Bot Token を設定します。
-- `VOICEVOX_API_BASE`（必須）: VOICEVOX ENGINE の URL を設定します。Composeを使用する場合はデフォルトのままで問題ありません。
-- `REDIS_URL`（必須）: Redis の URL を設定します。
-  - 形式は `redis://[<username>][:<password>@]<hostname>[:port][/<db>]` です。
-  - 詳細は https://docs.rs/redis#connection-parameters もご確認ください。
-- `RUST_LOG`（任意）: `koe`に設定すると、詳細なログが出力されます。
-- `SENTRY_DSN`（任意）: エラーをSentryに送信することができます。
-
-#### 2-3. 起動
-
-- `docker compose up --detach` でアプリケーションを起動します。
-- `docker compose logs` でログを確認できます。
-- `docker compose pull` でアプリケーションを更新します。ただし `docker-compose.yml` や設定ファイルが更新された場合は、手動でダウンロードする必要があります。
-- `docker compose down` でアプリケーションを停止します。
-- `docker compose down --volumes` でアプリケーションを停止し、Redis に保存されている設定をすべて削除します。
+[Discussions](https://github.com/ciffelia/koe/discussions) から日本語または英語でご相談ください。

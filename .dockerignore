@@ -8,6 +8,7 @@ target
 .git
 .github
 config
+docs
 icon
 .gitignore
 docker-compose.yml
