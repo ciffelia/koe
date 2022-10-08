@@ -35,6 +35,7 @@ jobs:
 
       - name: Create release
         run: |
+          echo 'Creating ${{ inputs.type }}'
           if [ '${{ inputs.type }}' == 'Prerelease' ]; then
             yarn run create-prerelease
           else
