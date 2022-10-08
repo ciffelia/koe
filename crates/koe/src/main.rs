@@ -31,14 +31,14 @@ async fn main() -> Result<()> {
 async fn run() -> Result<()> {
     ecs_logger::init();
 
-    let config = koe_config::load()?;
+    let config = koe_config::load().await?;
     info!("Config loaded");
 
     let intents = GatewayIntents::non_privileged() | GatewayIntents::MESSAGE_CONTENT;
 
-    let mut client = Client::builder(config.discord_bot_token, intents)
+    let mut client = Client::builder(config.discord.bot_token, intents)
         .event_handler(event_handler::Handler)
-        .application_id(config.discord_client_id)
+        .application_id(config.discord.client_id)
         .register_songbird()
         .await
         .context("Failed to build serenity client")?;
@@ -46,8 +46,8 @@ async fn run() -> Result<()> {
     app_state::initialize(
         &client,
         app_state::AppState {
-            redis_client: redis::Client::open(config.redis_url)?,
-            voicevox_client: VoicevoxClient::new(config.voicevox_api_base),
+            redis_client: redis::Client::open(config.redis.url)?,
+            voicevox_client: VoicevoxClient::new(config.voicevox.api_base),
             connected_guild_states: DashMap::new(),
         },
     )

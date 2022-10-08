@@ -6,7 +6,10 @@ services:
       - redis
       - voicevox
     restart: unless-stopped
-    env_file: ./config/.env
+    environment:
+      RUST_LOG: warn
+    volumes:
+      - "./config/koe.yaml:/etc/koe.yaml:ro"
 
   redis:
     image: redis:7.0.5

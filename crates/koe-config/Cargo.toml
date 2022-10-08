@@ -6,5 +6,6 @@ publish = false
 
 [dependencies]
 anyhow = { version = "1", features = ["backtrace"] }
+tokio = { version = "1", features = ["fs"] }
 serde = { version = "1", features = ["derive"] }
-envy = "0.4"
+serde_yaml = "0.9"

@@ -74,19 +74,29 @@ https://discord.com/api/oauth2/authorize?client_id=CLIENT_ID&permissions=3146752
 
 ### 2-4. Koe の設定
 
-1. `config` ディレクトリにある `example.env` の名前を `.env` に変更します。
-2. `.env`をテキストエディタで開きます。
-3. 次に示す環境変数を設定します。
-   - `DISCORD_CLIENT_ID`（必須）: 1-1 で控えた Client ID を設定します。
-   - `DISCORD_BOT_TOKEN`（必須）: 1-1 で控えた Bot Token を設定します。
-   - `VOICEVOX_API_BASE`（必須）: VOICEVOX ENGINE の URL を設定します。
+1. `config` ディレクトリにある `example.koe.yaml` の名前を `koe.yaml` に変更します。
+2. `koe.yaml`をテキストエディタで開きます。
+3. 次の設定を編集します。
+   - `discord.client_id`: 1-1 で控えた Client ID を設定します。
+   - `discord.bot_token`: 1-1 で控えた Bot Token を設定します。
+   - `voicevox.api_base`: VOICEVOX ENGINE の URL を設定します。
      - Docker Compose を使用する場合はデフォルトのままで問題ありません。
-   - `REDIS_URL`（必須）: Redis に接続するための URL を設定します。
+   - `redis.url`: Redis に接続するための URL を設定します。
      - 形式は `redis://[<username>][:<password>@]<hostname>[:port][/<db>]` です。
      - Docker Compose を使用する場合は`YOUR_STRONG_PASSWORD`を Redis のパスワードに置き換えるのみで問題ありません。
      - 詳細は https://docs.rs/redis#connection-parameters をご確認ください。
-   - `RUST_LOG`（任意）: ログレベルを設定します。`koe`に設定すると詳細なログが出力されます。
-   - `SENTRY_DSN`（任意）: 設定するとエラーを Sentry に送信することができます。
+
+### 2-5. 環境変数の設定（任意）
+
+`docker-compose.yml` から以下の環境変数を設定することができます。どちらも原則として設定する必要はありませんが、デバッグ時に役立ちます。
+
+- `KOE_CONFIG`: 設定ファイルの場所を設定します。
+  - デフォルトでは `/etc/koe.yaml` となっています。
+- `RUST_LOG`: ログレベルを設定します。
+  - `koe`に設定すると詳細なログが出力されます。
+  - 詳細は https://docs.rs/env_logger#enabling-logging をご確認ください。
+- `SENTRY_DSN`: Sentry の DSN を設定します。
+  - 設定するとエラーを Sentry に送信することができます。
 
 ## 3. 起動
 
