@@ -3,9 +3,13 @@ name: Create release
 on:
   workflow_dispatch:
     inputs:
-      prerelease:
-        description: Prerelease
-        type: boolean
+      type:
+        type: choice
+        required: true
+        default: Prerelease
+        options:
+          - Prerelease
+          - Release
 
 concurrency: ${{ github.workflow }}
 
