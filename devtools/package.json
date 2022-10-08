@@ -9,7 +9,7 @@
     "postinstall": "cd .. && husky install ./devtools/.husky"
   },
   "packageManager": "yarn@3.2.4",
-  "devDependencies": {
+  "dependencies": {
     "@commitlint/cli": "^17.1.2",
     "@commitlint/config-conventional": "^17.1.0",
     "@release-it/conventional-changelog": "^5.1.1",
