@@ -1,6 +1,6 @@
 services:
   app:
-    image: ghcr.io/ciffelia/koe:latest
+    image: ghcr.io/ciffelia/koe:0.0.1-alpha.0
     init: true
     depends_on:
       - redis
