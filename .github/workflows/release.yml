@@ -1,5 +1,7 @@
 name: Create release
 
+concurrency: ${{ github.workflow }}
+
 on: workflow_dispatch
 
 jobs:
