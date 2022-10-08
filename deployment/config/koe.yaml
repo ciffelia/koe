@@ -1,5 +1,3 @@
-# NOTE: edit this file and rename to koe.yaml
-
 discord:
   client_id: YOUR_CLIENT_ID
   bot_token: YOUR_BOT_TOKEN
