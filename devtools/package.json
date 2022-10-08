@@ -3,6 +3,8 @@
   "version": "0.0.1-alpha.0",
   "private": true,
   "scripts": {
+    "create-release": "release-it --ci",
+    "create-prerelease": "release-it --ci --preRelease=alpha",
     "postinstall": "cd .. && husky install ./devtools/.husky"
   },
   "packageManager": "yarn@3.2.4",

@@ -20,7 +20,7 @@ jobs:
         working-directory: ./devtools
 
       - name: Create prerelease
-        run: yarn run release-it --ci --preRelease=alpha
+        run: yarn run create-prerelease
         working-directory: ./devtools
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
