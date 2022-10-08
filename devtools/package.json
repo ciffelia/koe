@@ -8,6 +8,9 @@
   "devDependencies": {
     "@commitlint/cli": "^17.1.2",
     "@commitlint/config-conventional": "^17.1.0",
-    "husky": "^8.0.0"
+    "@release-it/conventional-changelog": "^5.1.1",
+    "conventional-changelog-conventionalcommits": "^5.0.0",
+    "husky": "^8.0.0",
+    "release-it": "^15.5.0"
   }
 }

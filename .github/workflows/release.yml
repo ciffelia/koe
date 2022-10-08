@@ -1,0 +1,21 @@
+name: Publish release
+
+on: workflow_dispatch
+
+jobs:
+  create-release:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Setup devtools
+        run: yarn install --immutable
+        working-directory: ./devtools
+
+      - name: Create prerelease
+        run: yarn run release-it --ci --preRelease=alpha
+        working-directory: ./devtools
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
