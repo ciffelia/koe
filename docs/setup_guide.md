@@ -57,26 +57,23 @@ https://discord.com/api/oauth2/authorize?client_id=CLIENT_ID&permissions=3146752
 
 ### 2-1. サンプル設定ファイルのダウンロード
 
-1. リポジトリを[ダウンロード](https://github.com/ciffelia/koe/archive/refs/heads/main.zip)し、適当な場所に展開します。以後、このディレクトリの中で作業を行います。
-2. `config` ディレクトリと `docker-compose.yml` を残して、他のディレクトリやファイルは削除します。
+1. リポジトリを[ダウンロード](https://github.com/ciffelia/koe/archive/refs/heads/main.zip)し、適当な場所に展開します。
+2. `deployment` ディレクトリを残し、他のファイルやディレクトリは削除します。以後、このディレクトリの中で作業を行います。
 
 ### 2-2. Redis のパスワード設定
 
-1. `config` ディレクトリにある `example.redis.conf` の名前を `redis.conf` に変更します。
-2. `redis.conf`をテキストエディタで開きます。
-3. `YOUR_STRONG_PASSWORD` を適当なパスワードに変更します。
+1. `config` ディレクトリにある `redis.conf`をテキストエディタで開きます。
+2. `YOUR_STRONG_PASSWORD` を適当なパスワードに変更します。
 
-### 2-3. VOICEVOX ENGINE のプリセット設定
+### 2-3. VOICEVOX ENGINE のプリセット設定（任意）
 
-1. `config` ディレクトリにある `example.voicevox_presets.yaml` の名前を `voicevox_presets.yaml` に変更します。
-2. `voicevox_presets.yaml`をテキストエディタで開きます。
-3. 必要に応じてプリセットを変更します。
+1. `config` ディレクトリにある `voicevox_presets.yaml`をテキストエディタで開きます。
+2. 必要に応じてプリセットを変更します。
 
 ### 2-4. Koe の設定
 
-1. `config` ディレクトリにある `example.koe.yaml` の名前を `koe.yaml` に変更します。
-2. `koe.yaml`をテキストエディタで開きます。
-3. 次の設定を編集します。
+1. `config` ディレクトリにある `koe.yaml`をテキストエディタで開きます。
+2. 次の設定を編集します。
    - `discord.client_id`: 1-1 で控えた Client ID を設定します。
    - `discord.bot_token`: 1-1 で控えた Bot Token を設定します。
    - `voicevox.api_base`: VOICEVOX ENGINE の URL を設定します。

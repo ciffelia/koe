@@ -2,8 +2,7 @@
 /target
 
 # Config files
-/config/*
-!/config/example.*
+/deployment_dev
 
 # CLion
 /.idea

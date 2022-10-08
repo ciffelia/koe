@@ -7,7 +7,8 @@ target
 # Files not required for Docker build
 .git
 .github
-config
+deployment
+deployment_dev
 docs
 icon
 .gitignore
