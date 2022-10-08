@@ -31,7 +31,7 @@ Koe は、指定されたテキストチャンネルに送信されたメッセ�
 
 ## 不具合の報告
 
-[Issues](https://github.com/ciffelia/koe/issues) から日本語または英語で報告をお願い致します。
+[Issues](https://github.com/ciffelia/koe/issues) から日本語または英語で報告をお願いします。
 
 ## 質問・相談
 
