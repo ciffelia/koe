@@ -8,7 +8,7 @@
 
 読み上げ音声の合成は非常に負荷の大きい処理です。Koe を実行するコンピュータの性能が低い場合、テキストチャンネルにメッセージが送信されてからボイスチャンネルで読み上げられるまでの遅延が大きくなります。
 
-Koe が使用している音声合成エンジンである VOICEVOX Engine では、音声合成処理に CPU または GPU を使用することができます。Bot を快適に使用するには高性能な CPU または GPU と 2GB 以上のメモリを搭載したマシンが必要です。
+Koe が使用している音声合成エンジンである VOICEVOX ENGINE では、音声合成処理に CPU または GPU を使用することができます。Bot を快適に使用するには高性能な CPU または GPU と 2GB 以上のメモリを搭載したマシンが必要です。
 
 参考として、[@ciffelia](https://github.com/ciffelia) が使用しているマシンでの遅延は以下の通りです。
 
@@ -18,7 +18,7 @@ Koe が使用している音声合成エンジンである VOICEVOX Engine で�
 
 ### 0-2. ソフトウェア
 
-Koe の実行には Docker および Docker Compose が必要です。あらかじめインストールしておいてください。なお、Koe が動作するには Redis と VOICEVOX Engine が必要ですが、これらは Docker Compose を用いて起動するため事前のインストールは不要です。
+Koe の実行には Docker および Docker Compose が必要です。あらかじめインストールしておいてください。なお、Koe が動作するには Redis と VOICEVOX ENGINE が必要ですが、これらは Docker Compose を用いて起動するため事前のインストールは不要です。
 
 ## 1. Discord Bot の登録
 
@@ -66,7 +66,7 @@ https://discord.com/api/oauth2/authorize?client_id=CLIENT_ID&permissions=3146752
 2. `redis.conf`をテキストエディタで開きます。
 3. `YOUR_STRONG_PASSWORD` を適当なパスワードに変更します。
 
-### 2-3. VOICEVOX Engine のプリセット設定
+### 2-3. VOICEVOX ENGINE のプリセット設定
 
 1. `config` ディレクトリにある `example.voicevox_presets.yaml` の名前を `voicevox_presets.yaml` に変更します。
 2. `voicevox_presets.yaml`をテキストエディタで開きます。
@@ -93,13 +93,13 @@ https://discord.com/api/oauth2/authorize?client_id=CLIENT_ID&permissions=3146752
 Docker Compose を使用する場合は以下のコマンドで開始・停止等の操作を行うことができます。詳細は https://docs.docker.com/compose/ をご確認ください。
 
 - `docker compose up --detach`
-  - Koe, Redis, VOICEVOX Engine を起動します。
+  - Koe, Redis, VOICEVOX ENGINE を起動します。
 - `docker compose logs`
   - ログを確認します。
 - `docker compose down`
-  - Koe, Redis, VOICEVOX Engine を停止します。
+  - Koe, Redis, VOICEVOX ENGINE を停止します。
 - `docker compose down --volumes`
-  - Koe, Redis, VOICEVOX Engine を停止し、Redis に保存されている設定をすべて削除します。
+  - Koe, Redis, VOICEVOX ENGINE を停止し、Redis に保存されている設定をすべて削除します。
 - `docker compose pull`
   - コンテナイメージを更新します。
 
