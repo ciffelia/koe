@@ -10,6 +10,9 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Make sure that the image exists
+        run: skopeo inspect 'docker://ghcr.io/ciffelia/koe:git-${{ github.sha }}'
+
       - name: Setup devtools
         run: yarn install --immutable
         working-directory: ./devtools
