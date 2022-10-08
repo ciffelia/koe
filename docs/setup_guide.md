@@ -16,6 +16,8 @@ Koe が使用している音声合成エンジンである VOICEVOX ENGINE で�
 - GPU モード: RTX 3070 (メモリ 32GB): 1 秒程度
 - CPU モード: Raspberry Pi 4 (メモリ 8GB): 15 秒程度
 
+※起動直後はモデルの初期化処理が行われているため、遅延がより大きくなります。
+
 ### 0-2. ソフトウェア
 
 Koe の実行には Docker および Docker Compose が必要です。あらかじめインストールしておいてください。なお、Koe が動作するには Redis と VOICEVOX ENGINE が必要ですが、これらは Docker Compose を用いて起動するため事前のインストールは不要です。
