@@ -10,11 +10,6 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Install skopeo
-        run: |
-          sudo apt-get update
-          sudo apt-get -y install skopeo
-
       - name: Setup devtools
         run: yarn install --immutable
         working-directory: ./devtools
