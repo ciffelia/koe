@@ -1,7 +1,8 @@
 const semver = require('semver')
+const pkg = require('../package.json')
 
 const main = () => {
-  const { version } = parseArgs()
+  const { version } = pkg
 
   const parsed = semver.parse(version)
   if (parsed === null) {
@@ -9,22 +10,7 @@ const main = () => {
     process.exit(1)
   }
 
-  const tags = generateTags(parsed)
-
-  console.log(tags.join('\n'))
-  console.log(`::set-output name=tags::${tags.join(' ')}`)
-}
-
-const parseArgs = () => {
-  if (process.argv.length !== 3) {
-    console.error('usage: node generateDockerTags.js <version>')
-    console.error('example: node generateDockerTags.js 1.12.3-alpha.1')
-    process.exit(1)
-  }
-
-  return {
-    version: process.argv[2]
-  }
+  console.log(generateTags(parsed).join(' '))
 }
 
 const generateTags = (v) => {
