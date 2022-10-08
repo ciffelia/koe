@@ -1,0 +1,13 @@
+{
+  "name": "koe",
+  "private": true,
+  "packageManager": "yarn@3.2.4",
+  "scripts": {
+    "postinstall": "cd .. && husky install ./devtools/.husky"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^17.1.2",
+    "@commitlint/config-conventional": "^17.1.0",
+    "husky": "^8.0.0"
+  }
+}

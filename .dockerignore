@@ -9,6 +9,7 @@ target
 .github
 deployment
 deployment_dev
+devtools
 docs
 .gitignore
 docker-compose.yml

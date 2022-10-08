@@ -1,0 +1,8 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+MSG_FILE=$(realpath "$1")
+
+cd devtools
+
+yarn run commitlint --edit "$MSG_FILE"
