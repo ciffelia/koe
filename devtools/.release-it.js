@@ -6,7 +6,8 @@ module.exports = {
     publish: false
   },
   github: {
-    release: true
+    release: true,
+    releaseName: 'v${version}'
   },
   plugins: {
     '@release-it/conventional-changelog': {
