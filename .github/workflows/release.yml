@@ -10,12 +10,6 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Setup yarn dependencies cache
-        uses: actions/setup-node@v3
-        with:
-          cache: yarn
-          cache-dependency-path: ./devtools/yarn.lock
-
       - name: Configure git author
         run: |
           git config --global user.name "github-actions"
