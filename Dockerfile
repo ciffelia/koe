@@ -21,14 +21,14 @@ RUN apt-get update && \
     apt-get install -y ca-certificates ffmpeg && \
     rm -rf /var/lib/apt/lists/*
 
+COPY --from=builder --chown=root:root /home/koe/app/target/release/koe /usr/bin/koe
+
 # Switch to unpriviledged user
 RUN useradd --create-home --user-group koe
 USER koe
 WORKDIR /home/koe
 
-COPY --from=builder --chown=koe:koe /home/koe/app/target/release/koe ./
-
 ARG SENTRY_RELEASE
 ENV SENTRY_RELEASE=$SENTRY_RELEASE
 
-ENTRYPOINT ["./koe"]
+ENTRYPOINT ["koe"]
