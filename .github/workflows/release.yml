@@ -1,4 +1,4 @@
-name: Publish release
+name: Create release
 
 on: workflow_dispatch
 
@@ -10,7 +10,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Make sure that the image exists
+      - name: Make sure that the container image is built
         run: skopeo inspect 'docker://ghcr.io/ciffelia/koe:git-${{ github.sha }}'
 
       - name: Setup devtools
