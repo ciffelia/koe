@@ -1,5 +1,5 @@
 <h1 align="center">
-  <img src="./icon/logo.png" alt="Koe" height="128">
+  <img src="docs/logo/logo.png" alt="Koe" height="128">
 </h1>
 
 <p align="center">

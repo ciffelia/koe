@@ -10,7 +10,6 @@ target
 deployment
 deployment_dev
 docs
-icon
 .gitignore
 docker-compose.yml
 LICENSE
