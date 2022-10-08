@@ -36,6 +36,13 @@ jobs:
           echo "::set-output name=tags::$tags"
         working-directory: ./devtools
 
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Create Docker tags
         run: |
           for tag in '${{ steps.generate-docker-tags.outputs.tags }}'
