@@ -1,6 +1,11 @@
 name: Create release
 
-on: workflow_dispatch
+on:
+  workflow_dispatch:
+    inputs:
+      prerelease:
+        description: Prerelease
+        type: boolean
 
 concurrency: ${{ github.workflow }}
 
@@ -24,8 +29,13 @@ jobs:
           git config user.name "github-actions"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-      - name: Create prerelease
-        run: yarn run create-prerelease
+      - name: Create release
+        run: |
+          if [ '${{ inputs.prerelease }}' == 'true' ]; then
+            yarn run create-prerelease
+          else
+            yarn run create-release
+          fi
         working-directory: ./devtools
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
