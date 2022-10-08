@@ -20,6 +20,7 @@ module.exports = {
       "sed -i 's/${latestVersion}/${version}/g' ../deployment/docker-compose.yml",
     'before:git:release': 'git add ../deployment/docker-compose.yml',
     'before:github:release':
-      "cp -r ../deployment ./koe && zip -r 'koe_${version}.zip' ./koe && rm -rf ./koe"
+      "cp -r ../deployment ./koe && zip -r 'koe_${version}.zip' ./koe && rm -rf ./koe",
+    'after:release': "echo '::set-output name=version::${version}'"
   }
 }

@@ -10,6 +10,11 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Install skopeo
+        run: |
+          sudo apt-get update
+          sudo apt-get -y install skopeo
+
       - name: Setup devtools
         run: yarn install --immutable
         working-directory: ./devtools
@@ -20,7 +25,20 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
       - name: Create prerelease
+        id: create-prerelease
         run: yarn run create-prerelease
         working-directory: ./devtools
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Generate Docker tags
+        id: generate-docker-tags
+        run: yarn run generate-docker-tags '${{ steps.create-prerelease.outputs.version }}'
+        working-directory: ./devtools
+
+      - name: Create Docker tags
+        run: |
+          for tag in '${{ steps.generate-docker-tags.outputs.tags }}'
+          do
+            skopeo copy --all 'docker://ghcr.io/ciffelia/koe:git-${{ github.sha }}' "docker://ghcr.io/ciffelia/koe:$tag"
+          done

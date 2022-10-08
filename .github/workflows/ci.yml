@@ -72,9 +72,7 @@ jobs:
       - name: Build (and push)
         uses: docker/build-push-action@v3
         with:
-          tags: |
-            ghcr.io/ciffelia/koe:latest
-            ghcr.io/ciffelia/koe:git-${{ github.sha }}
+          tags: ghcr.io/ciffelia/koe:git-${{ github.sha }}
           build-args: |
             SENTRY_RELEASE=${{ github.sha }}
           cache-from: type=gha

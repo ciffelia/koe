@@ -5,6 +5,7 @@
   "scripts": {
     "create-release": "release-it --ci",
     "create-prerelease": "release-it --ci --preRelease=alpha",
+    "generate-docker-tags": "node ./src/generateDockerTags.js",
     "postinstall": "cd .. && husky install ./devtools/.husky"
   },
   "packageManager": "yarn@3.2.4",
@@ -14,6 +15,7 @@
     "@release-it/conventional-changelog": "^5.1.1",
     "conventional-changelog-conventionalcommits": "^5.0.0",
     "husky": "^8.0.0",
-    "release-it": "^15.5.0"
+    "release-it": "^15.5.0",
+    "semver": "^7.3.8"
   }
 }
