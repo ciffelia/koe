@@ -12,5 +12,6 @@
     "conventional-changelog-conventionalcommits": "^5.0.0",
     "husky": "^8.0.0",
     "release-it": "^15.5.0"
-  }
+  },
+  "version": "0.0.1-alpha.0"
 }
