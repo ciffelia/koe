@@ -339,7 +339,7 @@ async fn handle_help(ctx: &Context, cmd: &ApplicationCommandInteraction) -> Resu
     r(
         ctx,
         cmd,
-        "使い方はこちらをご覧ください:\nhttps://github.com/ciffelia/koe/blob/main/README.md",
+        "使い方はこちらをご覧ください:\nhttps://github.com/ciffelia/koe/blob/main/docs/user_guide.md",
     )
     .await?;
     Ok(())
