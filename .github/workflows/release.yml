@@ -30,7 +30,10 @@ jobs:
 
       - name: Generate Docker tags
         id: generate-docker-tags
-        run: echo "::set-output name=tags::$(yarn run generate-docker-tags)"
+        run: |
+          tags=$(yarn run generate-docker-tags)
+          echo "$tags"
+          echo "::set-output name=tags::$tags"
         working-directory: ./devtools
 
       - name: Create Docker tags
