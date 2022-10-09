@@ -1,3 +1,11 @@
+const path = require('path');
+const fs = require('fs');
+
+const changelogHeaderTemplate = fs.readFileSync(
+  path.join(__dirname, './template/changelog/header.hbs'),
+  'utf-8',
+);
+
 module.exports = {
   git: {
     commitMessage: 'chore: release v${version}',
@@ -13,6 +21,9 @@ module.exports = {
   plugins: {
     '@release-it/conventional-changelog': {
       preset: 'conventionalcommits',
+      writerOpts: {
+        headerPartial: changelogHeaderTemplate,
+      },
     },
   },
   hooks: {
