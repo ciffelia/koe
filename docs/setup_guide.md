@@ -57,10 +57,10 @@ https://discord.com/api/oauth2/authorize?client_id=CLIENT_ID&permissions=3146752
 
 ## 2. 設定ファイルの準備
 
-### 2-1. サンプル設定ファイルのダウンロード
+### 2-1. 設定ファイルのダウンロード
 
-1. リポジトリを[ダウンロード](https://github.com/ciffelia/koe/archive/refs/heads/main.zip)し、適当な場所に展開します。
-2. `deployment` ディレクトリを残し、他のファイルやディレクトリは削除します。以後、このディレクトリの中で作業を行います。
+1. [最新のリリース](https://github.com/ciffelia/koe/releases/latest)を開き、`koe_x.x.x.zip`をダウンロードします。
+2. ダウンロードしたアーカイブを展開します。以後、このディレクトリの中で作業を行います。
 
 ### 2-2. Redis のパスワード設定
 
@@ -111,13 +111,6 @@ Docker Compose を使用する場合は以下のコマンドで開始・停止�
   - Koe, Redis, VOICEVOX ENGINE を停止し、Redis に保存されている設定をすべて削除します。
 - `docker compose pull`
   - コンテナイメージを更新します。
-
-## 4. 更新
-
-1. `docker compose down`でアプリケーションを停止します。
-2. [`docker-compose.yml`](https://github.com/ciffelia/koe/blob/main/docker-compose.yml) をダウンロードし上書きします。
-3. `docker compose pull`でコンテナイメージを更新します。
-4. `docker compose up --detach` でアプリケーションを起動します。
 
 ---
 
