@@ -19,6 +19,8 @@ jobs:
           profile: minimal
           override: true
 
+      - uses: ciffelia/cargo-cache-action@v1
+
       - name: Check
         run: cargo check
 
@@ -35,6 +37,8 @@ jobs:
           components: rustfmt
           override: true
 
+      - uses: ciffelia/cargo-cache-action@v1
+
       - name: Check code format
         run: cargo fmt --all -- --check
 
@@ -50,6 +54,8 @@ jobs:
           override: true
           profile: minimal
           components: clippy
+
+      - uses: ciffelia/cargo-cache-action@v1
 
       - name: Run lint
         run: cargo clippy --all-targets --all-features -- -D warnings
