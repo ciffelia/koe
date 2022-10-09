@@ -37,8 +37,6 @@ jobs:
           components: rustfmt
           override: true
 
-      - uses: ciffelia/cargo-cache-action@v1
-
       - name: Check code format
         run: cargo fmt --all -- --check
 
