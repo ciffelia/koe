@@ -3,6 +3,8 @@
   "version": "0.0.1-alpha.7",
   "private": true,
   "scripts": {
+    "lint": "prettier --check .",
+    "fix": "prettier --write .",
     "create-release": "release-it --ci --preRelease=alpha",
     "generate-docker-tags": "node ./src/generateDockerTags.js",
     "postinstall": "cd .. && husky install ./devtools/.husky"
@@ -16,5 +18,8 @@
     "husky": "8.0.1",
     "release-it": "15.5.0",
     "semver": "7.3.8"
+  },
+  "devDependencies": {
+    "prettier": "^2.7.1"
   }
 }
