@@ -16,10 +16,10 @@ on:
       type:
         type: choice
         required: true
-        default: Prerelease
+        default: prerelease
         options:
-          - Prerelease
-          - Release
+          - prerelease
+          - release
 
 concurrency: ${{ github.workflow }}
 
@@ -52,11 +52,7 @@ jobs:
             bump=''
           fi
 
-          if [ '${{ inputs.type }}' == 'Prerelease' ]; then
-            yarn run create-prerelease "$bump"
-          else
-            yarn run create-release "$bump"
-          fi
+          yarn run 'create-${{ inputs.type }}' "$bump"
         working-directory: ./devtools
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
