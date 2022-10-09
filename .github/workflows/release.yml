@@ -13,14 +13,6 @@ on:
           - minor
           - patch
 
-      type:
-        type: choice
-        required: true
-        default: prerelease
-        options:
-          - prerelease
-          - release
-
 concurrency: ${{ github.workflow }}
 
 jobs:
@@ -45,14 +37,13 @@ jobs:
 
       - name: Create release
         run: |
-          echo 'Creating ${{ inputs.bump }} ${{ inputs.type }}'
+          echo 'Creating ${{ inputs.bump }} release'
 
-          bump='${{ inputs.bump }}'
-          if [ "$bump" == 'auto' ]; then
-            bump=''
+          if [ '${{ inputs.bump }}' == 'auto' ]; then
+            yarn run create-release
+          else
+            yarn run create-release '${{ inputs.bump }}'
           fi
-
-          yarn run 'create-${{ inputs.type }}' "$bump"
         working-directory: ./devtools
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

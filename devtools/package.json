@@ -3,8 +3,7 @@
   "version": "0.0.1-alpha.6",
   "private": true,
   "scripts": {
-    "create-release": "release-it --ci",
-    "create-prerelease": "release-it --ci --preRelease=alpha",
+    "create-release": "release-it --ci --preRelease=alpha",
     "generate-docker-tags": "node ./src/generateDockerTags.js",
     "postinstall": "cd .. && husky install ./devtools/.husky"
   },
