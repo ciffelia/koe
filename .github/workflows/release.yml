@@ -3,6 +3,16 @@ name: Create release
 on:
   workflow_dispatch:
     inputs:
+      bump:
+        type: choice
+        required: true
+        default: auto
+        options:
+          - auto
+          - major
+          - minor
+          - patch
+
       type:
         type: choice
         required: true
@@ -35,11 +45,17 @@ jobs:
 
       - name: Create release
         run: |
-          echo 'Creating ${{ inputs.type }}'
+          echo 'Creating ${{ inputs.bump }} ${{ inputs.type }}'
+
+          bump='${{ inputs.bump }}'
+          if [ "$bump" == 'auto' ]; then
+            bump=''
+          fi
+
           if [ '${{ inputs.type }}' == 'Prerelease' ]; then
-            yarn run create-prerelease
+            yarn run create-prerelease "$bump"
           else
-            yarn run create-release
+            yarn run create-release "$bump"
           fi
         working-directory: ./devtools
         env:
