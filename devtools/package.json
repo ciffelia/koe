@@ -1,6 +1,6 @@
 {
   "name": "koe",
-  "version": "0.0.1-alpha.8",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "lint": "prettier --check .",
