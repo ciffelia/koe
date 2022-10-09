@@ -10,11 +10,11 @@
 
 Koe が使用している音声合成エンジンである VOICEVOX ENGINE では、音声合成処理に CPU または GPU を使用することができます。Bot を快適に使用するには高性能な CPU または GPU と 2GB 以上のメモリを搭載したマシンが必要です。
 
-参考として、[@ciffelia](https://github.com/ciffelia) が使用しているマシンでの遅延は以下の通りです。
+参考までに、[@ciffelia](https://github.com/ciffelia) が使用しているマシンでの遅延は以下の通りです。
 
-- CPU モード: Ryzen 5 5600X (メモリ 32GB): 1 秒程度
-- GPU モード: RTX 3070 (メモリ 32GB): 1 秒程度
-- CPU モード: Raspberry Pi 4 (メモリ 8GB): 15 秒程度
+- CPU: Ryzen 5 5600X (メモリ32GB): 1 秒程度
+- CPU: Raspberry Pi 4 (メモリ8GB): 15 秒程度
+- GPU: RTX 3070 (メモリ32GB): 1 秒程度
 
 ※起動直後はモデルの初期化処理が行われているため、遅延がより大きくなります。
 
@@ -64,42 +64,42 @@ https://discord.com/api/oauth2/authorize?client_id=CLIENT_ID&permissions=3146752
 
 ### 2-2. Redis のパスワード設定
 
-1. `config` ディレクトリにある `redis.conf`をテキストエディタで開きます。
+1. `config/redis.conf`をテキストエディタで開きます。
 2. `YOUR_STRONG_PASSWORD` を適当なパスワードに変更します。
 
 ### 2-3. VOICEVOX ENGINE のプリセット設定（任意）
 
-1. `config` ディレクトリにある `voicevox_presets.yaml`をテキストエディタで開きます。
+1. `config/voicevox_presets.yaml`をテキストエディタで開きます。
 2. 必要に応じてプリセットを変更します。
 
 ### 2-4. Koe の設定
 
-1. `config` ディレクトリにある `koe.yaml`をテキストエディタで開きます。
-2. 次の設定を編集します。
-   - `discord.client_id`: 1-1 で控えた Client ID を設定します。
-   - `discord.bot_token`: 1-1 で控えた Bot Token を設定します。
-   - `voicevox.api_base`: VOICEVOX ENGINE の URL を設定します。
+1. `config/koe.yaml`をテキストエディタで開きます。
+2. 次の設定を書き換えます。
+   - `discord.client_id`: 1-1 で控えた Client ID
+   - `discord.bot_token`: 1-1 で控えた Bot Token
+   - `voicevox.api_base`: VOICEVOX ENGINE の URL
      - Docker Compose を使用する場合はデフォルトのままで問題ありません。
-   - `redis.url`: Redis に接続するための URL を設定します。
+   - `redis.url`: Redis に接続するための URL
      - 形式は `redis://[<username>][:<password>@]<hostname>[:port][/<db>]` です。
      - Docker Compose を使用する場合は`YOUR_STRONG_PASSWORD`を Redis のパスワードに置き換えるのみで問題ありません。
      - 詳細は https://docs.rs/redis#connection-parameters をご確認ください。
 
 ### 2-5. 環境変数の設定（任意）
 
-`docker-compose.yml` から以下の環境変数を設定することができます。どちらも原則として設定する必要はありませんが、デバッグ時に役立ちます。
+`docker-compose.yml` から下記の環境変数を設定することができます。いずれも原則として設定する必要はありませんが、デバッグ時に役立ちます。
 
-- `KOE_CONFIG`: 設定ファイルの場所を設定します。
+- `KOE_CONFIG`: 設定ファイルの場所
   - デフォルトでは `/etc/koe.yaml` となっています。
-- `RUST_LOG`: ログレベルを設定します。
+- `RUST_LOG`: ログレベル
   - `koe`に設定すると詳細なログが出力されます。
   - 詳細は https://docs.rs/env_logger#enabling-logging をご確認ください。
-- `SENTRY_DSN`: Sentry の DSN を設定します。
+- `SENTRY_DSN`: Sentry の DSN
   - 設定するとエラーを Sentry に送信することができます。
 
 ## 3. 起動
 
-Docker Compose を使用する場合は以下のコマンドで開始・停止等の操作を行うことができます。詳細は https://docs.docker.com/compose/ をご確認ください。
+下記のコマンドで開始・停止等の操作を行うことができます。詳細は https://docs.docker.com/compose/ をご確認ください。
 
 - `docker compose up --detach`
   - Koe, Redis, VOICEVOX ENGINE を起動します。
