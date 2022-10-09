@@ -5,7 +5,7 @@
   "scripts": {
     "lint": "prettier --check .",
     "fix": "prettier --write .",
-    "create-release": "release-it --ci --preRelease=alpha",
+    "create-release": "release-it --ci",
     "generate-docker-tags": "node ./src/generateDockerTags.js",
     "postinstall": "cd .. && husky install ./devtools/.husky"
   },
