@@ -20,7 +20,7 @@ log = "0.4"
 ecs-logger = "1"
 
 # Error reporting
-sentry = { version = "0.27", features = ["anyhow"] }
+sentry = { version = "0.29", features = ["anyhow"] }
 
 # Discord
 serenity = { version = "0.11", default-features = false, features = ["cache", "client", "utils", "voice", "native_tls_backend"] }
