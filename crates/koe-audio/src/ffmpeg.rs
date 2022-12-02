@@ -8,15 +8,15 @@ use tokio::process::Command;
 pub async fn convert_to_pcm_s16le(source: Vec<u8>) -> Result<Vec<u8>> {
     let mut child = Command::new("ffmpeg")
         // input: stdin
-        .args(&["-i", "pipe:"])
+        .args(["-i", "pipe:"])
         // format: 16-bit signed little-endian
-        .args(&["-f", "s16le"])
+        .args(["-f", "s16le"])
         // channels: 1 (mono)
-        .args(&["-ac", "1"])
+        .args(["-ac", "1"])
         // sampling rate: 48kHz
-        .args(&["-ar", "48000"])
+        .args(["-ar", "48000"])
         // codec: pcm
-        .args(&["-acodec", "pcm_s16le"])
+        .args(["-acodec", "pcm_s16le"])
         // output: stdout
         .arg("-")
         .stdin(Stdio::piped())
