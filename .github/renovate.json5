@@ -1,4 +1,26 @@
 {
-  extends: ['config:base'],
-  prHourlyLimit: 0,
+  extends: [
+    'config:base',
+    ':semanticCommits',
+    ':semanticCommitTypeAll(chore)',
+    ':prHourlyLimitNone',
+  ],
+  timezone: 'Asia/Tokyo',
+  schedule: ['every weekend'],
+  packageRules: [
+    {
+      matchUpdateTypes: ['minor', 'patch'],
+      matchCurrentVersion: '!/^0/',
+      automerge: true,
+    },
+    {
+      matchManagers: ['npm'],
+      rangeStrategy: 'bump',
+    },
+    {
+      matchManagers: ['dockerfile'],
+      matchPackageNames: ['rust'],
+      enabled: false,
+    },
+  ],
 }
