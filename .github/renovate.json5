@@ -1,4 +1,5 @@
 {
+  $schema: 'https://docs.renovatebot.com/renovate-schema.json',
   extends: [
     'config:base',
     ':semanticCommits',
@@ -6,7 +7,7 @@
     ':prHourlyLimitNone',
   ],
   timezone: 'Asia/Tokyo',
-  schedule: ['every weekend'],
+  schedule: ['before 9am on Saturday'],
   packageRules: [
     {
       matchUpdateTypes: ['minor', 'patch'],
