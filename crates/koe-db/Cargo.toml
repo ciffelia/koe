@@ -5,4 +5,4 @@ edition = "2021"
 
 [dependencies]
 anyhow = { version = "1", features = ["backtrace"] }
-redis = { version = "0.22", default-features = false, features = ["aio", "tokio-comp"] }
+redis = { version = "0.23", default-features = false, features = ["aio", "tokio-comp"] }
