@@ -1,4 +1,4 @@
-FROM rust:1.65.0-bullseye as builder
+FROM rust:1.68.2-bullseye as builder
 
 RUN apt-get update && \
     apt-get install -y libopus-dev && \
