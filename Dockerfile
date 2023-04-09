@@ -21,7 +21,7 @@ RUN apt-get update && \
     apt-get install -y ca-certificates ffmpeg && \
     rm -rf /var/lib/apt/lists/*
 
-COPY --from=builder --chown=root:root /home/koe/app/target/release/koe /usr/bin/koe
+COPY --from=builder --chown=root:root /home/koe/app/target/release/koe /usr/local/bin/koe
 
 # Switch to unpriviledged user
 RUN useradd --create-home --user-group koe
