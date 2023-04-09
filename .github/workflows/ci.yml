@@ -2,6 +2,9 @@ name: CI
 
 on: [push, pull_request]
 
+permissions:
+  contents: read
+
 env:
   RUST_VERSION: 1.68.2
   CARGO_TERM_COLOR: always
@@ -61,6 +64,9 @@ jobs:
   docker-build-push:
     needs: [check, format, lint]
     runs-on: ubuntu-22.04
+    permissions:
+      contents: read
+      packages: write
     steps:
       - uses: actions/checkout@v3
 

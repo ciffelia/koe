@@ -13,6 +13,10 @@ on:
           - minor
           - patch
 
+permissions:
+  contents: write
+  packages: write
+
 concurrency: ${{ github.workflow }}
 
 jobs:
