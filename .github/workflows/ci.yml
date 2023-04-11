@@ -69,9 +69,6 @@ jobs:
   check-next-version:
     runs-on: ubuntu-22.04
     steps:
-      - name: Make sure that the container image is built
-        run: skopeo inspect 'docker://ghcr.io/ciffelia/koe:git-${{ github.sha }}'
-
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
