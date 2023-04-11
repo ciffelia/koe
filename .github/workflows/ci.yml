@@ -66,6 +66,24 @@ jobs:
       - name: Run lint
         run: cargo clippy --all-targets --all-features -- -D warnings
 
+  check-next-version:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Make sure that the container image is built
+        run: skopeo inspect 'docker://ghcr.io/ciffelia/koe:git-${{ github.sha }}'
+
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Setup devtools
+        run: yarn install --immutable
+        working-directory: ./devtools
+
+      - name: Check next version
+        run: yarn run print-next-version
+        working-directory: ./devtools
+
   docker-build-push:
     needs: [check, format, lint]
     runs-on: ubuntu-22.04
