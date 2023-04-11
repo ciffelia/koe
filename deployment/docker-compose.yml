@@ -22,7 +22,7 @@ services:
       - "redis-data:/data"
 
   voicevox:
-    image: voicevox/voicevox_engine:cpu-ubuntu20.04-0.13.1
+    image: voicevox/voicevox_engine:cpu-ubuntu20.04-0.14.4
     restart: unless-stopped
     expose:
       - 50021
