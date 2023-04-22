@@ -67,6 +67,7 @@ jobs:
         run: cargo clippy --all-targets --all-features -- -D warnings
 
   check-next-version:
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v3
