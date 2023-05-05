@@ -17,7 +17,7 @@
     "@release-it/conventional-changelog": "^5.1.1",
     "conventional-changelog-conventionalcommits": "^5.0.0",
     "husky": "^8.0.3",
-    "release-it": "^15.10.1",
+    "release-it": "^15.10.3",
     "semver": "^7.5.0"
   },
   "devDependencies": {
