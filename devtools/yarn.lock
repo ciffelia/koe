@@ -3104,7 +3104,7 @@ __metadata:
     conventional-changelog-conventionalcommits: ^5.0.0
     husky: ^8.0.3
     prettier: ^2.8.8
-    release-it: ^15.10.5
+    release-it: ^15.11.0
     semver: ^7.5.1
   languageName: unknown
   linkType: soft
@@ -4225,9 +4225,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"release-it@npm:^15.10.5":
-  version: 15.10.5
-  resolution: "release-it@npm:15.10.5"
+"release-it@npm:^15.11.0":
+  version: 15.11.0
+  resolution: "release-it@npm:15.11.0"
   dependencies:
     "@iarna/toml": 2.2.5
     "@octokit/rest": 19.0.11
@@ -4258,7 +4258,7 @@ __metadata:
     yargs-parser: 21.1.1
   bin:
     release-it: bin/release-it.js
-  checksum: faa9d754fc890cfcbdadd0e1d86be3c90c62270aa0777afcb8072d9908be0987b7d88b33a63194b35888c2243ddf18a7b384f6b2b850f3a682dc00c67d3de1e8
+  checksum: 1a8b3be9c94afb44fd1b921bd15fb584887c78f4a29c3f4385901d42e9f14dbffe0e1a0f401dca235b93c3bd68c97f7e6fb4f6834a9ccf6cdb41de5ed76e557d
   languageName: node
   linkType: hard
 
