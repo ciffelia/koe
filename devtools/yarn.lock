@@ -1212,6 +1212,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"conventional-changelog-conventionalcommits@npm:^6.1.0":
+  version: 6.1.0
+  resolution: "conventional-changelog-conventionalcommits@npm:6.1.0"
+  dependencies:
+    compare-func: ^2.0.0
+  checksum: 4383a35cdf72f5964e194a1146e7f78276e301f73bd993b71627bb93586b6470d411b9613507ceb37e0fed0b023199c95e941541fa47172b4e6a7916fc3a53ff
+  languageName: node
+  linkType: hard
+
 "conventional-changelog-core@npm:^4.2.1":
   version: 4.2.4
   resolution: "conventional-changelog-core@npm:4.2.4"
@@ -3101,7 +3110,7 @@ __metadata:
     "@commitlint/cli": ^17.6.5
     "@commitlint/config-conventional": ^17.6.5
     "@release-it/conventional-changelog": ^5.1.1
-    conventional-changelog-conventionalcommits: ^5.0.0
+    conventional-changelog-conventionalcommits: ^6.1.0
     husky: ^8.0.3
     prettier: ^2.8.8
     release-it: ^15.11.0
