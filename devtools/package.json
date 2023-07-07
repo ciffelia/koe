@@ -18,7 +18,7 @@
     "conventional-changelog-conventionalcommits": "^5.0.0",
     "husky": "^8.0.3",
     "release-it": "^15.11.0",
-    "semver": "^7.5.3"
+    "semver": "^7.5.4"
   },
   "devDependencies": {
     "prettier": "^2.8.8"
