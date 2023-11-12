@@ -3,8 +3,8 @@
   "version": "1.1.0",
   "private": true,
   "scripts": {
-    "lint": "prettier --check .",
-    "fix": "prettier --write .",
+    "lint": "prettier --ignore-path=.prettierignore --check .",
+    "fix": "prettier --ignore-path=.prettierignore --write .",
     "print-next-version": "release-it --release-version",
     "create-release": "release-it --ci",
     "generate-docker-tags": "node ./src/generateDockerTags.js",
@@ -21,6 +21,6 @@
     "semver": "^7.5.4"
   },
   "devDependencies": {
-    "prettier": "^2.8.8"
+    "prettier": "^3.0.3"
   }
 }
