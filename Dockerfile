@@ -26,9 +26,8 @@ RUN apt-get update && \
 COPY --from=builder /usr/local/bin/koe /usr/local/bin/koe
 
 # Switch to unpriviledged user
-RUN useradd --create-home --user-group koe
+RUN useradd --user-group koe
 USER koe
-WORKDIR /home/koe
 
 ARG SENTRY_RELEASE
 ENV SENTRY_RELEASE=$SENTRY_RELEASE
