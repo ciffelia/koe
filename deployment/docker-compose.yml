@@ -3,8 +3,10 @@ services:
     image: ghcr.io/ciffelia/koe:1.1.0
     init: true
     depends_on:
-      - redis
-      - voicevox
+      redis:
+        condition: service_healthy
+      voicevox:
+        condition: service_healthy
     restart: unless-stopped
     environment:
       RUST_LOG: warn
@@ -20,6 +22,12 @@ services:
     volumes:
       - "./config/redis.conf:/usr/local/etc/redis/redis.conf:ro"
       - "redis-data:/data"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      start_period: 1m
+      start_interval: 3s
 
   voicevox:
     image: voicevox/voicevox_engine:cpu-ubuntu20.04-0.14.6
@@ -28,6 +36,12 @@ services:
       - 50021
     volumes:
       - "./config/voicevox_presets.yaml:/opt/voicevox_engine/presets.yaml:ro"
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "-O", "/dev/null", "http://localhost:50021/version"]
+      interval: 10s
+      timeout: 3s
+      start_period: 1m
+      start_interval: 3s
 
 volumes:
   redis-data:
