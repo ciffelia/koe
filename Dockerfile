@@ -23,11 +23,11 @@ RUN apt-get update && \
     apt-get install -y ca-certificates ffmpeg && \
     rm -rf /var/lib/apt/lists/*
 
-COPY --from=builder /usr/local/bin/koe /usr/local/bin/koe
-
 # Switch to unpriviledged user
 RUN useradd --user-group koe
 USER koe
+
+COPY --from=builder /usr/local/bin/koe /usr/local/bin/koe
 
 ARG SENTRY_RELEASE
 ENV SENTRY_RELEASE=$SENTRY_RELEASE
