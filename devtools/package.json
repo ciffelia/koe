@@ -12,12 +12,12 @@
   },
   "packageManager": "yarn@4.0.1",
   "dependencies": {
-    "@commitlint/cli": "^17.7.1",
-    "@commitlint/config-conventional": "^17.7.0",
-    "@release-it/conventional-changelog": "^5.1.1",
-    "conventional-changelog-conventionalcommits": "^5.0.0",
+    "@commitlint/cli": "^18.4.1",
+    "@commitlint/config-conventional": "^18.4.0",
+    "@release-it/conventional-changelog": "^8.0.0",
+    "conventional-changelog-conventionalcommits": "^7.0.2",
     "husky": "^8.0.3",
-    "release-it": "^15.11.0",
+    "release-it": "^17.0.0",
     "semver": "^7.5.4"
   },
   "devDependencies": {
