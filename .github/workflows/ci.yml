@@ -70,7 +70,7 @@ jobs:
         working-directory: ./devtools
 
   docker-build-push:
-    needs: [check, format, lint]
+    needs: [format, lint]
     runs-on: ubuntu-22.04
     permissions:
       contents: read
