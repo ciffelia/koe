@@ -56,6 +56,8 @@ fn should_read_author_name(msg: &Message, last_msg: &Option<Message>) -> bool {
 async fn build_author_name(ctx: &Context, msg: &Message) -> String {
     msg.author_nick(&ctx.http)
         .await
+        // FIXME: `User::name`はユーザーの表示名ではなく一意のユーザー名を返す。現在のSerenityの実装では、ユーザーの表示名を取得する方法がない。
+        // cf. https://github.com/serenity-rs/serenity/discussions/2500
         .unwrap_or_else(|| msg.author.name.clone())
 }
 
