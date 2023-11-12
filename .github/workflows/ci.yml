@@ -11,7 +11,7 @@ permissions:
   contents: read
 
 env:
-  RUST_VERSION: 1.68.2
+  RUST_VERSION: 1.73.0
   CARGO_TERM_COLOR: always
 
 jobs:
