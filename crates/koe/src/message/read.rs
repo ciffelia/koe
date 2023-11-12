@@ -98,7 +98,7 @@ async fn replace_words_on_dict(
 
     let ac = AhoCorasickBuilder::new()
         .match_kind(MatchKind::LeftmostLongest)
-        .build(word_list);
+        .build(word_list)?;
 
     Ok(ac.replace_all(text, &read_as_list))
 }
