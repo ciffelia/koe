@@ -9,9 +9,9 @@ macro_rules! regex {
 }
 
 pub fn url_regex() -> &'static Regex {
-    regex!(r#"https?://\S\S+"#)
+    regex!(r"https?://\S\S+")
 }
 
 pub fn custom_emoji_regex() -> &'static Regex {
-    regex!(r#"<(:\w+:)\d+>"#)
+    regex!(r"<(:\w+:)\d+>")
 }
