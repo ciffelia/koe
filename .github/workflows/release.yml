@@ -4,6 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       bump:
+        description: Increment major, minor, or patch version
         type: choice
         required: true
         default: auto
