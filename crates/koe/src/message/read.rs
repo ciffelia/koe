@@ -20,10 +20,11 @@ pub async fn build_read_text(
 
     let content = plain_content(ctx, msg);
     let content = replace_custom_emojis(&content);
-    let content = discord_md::parse(&content).to_markdown_string(&ToMarkdownStringOption {
-        omit_format: true,
-        omit_spoiler: true,
-    });
+    let content = discord_md::parse(&content).to_markdown_string(
+        &ToMarkdownStringOption::new()
+            .omit_format(true)
+            .omit_spoiler(true),
+    );
     let content = remove_url(&content);
 
     let text = if should_read_author_name(msg, last_msg) {

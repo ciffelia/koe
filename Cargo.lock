@@ -382,9 +382,9 @@ dependencies = [
 
 [[package]]
 name = "discord-md"
-version = "2.0.0"
+version = "3.0.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b52bd70f8c3a87b38f6af64310e8e279e633b1a4fcde847d9e59742e339327b1"
+checksum = "bf734867cf313d9ffed7677af003ce6779ce77a80d4f8a9101959c97df3ef96b"
 dependencies = [
  "derive_more",
  "nom",
