@@ -432,9 +432,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@release-it/conventional-changelog@npm:^8.0.0":
-  version: 8.0.0
-  resolution: "@release-it/conventional-changelog@npm:8.0.0"
+"@release-it/conventional-changelog@npm:^8.0.1":
+  version: 8.0.1
+  resolution: "@release-it/conventional-changelog@npm:8.0.1"
   dependencies:
     concat-stream: "npm:^2.0.0"
     conventional-changelog: "npm:^5.1.0"
@@ -442,7 +442,7 @@ __metadata:
     semver: "npm:^7.5.4"
   peerDependencies:
     release-it: ^17.0.0
-  checksum: 126428012ac12c6610de702b0996f7f28fe8ff55f88798991d4a70a8e436906a7a1c63b7466050f75ff21c298e4ed09037510b154ff979e64c1a1e9a333f43fc
+  checksum: 908000074a7e3d30637c34018ed261a4c97a302b5bd0362e75d37a1c8f8e0156e96031e92c5ab69d67e02f1d66f1b6aa68169c8a85693f789f4d0db120d6b67b
   languageName: node
   linkType: hard
 
@@ -2987,7 +2987,7 @@ __metadata:
   dependencies:
     "@commitlint/cli": "npm:^18.4.2"
     "@commitlint/config-conventional": "npm:^18.4.2"
-    "@release-it/conventional-changelog": "npm:^8.0.0"
+    "@release-it/conventional-changelog": "npm:^8.0.1"
     conventional-changelog-conventionalcommits: "npm:^7.0.2"
     husky: "npm:^8.0.3"
     prettier: "npm:^3.1.0"
