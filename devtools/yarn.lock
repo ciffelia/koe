@@ -2982,7 +2982,7 @@ __metadata:
     conventional-changelog-conventionalcommits: "npm:^7.0.2"
     husky: "npm:^8.0.3"
     prettier: "npm:^3.1.0"
-    release-it: "npm:^17.0.0"
+    release-it: "npm:^17.0.1"
     semver: "npm:^7.5.4"
   languageName: unknown
   linkType: soft
@@ -4013,9 +4013,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"release-it@npm:^17.0.0":
-  version: 17.0.0
-  resolution: "release-it@npm:17.0.0"
+"release-it@npm:^17.0.1":
+  version: 17.0.1
+  resolution: "release-it@npm:17.0.1"
   dependencies:
     "@iarna/toml": "npm:2.2.5"
     "@octokit/rest": "npm:20.0.2"
@@ -4046,7 +4046,7 @@ __metadata:
     yargs-parser: "npm:21.1.1"
   bin:
     release-it: bin/release-it.js
-  checksum: a38a1978bc9cf35cc3cb8704088f4afa392cc24870852459aad91924d411f907182bdf6f1e4f5fc08562bda9c8b0ef8649faa748c092f7d31868fb4a4c3fec36
+  checksum: 2ce4cf6dd648d47d6ef5e4c7b57a9586b9520c85996d35dcbd6e7bbce1f27726db1f5b9a4f38e48e81a0ffd269f71521afbed3c903271414162eaa7edebdba30
   languageName: node
   linkType: hard
 
