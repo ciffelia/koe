@@ -12,7 +12,7 @@ koe-db = { path = "../koe-db" }
 koe-speech = { path = "../koe-speech" }
 
 # Basics
-anyhow = { version = "1.0.75", features = ["backtrace"] }
+anyhow = { version = "1.0.76", features = ["backtrace"] }
 tokio = { version = "1.35.0", features = ["rt-multi-thread", "macros", "sync", "time"] }
 
 # Logging
