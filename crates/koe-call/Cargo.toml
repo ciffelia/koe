@@ -4,7 +4,7 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-anyhow = { version = "1.0.77", features = ["backtrace"] }
+anyhow = { version = "1.0.79", features = ["backtrace"] }
 tokio = { version = "1.35.1", features = ["sync"] }
 serenity = { version = "0.11.7", default-features = false, features = ["native_tls_backend"] }
 songbird = { version = "0.3.2", default-features = false, features = ["serenity-native", "driver", "builtin-queue"] }
