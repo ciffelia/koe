@@ -5,7 +5,7 @@ edition = "2021"
 publish = false
 
 [dependencies]
-anyhow = { version = "1.0.77", features = ["backtrace"] }
+anyhow = { version = "1.0.79", features = ["backtrace"] }
 tokio = { version = "1.35.1", features = ["fs"] }
 serde = { version = "1.0.193", features = ["derive"] }
 serde_yaml = "0.9.27"
