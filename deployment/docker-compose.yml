@@ -14,7 +14,7 @@ services:
       - "./config/koe.yaml:/etc/koe.yaml:ro"
 
   redis:
-    image: redis:7.2.3
+    image: redis:7.2.4
     command: /usr/local/etc/redis/redis.conf
     restart: unless-stopped
     expose:
