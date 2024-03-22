@@ -30,6 +30,6 @@ discord-md = "3.0.0"
 # Utilities
 dashmap = "5.5.3"
 once_cell = "1.19.0"
-aho-corasick = "1.1.2"
+aho-corasick = "1.1.3"
 regex = "1.10.3"
 rand = "0.8.5"
