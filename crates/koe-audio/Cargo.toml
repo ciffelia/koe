@@ -7,4 +7,4 @@ publish = false
 [dependencies]
 anyhow = { version = "1.0.81", features = ["backtrace"] }
 tokio = { version = "1.37.0", features = ["rt", "process", "io-util"] }
-log = "0.4.20"
+log = "0.4.21"

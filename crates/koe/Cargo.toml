@@ -16,7 +16,7 @@ anyhow = { version = "1.0.81", features = ["backtrace"] }
 tokio = { version = "1.37.0", features = ["rt-multi-thread", "macros", "sync", "time"] }
 
 # Logging
-log = "0.4.20"
+log = "0.4.21"
 ecs-logger = "1.1.0"
 
 # Error reporting
