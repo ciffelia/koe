@@ -241,6 +241,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@inquirer/figures@npm:^1.0.1":
+  version: 1.0.1
+  resolution: "@inquirer/figures@npm:1.0.1"
+  checksum: 10/ed9f23ce881e7fe7042f5f1a630d7d0febe7cce0eadc6e2eeb10238d80c4a19d03c344e980cb2e199081823fbaad42b3e1fab46ef77d3ac68e0575fc7037067a
+  languageName: node
+  linkType: hard
+
 "@ljharb/through@npm:^2.3.13":
   version: 2.3.13
   resolution: "@ljharb/through@npm:2.3.13"
@@ -1774,15 +1781,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"figures@npm:^3.2.0":
-  version: 3.2.0
-  resolution: "figures@npm:3.2.0"
-  dependencies:
-    escape-string-regexp: "npm:^1.0.5"
-  checksum: 10/a3bf94e001be51d3770500789157f067218d4bc681a65e1f69d482de15120bcac822dceb1a7b3803f32e4e3a61a46df44f7f2c8ba95d6375e7491502e0dd3d97
-  languageName: node
-  linkType: hard
-
 "fill-range@npm:^7.0.1":
   version: 7.0.1
   resolution: "fill-range@npm:7.0.1"
@@ -2445,17 +2443,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"inquirer@npm:9.2.17":
-  version: 9.2.17
-  resolution: "inquirer@npm:9.2.17"
+"inquirer@npm:9.2.19":
+  version: 9.2.19
+  resolution: "inquirer@npm:9.2.19"
   dependencies:
+    "@inquirer/figures": "npm:^1.0.1"
     "@ljharb/through": "npm:^2.3.13"
     ansi-escapes: "npm:^4.3.2"
     chalk: "npm:^5.3.0"
     cli-cursor: "npm:^3.1.0"
     cli-width: "npm:^4.1.0"
     external-editor: "npm:^3.1.0"
-    figures: "npm:^3.2.0"
     lodash: "npm:^4.17.21"
     mute-stream: "npm:1.0.0"
     ora: "npm:^5.4.1"
@@ -2464,7 +2462,7 @@ __metadata:
     string-width: "npm:^4.2.3"
     strip-ansi: "npm:^6.0.1"
     wrap-ansi: "npm:^6.2.0"
-  checksum: 10/1545d4187b25f6f3b01ec0bf4b4c023276a63fd1eb804f6d86fe49cd75265589f5e92d973cddca0960fc0cc12373b040adaf63c8a43fc8ce4d918e6834972984
+  checksum: 10/034fc65c583d61579cb8b86630a53a6a812279daf3cd004d090caf8583f5909e5ce192d230a24d0c4bff7c02adf3d1a4c5c36bf6fa16b117b0e6dca6d47a0972
   languageName: node
   linkType: hard
 
@@ -2999,7 +2997,7 @@ __metadata:
     conventional-changelog-conventionalcommits: "npm:^7.0.2"
     husky: "npm:^8.0.3"
     prettier: "npm:^3.2.5"
-    release-it: "npm:^17.2.0"
+    release-it: "npm:^17.2.1"
     semver: "npm:^7.6.0"
   languageName: unknown
   linkType: soft
@@ -4030,9 +4028,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"release-it@npm:^17.2.0":
-  version: 17.2.0
-  resolution: "release-it@npm:17.2.0"
+"release-it@npm:^17.2.1":
+  version: 17.2.1
+  resolution: "release-it@npm:17.2.1"
   dependencies:
     "@iarna/toml": "npm:2.2.5"
     "@octokit/rest": "npm:20.1.0"
@@ -4043,7 +4041,7 @@ __metadata:
     git-url-parse: "npm:14.0.0"
     globby: "npm:14.0.1"
     got: "npm:13.0.0"
-    inquirer: "npm:9.2.17"
+    inquirer: "npm:9.2.19"
     is-ci: "npm:3.0.1"
     issue-parser: "npm:7.0.0"
     lodash: "npm:4.17.21"
@@ -4063,7 +4061,7 @@ __metadata:
     yargs-parser: "npm:21.1.1"
   bin:
     release-it: bin/release-it.js
-  checksum: 10/451bdee03a81b278f82744ea529889dca087e7c9d746b36f71d3743eab894e402d7c4b5be8b1e0f24d928102762913911f5f5ee402036c3db4343b73e59fd68a
+  checksum: 10/ab02ed73c948a96c74002145c91674590780a446ee5f643b98c3d71e0df577e6eda10ab09e67648a483ae02b56de3ef080642ce26ef2bfe2fc2b104d94431523
   languageName: node
   linkType: hard
 
