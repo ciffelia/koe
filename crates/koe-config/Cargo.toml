@@ -7,5 +7,5 @@ publish = false
 [dependencies]
 anyhow = { version = "1.0.82", features = ["backtrace"] }
 tokio = { version = "1.37.0", features = ["fs"] }
-serde = { version = "1.0.198", features = ["derive"] }
+serde = { version = "1.0.200", features = ["derive"] }
 serde_yaml = "0.9.27"
