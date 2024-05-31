@@ -10,7 +10,7 @@
     "generate-docker-tags": "node ./src/generateDockerTags.js",
     "postinstall": "cd .. && husky install ./devtools/.husky"
   },
-  "packageManager": "yarn@4.2.1",
+  "packageManager": "yarn@4.2.2",
   "dependencies": {
     "@commitlint/cli": "^18.6.1",
     "@commitlint/config-conventional": "^18.6.3",
