@@ -27,7 +27,7 @@ pub async fn build_read_text(
     );
     let content = remove_url(&content);
 
-    let text = if should_read_author_name(msg, last_msg) {
+    let text = if should_read_author_name() {
         format!("{}。{}", author_name, content)
     } else {
         content
@@ -35,22 +35,16 @@ pub async fn build_read_text(
 
     let text = replace_words_on_dict(conn, guild_id, &text).await?;
 
-    // 文字数を60文字に制限
-    if text.chars().count() > 60 {
-        Ok(text.chars().take(60 - 4).collect::<String>() + "、以下略")
+    // 文字数を70文字に制限
+    if text.chars().count() > 70 {
+        Ok(text.chars().take(70 - 4).collect::<String>() + "、以下略")
     } else {
         Ok(text)
     }
 }
 
-fn should_read_author_name(msg: &Message, last_msg: &Option<Message>) -> bool {
-    let last_msg = match last_msg {
-        Some(msg) => msg,
-        None => return true,
-    };
-
-    msg.author != last_msg.author
-        || (msg.timestamp.unix_timestamp() - last_msg.timestamp.unix_timestamp()) > 10
+fn should_read_author_name() -> bool {
+    false
 }
 
 async fn build_author_name(ctx: &Context, msg: &Message) -> String {
