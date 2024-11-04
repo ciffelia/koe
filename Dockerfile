@@ -1,7 +1,7 @@
-FROM rust:1.73.0-bullseye as builder
+FROM rust:1.73.0-bullseye AS builder
 
-RUN apt-get update && \
-    apt-get install -y libopus-dev && \
+RUN apt update && \
+    apt install -y libopus-dev && \
     rm -rf /var/lib/apt/lists/*
 
 WORKDIR /root/koe
@@ -19,8 +19,8 @@ RUN --mount=type=cache,target=/root/.cargo/bin \
 
 FROM debian:bullseye-slim
 
-RUN apt-get update && \
-    apt-get install -y ca-certificates ffmpeg && \
+RUN apt update && \
+    apt install -y ca-certificates ffmpeg && \
     rm -rf /var/lib/apt/lists/*
 
 # Switch to unpriviledged user
