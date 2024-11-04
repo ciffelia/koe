@@ -61,7 +61,7 @@ async fn handle_join(ctx: &Context, cmd: &ApplicationCommandInteraction) -> Resu
     let guild_id = match cmd.guild_id {
         Some(id) => id,
         None => {
-            r(ctx, cmd, "`/join`, `/kjoin` はサーバー内でのみ使えます。").await?;
+            r(ctx, cmd, "`/join`, `/pjoin` はサーバー内でのみ使えます。").await?;
             return Ok(());
         }
     };
@@ -100,7 +100,7 @@ async fn handle_leave(ctx: &Context, cmd: &ApplicationCommandInteraction) -> Res
     let guild_id = match cmd.guild_id {
         Some(id) => id,
         None => {
-            r(ctx, cmd, "`/leave`, `/kleave` はサーバー内でのみ使えます。").await?;
+            r(ctx, cmd, "`/leave`, `/pleave` はサーバー内でのみ使えます。").await?;
             return Ok(());
         }
     };
@@ -125,7 +125,7 @@ async fn handle_skip(ctx: &Context, cmd: &ApplicationCommandInteraction) -> Resu
     let guild_id = match cmd.guild_id {
         Some(id) => id,
         None => {
-            r(ctx, cmd, "`/skip`, `/kskip` はサーバー内でのみ使えます。").await?;
+            r(ctx, cmd, "`/skip`, `/pskip` はサーバー内でのみ使えます。").await?;
             return Ok(());
         }
     };
@@ -339,7 +339,7 @@ async fn handle_help(ctx: &Context, cmd: &ApplicationCommandInteraction) -> Resu
     r(
         ctx,
         cmd,
-        "使い方はこちらをご覧ください:\nhttps://github.com/ciffelia/koe/blob/main/docs/user_guide.md",
+        "使い方はこちらをご覧ください:\nhttps://github.com/eraiza0816/koe/blob/main/docs/user_guide.md",
     )
     .await?;
     Ok(())
