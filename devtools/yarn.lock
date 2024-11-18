@@ -2349,12 +2349,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"husky@npm:^8.0.3":
-  version: 8.0.3
-  resolution: "husky@npm:8.0.3"
+"husky@npm:^9.1.7":
+  version: 9.1.7
+  resolution: "husky@npm:9.1.7"
   bin:
-    husky: lib/bin.js
-  checksum: 10/b754cf70fdc97c3b60fec5b80056b9c11436464953b1691bf2b5dcf0081fb6685d2c5f47abb8b2b1c49f504aabea5321fdd6496f8b755d9f6e7525a493406abb
+    husky: bin.js
+  checksum: 10/c2412753f15695db369634ba70f50f5c0b7e5cb13b673d0826c411ec1bd9ddef08c1dad89ea154f57da2521d2605bd64308af748749b27d08c5f563bcd89975f
   languageName: node
   linkType: hard
 
@@ -2995,7 +2995,7 @@ __metadata:
     "@commitlint/config-conventional": "npm:^18.6.3"
     "@release-it/conventional-changelog": "npm:^8.0.1"
     conventional-changelog-conventionalcommits: "npm:^7.0.2"
-    husky: "npm:^8.0.3"
+    husky: "npm:^9.1.7"
     prettier: "npm:^3.3.1"
     release-it: "npm:^17.3.0"
     semver: "npm:^7.6.2"
