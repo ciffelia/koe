@@ -36,8 +36,8 @@ pub async fn build_read_text(
     let text = replace_words_on_dict(conn, guild_id, &text).await?;
 
     // 文字数を70文字に制限
-    if text.chars().count() > 70 {
-        Ok(text.chars().take(70 - 4).collect::<String>() + "、以下略")
+    if text.chars().count() > 140 {
+        Ok(text.chars().take(140 - 4).collect::<String>() + "、以下略")
     } else {
         Ok(text)
     }

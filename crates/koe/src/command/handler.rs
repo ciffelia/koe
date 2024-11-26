@@ -61,7 +61,7 @@ async fn handle_join(ctx: &Context, cmd: &ApplicationCommandInteraction) -> Resu
     let guild_id = match cmd.guild_id {
         Some(id) => id,
         None => {
-            r(ctx, cmd, "`/join`, `/pjoin` はサーバー内でのみ使えます。").await?;
+            r(ctx, cmd, "`/join`, はサーバー内でのみ使えます。").await?;
             return Ok(());
         }
     };
@@ -125,7 +125,7 @@ async fn handle_skip(ctx: &Context, cmd: &ApplicationCommandInteraction) -> Resu
     let guild_id = match cmd.guild_id {
         Some(id) => id,
         None => {
-            r(ctx, cmd, "`/skip`, `/pskip` はサーバー内でのみ使えます。").await?;
+            r(ctx, cmd, "`/skip`はサーバー内でのみ使えます。").await?;
             return Ok(());
         }
     };
