@@ -3036,7 +3036,7 @@ __metadata:
     husky: "npm:^8.0.3"
     prettier: "npm:^3.3.1"
     release-it: "npm:^17.3.0"
-    semver: "npm:^7.6.2"
+    semver: "npm:^7.6.3"
   languageName: unknown
   linkType: soft
 
@@ -4321,7 +4321,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"semver@npm:7.6.2, semver@npm:^7.6.2":
+"semver@npm:7.6.2":
   version: 7.6.2
   resolution: "semver@npm:7.6.2"
   bin:
