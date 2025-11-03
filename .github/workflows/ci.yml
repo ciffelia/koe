@@ -10,7 +10,7 @@ permissions:
   contents: read
 
 env:
-  RUST_VERSION: "1.91.0"
+  RUST_TOOLCHAIN: "1.91.0"
   RUST_TOOLCHAIN_RUSTFMT: nightly
   CARGO_TERM_COLOR: always
 
@@ -28,7 +28,7 @@ jobs:
           rustup toolchain install "$RUST_TOOLCHAIN_RUSTFMT" --component rustfmt
           rustup override set "$RUST_TOOLCHAIN_RUSTFMT"
 
-      - name: Check code format
+      - name: cargo fmt
         run: cargo fmt --all -- --check
 
   lint:
@@ -41,12 +41,12 @@ jobs:
       - name: Setup Rust
         run: |
           rustup set profile minimal
-          rustup toolchain install "$RUST_VERSION" --component clippy
-          rustup override set "$RUST_VERSION"
+          rustup toolchain install "$RUST_TOOLCHAIN" --component clippy
+          rustup override set "$RUST_TOOLCHAIN"
 
       - uses: Swatinem/rust-cache@v2
 
-      - name: Run lint
+      - name: cargo clippy
         run: cargo clippy --all-targets --all-features -- -D warnings
 
   check-next-version:
