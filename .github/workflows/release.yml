@@ -22,6 +22,7 @@ concurrency: ${{ github.workflow }}
 
 jobs:
   create-release:
+    if: false
     runs-on: ubuntu-24.04
     steps:
       - name: Make sure that the container image is built
