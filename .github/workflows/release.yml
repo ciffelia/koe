@@ -22,18 +22,20 @@ concurrency: ${{ github.workflow }}
 
 jobs:
   create-release:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - name: Make sure that the container image is built
         run: skopeo inspect 'docker://ghcr.io/ciffelia/koe:git-${{ github.sha }}'
 
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           fetch-depth: 0
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with:
-          node-version: 18
+          node-version: 22
+          cache: yarn
+          cache-dependency-path: ./devtools/yarn.lock
 
       - name: Setup devtools
         run: yarn install --immutable
@@ -69,7 +71,7 @@ jobs:
         uses: docker/login-action@v3
         with:
           registry: ghcr.io
-          username: ${{ github.repository_owner }}
+          username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Create Docker tags
