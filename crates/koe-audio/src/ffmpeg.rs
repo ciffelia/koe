@@ -1,8 +1,8 @@
-use anyhow::{bail, Context, Result};
-use log::trace;
 use std::process::Stdio;
-use tokio::io::AsyncWriteExt;
-use tokio::process::Command;
+
+use anyhow::{Context, Result, bail};
+use log::trace;
+use tokio::{io::AsyncWriteExt, process::Command};
 
 /// Convert any type of audio source into 16-bit signed little-endian samples (i.e. wav) with ffmpeg.
 pub async fn convert_to_pcm_s16le(source: Vec<u8>) -> Result<Vec<u8>> {

@@ -1,4 +1,6 @@
-use anyhow::{anyhow, Result};
+use std::sync::Arc;
+
+use anyhow::{Result, anyhow};
 use dashmap::DashMap;
 use koe_db::redis;
 use koe_speech::voicevox::VoicevoxClient;
@@ -10,7 +12,6 @@ use serenity::{
     },
     prelude::TypeMapKey,
 };
-use std::sync::Arc;
 
 pub struct AppState {
     pub redis_client: redis::Client,

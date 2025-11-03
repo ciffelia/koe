@@ -1,13 +1,14 @@
-use crate::error::report_error;
 use anyhow::{Context, Result};
 use dashmap::DashMap;
 use koe_db::redis;
 use koe_speech::{speech::initialize_speakers, voicevox::VoicevoxClient};
 use log::info;
 use sentry::integrations::anyhow::capture_anyhow;
-use serenity::{model::gateway::GatewayIntents, Client};
+use serenity::{Client, model::gateway::GatewayIntents};
 use songbird::SerenityInit;
 use tokio::time::Duration;
+
+use crate::error::report_error;
 
 mod app_state;
 mod command;

@@ -1,11 +1,12 @@
-use super::read::build_read_text;
-use crate::app_state;
-use anyhow::{anyhow, Context as _, Result};
+use anyhow::{Context as _, Result, anyhow};
 use koe_db::voice::GetOption;
-use koe_speech::speech::{list_preset_ids, make_speech, SpeechRequest};
+use koe_speech::speech::{SpeechRequest, list_preset_ids, make_speech};
 use log::trace;
 use rand::seq::SliceRandom;
 use serenity::{client::Context, model::channel::Message};
+
+use super::read::build_read_text;
+use crate::app_state;
 
 pub async fn handle(ctx: &Context, msg: Message) -> Result<()> {
     let guild_id = match msg.guild_id {

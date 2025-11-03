@@ -1,9 +1,4 @@
-use super::{
-    model::{Command, DictAddOption, DictRemoveOption},
-    parser::parse,
-};
-use crate::{app_state, component_interaction::custom_id};
-use anyhow::{anyhow, bail, Context as _, Result};
+use anyhow::{Context as _, Result, anyhow, bail};
 use koe_db::{
     dict::{GetAllOption, InsertOption, InsertResponse, RemoveOption, RemoveResponse},
     voice::GetOption,
@@ -16,12 +11,18 @@ use serenity::{
     client::Context,
     model::{
         application::interaction::{
-            application_command::ApplicationCommandInteraction, InteractionResponseType,
-            MessageFlags,
+            InteractionResponseType, MessageFlags,
+            application_command::ApplicationCommandInteraction,
         },
         id::{ChannelId, GuildId, UserId},
     },
 };
+
+use super::{
+    model::{Command, DictAddOption, DictRemoveOption},
+    parser::parse,
+};
+use crate::{app_state, component_interaction::custom_id};
 
 pub async fn handle(ctx: &Context, cmd: &ApplicationCommandInteraction) -> Result<()> {
     match parse(cmd) {

@@ -1,6 +1,6 @@
 services:
   app:
-    image: ghcr.io/ciffelia/rust-devcontainer:latest
+    build: .
     command: sleep infinity
     volumes:
       - ..:/workspaces/koe:cached

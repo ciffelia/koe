@@ -1,4 +1,3 @@
-use crate::regex::{custom_emoji_regex, url_regex};
 use aho_corasick::{AhoCorasickBuilder, MatchKind};
 use anyhow::Result;
 use discord_md::generate::{ToMarkdownString, ToMarkdownStringOption};
@@ -8,6 +7,8 @@ use serenity::{
     model::{channel::Message, id::GuildId},
     utils::ContentSafeOptions,
 };
+
+use crate::regex::{custom_emoji_regex, url_regex};
 
 pub async fn build_read_text(
     ctx: &Context,

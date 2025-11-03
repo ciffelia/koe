@@ -1,6 +1,5 @@
-use anyhow::{bail, Result};
-use redis::aio::Connection;
-use redis::AsyncCommands;
+use anyhow::{Result, bail};
+use redis::{AsyncCommands, aio::Connection};
 
 #[derive(Debug, Clone)]
 pub struct InsertOption {

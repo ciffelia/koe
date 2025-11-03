@@ -1,6 +1,3 @@
-use crate::error::report_error;
-use crate::{command, voice_state};
-use crate::{component_interaction, message};
 use anyhow::Context as _;
 use log::info;
 use serenity::{
@@ -14,6 +11,8 @@ use serenity::{
         voice::VoiceState,
     },
 };
+
+use crate::{command, component_interaction, error::report_error, message, voice_state};
 
 pub struct Handler;
 

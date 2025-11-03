@@ -1,5 +1,6 @@
-use crate::ffmpeg::convert_to_pcm_s16le;
 use anyhow::Result;
+
+use crate::ffmpeg::convert_to_pcm_s16le;
 
 /// Representation of encoded (compressed) audio.
 pub struct EncodedAudio(Vec<u8>);

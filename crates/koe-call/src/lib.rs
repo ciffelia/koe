@@ -1,12 +1,13 @@
-use anyhow::{anyhow, Context as _, Result};
+use std::sync::Arc;
+
+use anyhow::{Context as _, Result, anyhow};
 use serenity::client::Context;
 use songbird::{
+    Call, Songbird,
     id::{ChannelId, GuildId},
     input::{Codec, Container, Input, Reader},
     join::Join,
-    Call, Songbird,
 };
-use std::sync::Arc;
 use tokio::sync::Mutex;
 
 pub async fn join_deaf(

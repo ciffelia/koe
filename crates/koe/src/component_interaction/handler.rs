@@ -1,13 +1,14 @@
-use super::custom_id;
-use crate::app_state;
-use anyhow::{anyhow, bail, Context as _, Result};
+use anyhow::{Context as _, Result, anyhow, bail};
 use koe_db::voice::SetOption;
 use serenity::{
     client::Context,
     model::application::interaction::{
-        message_component::MessageComponentInteraction, InteractionResponseType,
+        InteractionResponseType, message_component::MessageComponentInteraction,
     },
 };
+
+use super::custom_id;
+use crate::app_state;
 
 pub async fn handle(ctx: &Context, interaction: &MessageComponentInteraction) -> Result<()> {
     if interaction.data.custom_id == custom_id::CUSTOM_ID_VOICE {

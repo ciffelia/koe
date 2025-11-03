@@ -1,7 +1,8 @@
-use super::model::{Command, DictAddOption, DictRemoveOption};
 use serenity::model::application::interaction::application_command::{
     ApplicationCommandInteraction, CommandDataOptionValue,
 };
+
+use super::model::{Command, DictAddOption, DictRemoveOption};
 
 pub fn parse(cmd: &ApplicationCommandInteraction) -> Command {
     match cmd.data.name.as_str() {

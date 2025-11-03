@@ -1,10 +1,11 @@
-use crate::app_state;
 use anyhow::{Context as _, Result};
 use log::debug;
 use serenity::{
     client::Context,
     model::id::{ChannelId, GuildId, UserId},
 };
+
+use crate::app_state;
 
 pub async fn handle_update(ctx: &Context, guild_id: Option<GuildId>) -> Result<()> {
     let guild_id = match guild_id {

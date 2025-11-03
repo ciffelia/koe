@@ -1,6 +1,7 @@
-use crate::voicevox::{GenerateQueryFromPresetParams, Preset, SynthesisParams, VoicevoxClient};
-use anyhow::{anyhow, Result};
+use anyhow::{Result, anyhow};
 use koe_audio::EncodedAudio;
+
+use crate::voicevox::{GenerateQueryFromPresetParams, Preset, SynthesisParams, VoicevoxClient};
 
 pub async fn initialize_speakers(client: &VoicevoxClient) -> Result<()> {
     let preset_list = client.presets().await?;

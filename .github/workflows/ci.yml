@@ -11,6 +11,7 @@ permissions:
 
 env:
   RUST_VERSION: "1.91.0"
+  RUST_TOOLCHAIN_RUSTFMT: nightly
   CARGO_TERM_COLOR: always
 
 jobs:
@@ -24,8 +25,8 @@ jobs:
       - name: Setup Rust
         run: |
           rustup set profile minimal
-          rustup toolchain install "$RUST_VERSION" --component rustfmt
-          rustup override set "$RUST_VERSION"
+          rustup toolchain install "$RUST_TOOLCHAIN_RUSTFMT" --component rustfmt
+          rustup override set "$RUST_TOOLCHAIN_RUSTFMT"
 
       - name: Check code format
         run: cargo fmt --all -- --check

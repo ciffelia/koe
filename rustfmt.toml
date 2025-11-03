@@ -1,0 +1,4 @@
+imports_granularity = "Crate"
+group_imports = "StdExternalCrate"
+format_strings = true
+style_edition = "2024"
