@@ -1,0 +1,15 @@
+services:
+  app:
+    image: ghcr.io/ciffelia/rust-devcontainer:latest
+    command: sleep infinity
+    volumes:
+      - ..:/workspaces/koe:cached
+
+  redis:
+    image: redis:7.2.11-alpine
+    command: redis-server --save 60 1
+
+  voicevox:
+    image: voicevox/voicevox_engine:cpu-ubuntu20.04-0.14.6
+    volumes:
+      - ./config/voicevox_presets.yaml:/opt/voicevox_engine/presets.yaml:ro

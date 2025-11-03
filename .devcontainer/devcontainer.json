@@ -1,0 +1,15 @@
+{
+  "name": "koe",
+  "dockerComposeFile": "compose.yaml",
+  "service": "app",
+  "workspaceFolder": "/workspaces/koe",
+  "containerEnv": {
+    // Persist bash history
+    "PROMPT_COMMAND": "history -a",
+    "HISTFILE": "${containerWorkspaceFolder}/.devcontainer/persist/.bash_history"
+  },
+  "forwardPorts": [
+    "redis:6379",
+    "voicevox:50021"
+  ]
+}

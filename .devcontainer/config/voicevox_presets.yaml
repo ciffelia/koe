@@ -1,0 +1,252 @@
+- id: 0
+  name: 四国めたん ノーマル
+  speaker_uuid: 7ffcb7ce-00ec-4bdc-82cd-45a8889e43ff
+  style_id: 2
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+
+- id: 12
+  name: 四国めたん あまあま
+  speaker_uuid: 7ffcb7ce-00ec-4bdc-82cd-45a8889e43ff
+  style_id: 0
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+
+- id: 13
+  name: 四国めたん ツンツン
+  speaker_uuid: 7ffcb7ce-00ec-4bdc-82cd-45a8889e43ff
+  style_id: 6
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+
+- id: 14
+  name: 四国めたん セクシー
+  speaker_uuid: 7ffcb7ce-00ec-4bdc-82cd-45a8889e43ff
+  style_id: 4
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+
+- id: 1
+  name: ずんだもん ノーマル
+  speaker_uuid: 388f246b-8c41-4ac1-8e2d-5d79f3ff56d9
+  style_id: 3
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+
+- id: 15
+  name: ずんだもん あまあま
+  speaker_uuid: 388f246b-8c41-4ac1-8e2d-5d79f3ff56d9
+  style_id: 1
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+
+- id: 16
+  name: ずんだもん ツンツン
+  speaker_uuid: 388f246b-8c41-4ac1-8e2d-5d79f3ff56d9
+  style_id: 7
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+
+- id: 17
+  name: ずんだもん セクシー
+  speaker_uuid: 388f246b-8c41-4ac1-8e2d-5d79f3ff56d9
+  style_id: 5
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+
+- id: 18
+  name: ずんだもん ささやき
+  speaker_uuid: 388f246b-8c41-4ac1-8e2d-5d79f3ff56d9
+  style_id: 22
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+
+- id: 2
+  name: 春日部つむぎ
+  speaker_uuid: 35b2c544-660e-401e-b503-0e14c635303a
+  style_id: 8
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+
+- id: 3
+  name: 雨晴はう
+  speaker_uuid: 3474ee95-c274-47f9-aa1a-8322163d96f1
+  style_id: 10
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+
+- id: 4
+  name: 波音リツ
+  speaker_uuid: b1a81618-b27b-40d2-b0ea-27a9ad408c4b
+  style_id: 9
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+
+- id: 5
+  name: 玄野武宏
+  speaker_uuid: c30dc15a-0992-4f8d-8bb8-ad3b314e6a6f
+  style_id: 11
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+
+- id: 6
+  name: 白上虎太郎
+  speaker_uuid: e5020595-5c5d-4e87-b849-270a518d0dcf
+  style_id: 12
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+
+- id: 7
+  name: 青山龍星
+  speaker_uuid: 4f51116a-d9ee-4516-925d-21f183e2afad
+  style_id: 13
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+
+- id: 8
+  name: 冥鳴ひまり
+  speaker_uuid: 8eaad775-3119-417e-8cf4-2a10bfd592c8
+  style_id: 14
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+
+- id: 9
+  name: 九州そら ノーマル
+  speaker_uuid: 481fb609-6446-4870-9f46-90c4dd623403
+  style_id: 16
+  speedScale: 1.5
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+
+- id: 19
+  name: 九州そら あまあま
+  speaker_uuid: 481fb609-6446-4870-9f46-90c4dd623403
+  style_id: 15
+  speedScale: 1.5
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+
+- id: 20
+  name: 九州そら ツンツン
+  speaker_uuid: 481fb609-6446-4870-9f46-90c4dd623403
+  style_id: 18
+  speedScale: 1.5
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+
+- id: 21
+  name: 九州そら セクシー
+  speaker_uuid: 481fb609-6446-4870-9f46-90c4dd623403
+  style_id: 17
+  speedScale: 1.5
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+
+- id: 22
+  name: 九州そら ささやき
+  speaker_uuid: 481fb609-6446-4870-9f46-90c4dd623403
+  style_id: 19
+  speedScale: 1.5
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+
+- id: 10
+  name: もち子さん
+  speaker_uuid: 9f3ee141-26ad-437e-97bd-d22298d02ad2
+  style_id: 20
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+
+- id: 11
+  name: 剣崎雌雄
+  speaker_uuid: 1a17ca16-7ee5-4ea5-b191-2f02ace24d21
+  style_id: 21
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
