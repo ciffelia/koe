@@ -1,8 +1,9 @@
 [package]
 name = "koe-db"
-version = "0.1.0"
-edition = "2021"
+version.workspace = true
+publish.workspace = true
+edition.workspace = true
 
 [dependencies]
-anyhow = { version = "1.0.82", features = ["backtrace"] }
-redis = { version = "0.23.3", default-features = false, features = ["aio", "tokio-comp"] }
+anyhow.workspace = true
+redis.workspace = true

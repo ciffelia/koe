@@ -1,11 +1,12 @@
 [package]
 name = "koe-speech"
-version = "0.1.0"
-edition = "2021"
-publish = false
+version.workspace = true
+publish.workspace = true
+edition.workspace = true
 
 [dependencies]
-koe-audio = { path = "../koe-audio" }
-anyhow = { version = "1.0.82", features = ["backtrace"] }
-serde = { version = "1.0.200", features = ["derive"] }
-reqwest = { version = "0.11.22", features = ["json"] }
+koe-audio.workspace = true
+
+anyhow.workspace = true
+serde.workspace = true
+reqwest.workspace = true

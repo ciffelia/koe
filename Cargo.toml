@@ -1,2 +1,45 @@
 [workspace]
 members = ["crates/*"]
+
+[workspace.package]
+version = "0.1.0"
+publish = false
+edition = "2021"
+
+[workspace.dependencies]
+koe-audio = { path = "./crates/koe-audio" }
+koe-call = { path = "./crates/koe-call" }
+koe-config = { path = "./crates/koe-config" }
+koe-db = { path = "./crates/koe-db" }
+koe-speech = { path = "./crates/koe-speech" }
+
+# Basics
+anyhow = { version = "1.0.82", features = ["backtrace"] }
+tokio = { version = "1.37.0", features = ["rt-multi-thread", "macros", "sync", "time", "rt", "process", "io-util", "fs"] }
+
+# Logging
+log = "0.4.20"
+ecs-logger = "1.1.0"
+
+# Error reporting
+sentry = { version = "0.31.8", features = ["anyhow"] }
+
+# Discord
+serenity = { version = "0.11.7", default-features = false, features = ["cache", "client", "utils", "voice", "native_tls_backend"] }
+songbird = { version = "0.3.2", default-features = false, features = ["serenity-native", "driver", "builtin-queue"] }
+discord-md = "3.0.0"
+
+# Database
+redis = { version = "0.23.3", default-features = false, features = ["aio", "tokio-comp"] }
+
+# Configuration
+serde = { version = "1.0.200", features = ["derive"] }
+serde_yaml = "0.9.27"
+
+# Utilities
+reqwest = { version = "0.11.22", features = ["json"] }
+dashmap = "5.5.3"
+once_cell = "1.19.0"
+aho-corasick = "1.1.3"
+regex = "1.10.4"
+rand = "0.8.5"

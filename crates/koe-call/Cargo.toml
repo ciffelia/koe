@@ -1,10 +1,11 @@
 [package]
 name = "koe-call"
-version = "0.1.0"
-edition = "2021"
+version.workspace = true
+publish.workspace = true
+edition.workspace = true
 
 [dependencies]
-anyhow = { version = "1.0.82", features = ["backtrace"] }
-tokio = { version = "1.37.0", features = ["sync"] }
-serenity = { version = "0.11.7", default-features = false, features = ["native_tls_backend"] }
-songbird = { version = "0.3.2", default-features = false, features = ["serenity-native", "driver", "builtin-queue"] }
+anyhow.workspace = true
+tokio.workspace = true
+serenity.workspace = true
+songbird.workspace = true
