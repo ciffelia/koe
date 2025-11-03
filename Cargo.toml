@@ -25,7 +25,7 @@ ecs-logger = "1.1.0"
 sentry = { version = "0.31.8", features = ["anyhow"] }
 
 # Discord
-serenity = { version = "0.11.7", default-features = false, features = ["cache", "client", "utils", "voice", "native_tls_backend"] }
+serenity = { version = "0.12.0", default-features = false, features = ["cache", "client", "utils", "voice", "native_tls_backend"] }
 songbird = { version = "0.3.2", default-features = false, features = ["serenity-native", "driver", "builtin-queue"] }
 discord-md = "3.0.0"
 
