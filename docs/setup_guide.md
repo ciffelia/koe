@@ -29,9 +29,21 @@ Koe の実行には Docker および Docker Compose が必要です。あらか�
 1. [Discord Developer Portal](https://discord.com/developers/applications) を開き、新しくアプリケーションを作成します。
 2. General Information ページに記載されている Application ID (Client ID) を控えておきます。
 3. Description に VOICEVOX や各音源のクレジット、使用上の注意事項などを入力します。ここで記入した内容は Bot のプロフィールに表示されます。
-4. Bot ページに移動し、Add Bot をクリックして Bot を有効にします。
-5. Message Content Intent を有効にします。
+4. Installation ページに移動し、Install Link を None に設定します。
+5. Bot ページに移動します。
 6. Reset Token をクリックして Token を生成し、控えておきます。
+7. Public Bot を無効にします。
+8. Message Content Intent を有効にします。
+9. 画面下部の Save Changes をクリックして設定を保存します。
+
+<details>
+<summary>参考: プロフィールの記入例</summary>
+
+> KoeはVOICEVOX及び以下に記す音源を用いて音声合成を行っています。公序良俗に反する内容の読み上げなど、VOICEVOXや各音源の利用規約に違反する行為はお控えください。
+>
+> 四国めたん, ずんだもん, 春日部つむぎ, 雨晴はう, 波音リツ, 玄野武宏, 白上虎太郎, 青山龍星, 冥鳴ひまり, 九州そら, もち子（CV: 明日葉よもぎ）, 剣崎雌雄
+
+</details>
 
 ### 1-2. サーバーに Bot を追加
 
@@ -40,6 +52,8 @@ Koe の実行には Docker および Docker Compose が必要です。あらか�
 ```
 https://discord.com/api/oauth2/authorize?client_id=CLIENT_ID&permissions=3146752&scope=bot%20applications.commands
 ```
+
+Bot を他のサーバーにも追加したい場合は、この URL に再度アクセスしてください。
 
 <details>
   <summary>参考: Koe が使用する権限</summary>
