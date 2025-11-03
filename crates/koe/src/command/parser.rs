@@ -16,14 +16,14 @@ pub fn parse(cmd: &ApplicationCommandInteraction) -> Command {
 }
 
 fn parse_dict(cmd: &ApplicationCommandInteraction) -> Command {
-    let option_dict = match cmd.data.options.get(0) {
+    let option_dict = match cmd.data.options.first() {
         Some(option) => option,
         None => return Command::Unknown,
     };
 
     match option_dict.name.as_str() {
         "add" => {
-            let option_word = match option_dict.options.get(0) {
+            let option_word = match option_dict.options.first() {
                 Some(x) => x,
                 None => return Command::Unknown,
             };
@@ -46,7 +46,7 @@ fn parse_dict(cmd: &ApplicationCommandInteraction) -> Command {
             })
         }
         "remove" => {
-            let option_word = match option_dict.options.get(0) {
+            let option_word = match option_dict.options.first() {
                 Some(x) => x,
                 None => return Command::Unknown,
             };

@@ -22,9 +22,8 @@ mod voice_state;
 async fn main() -> Result<()> {
     let _guard = sentry::init(());
 
-    run().await.map_err(|err| {
-        capture_anyhow(&err);
-        err
+    run().await.inspect_err(|err| {
+        capture_anyhow(err);
     })
 }
 

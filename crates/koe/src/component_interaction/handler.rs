@@ -32,7 +32,7 @@ async fn handle_voice(ctx: &Context, interaction: &MessageComponentInteraction) 
     let selected_preset_id = interaction
         .data
         .values
-        .get(0)
+        .first()
         .ok_or_else(|| anyhow!("Value not available in message component interaction"))?
         .parse::<i64>()?;
 
