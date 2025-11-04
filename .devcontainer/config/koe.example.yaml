@@ -1,0 +1,9 @@
+discord:
+  client_id: YOUR_CLIENT_ID
+  bot_token: YOUR_BOT_TOKEN
+
+voicevox:
+  api_base: http://voicevox:50021
+
+redis:
+  url: redis://redis
