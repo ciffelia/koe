@@ -12,7 +12,7 @@ use crate::regex::{custom_emoji_regex, url_regex};
 
 pub async fn build_read_text(
     ctx: &Context,
-    conn: &mut redis::aio::Connection,
+    conn: &mut redis::aio::MultiplexedConnection,
     guild_id: GuildId,
     msg: &Message,
     last_msg: &Option<Message>,
@@ -85,7 +85,7 @@ fn replace_custom_emojis(text: &str) -> String {
 }
 
 async fn replace_words_on_dict(
-    conn: &mut redis::aio::Connection,
+    conn: &mut redis::aio::MultiplexedConnection,
     guild_id: GuildId,
     text: &str,
 ) -> Result<String> {

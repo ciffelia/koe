@@ -1,5 +1,5 @@
 use anyhow::Result;
-use redis::{AsyncCommands, aio::Connection};
+use redis::{AsyncCommands, aio::MultiplexedConnection};
 
 #[derive(Debug, Clone)]
 pub struct GetOption {
@@ -10,7 +10,7 @@ pub struct GetOption {
 
 /// ユーザーの声を返す
 /// 未設定の場合は`option.fallback`の値を設定して返す
-pub async fn get(connection: &mut Connection, option: GetOption) -> Result<i64> {
+pub async fn get(connection: &mut MultiplexedConnection, option: GetOption) -> Result<i64> {
     let key = voice_key(option.guild_id, option.user_id);
 
     let (resp,) = redis::pipe()
@@ -31,7 +31,7 @@ pub struct SetOption {
 }
 
 /// ユーザーの声を設定する
-pub async fn set(connection: &mut Connection, option: SetOption) -> Result<()> {
+pub async fn set(connection: &mut MultiplexedConnection, option: SetOption) -> Result<()> {
     let key = voice_key(option.guild_id, option.user_id);
     connection.set(&key, option.value).await?;
     Ok(())

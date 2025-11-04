@@ -46,7 +46,10 @@ async fn handle_voice(ctx: &Context, interaction: &ComponentInteraction) -> Resu
         .find(|p| p.id == selected_preset_id)
         .ok_or_else(|| anyhow!("Preset {} not available", selected_preset_id))?;
 
-    let mut conn = state.redis_client.get_async_connection().await?;
+    let mut conn = state
+        .redis_client
+        .get_multiplexed_async_connection()
+        .await?;
     koe_db::voice::set(
         &mut conn,
         SetOption {

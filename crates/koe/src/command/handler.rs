@@ -159,7 +159,10 @@ async fn handle_voice(ctx: &Context, cmd: &CommandInteraction) -> Result<()> {
         .map(|p| p.id)
         .ok_or_else(|| anyhow!("No presets available"))?;
 
-    let mut conn = state.redis_client.get_async_connection().await?;
+    let mut conn = state
+        .redis_client
+        .get_multiplexed_async_connection()
+        .await?;
     let current_preset = koe_db::voice::get(
         &mut conn,
         GetOption {
@@ -214,7 +217,10 @@ async fn handle_dict_add(
     };
 
     let state = app_state::get(ctx).await?;
-    let mut conn = state.redis_client.get_async_connection().await?;
+    let mut conn = state
+        .redis_client
+        .get_multiplexed_async_connection()
+        .await?;
 
     let resp = koe_db::dict::insert(
         &mut conn,
@@ -255,7 +261,10 @@ async fn handle_dict_remove(
     };
 
     let state = app_state::get(ctx).await?;
-    let mut conn = state.redis_client.get_async_connection().await?;
+    let mut conn = state
+        .redis_client
+        .get_multiplexed_async_connection()
+        .await?;
 
     let resp = koe_db::dict::remove(
         &mut conn,
@@ -290,7 +299,10 @@ async fn handle_dict_view(ctx: &Context, cmd: &CommandInteraction) -> Result<()>
     };
 
     let state = app_state::get(ctx).await?;
-    let mut conn = state.redis_client.get_async_connection().await?;
+    let mut conn = state
+        .redis_client
+        .get_multiplexed_async_connection()
+        .await?;
 
     let dict = koe_db::dict::get_all(
         &mut conn,

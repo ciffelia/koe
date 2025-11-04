@@ -38,7 +38,10 @@ pub async fn handle(ctx: &Context, msg: Message) -> Result<()> {
         return Ok(());
     }
 
-    let mut conn = state.redis_client.get_async_connection().await?;
+    let mut conn = state
+        .redis_client
+        .get_multiplexed_async_connection()
+        .await?;
 
     let text = build_read_text(
         ctx,

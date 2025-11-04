@@ -1,5 +1,5 @@
 use anyhow::{Result, bail};
-use redis::{AsyncCommands, aio::Connection};
+use redis::{AsyncCommands, aio::MultiplexedConnection};
 
 #[derive(Debug, Clone)]
 pub struct InsertOption {
@@ -15,7 +15,10 @@ pub enum InsertResponse {
 }
 
 /// 辞書に語句を追加する
-pub async fn insert(connection: &mut Connection, option: InsertOption) -> Result<InsertResponse> {
+pub async fn insert(
+    connection: &mut MultiplexedConnection,
+    option: InsertOption,
+) -> Result<InsertResponse> {
     let resp = connection
         .hset_nx(dict_key(option.guild_id), option.word, option.read_as)
         .await?;
@@ -40,7 +43,10 @@ pub enum RemoveResponse {
 }
 
 /// 辞書から語句を削除する
-pub async fn remove(connection: &mut Connection, option: RemoveOption) -> Result<RemoveResponse> {
+pub async fn remove(
+    connection: &mut MultiplexedConnection,
+    option: RemoveOption,
+) -> Result<RemoveResponse> {
     let resp = connection
         .hdel(dict_key(option.guild_id), option.word)
         .await?;
@@ -60,7 +66,7 @@ pub struct GetAllOption {
 /// 辞書全体を返す
 /// 辞書が存在しないときは空の[`Vec`]を返す
 pub async fn get_all(
-    connection: &mut Connection,
+    connection: &mut MultiplexedConnection,
     option: GetAllOption,
 ) -> Result<Vec<(String, String)>> {
     let resp = connection.hgetall(dict_key(option.guild_id)).await?;
