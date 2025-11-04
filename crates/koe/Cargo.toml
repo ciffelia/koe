@@ -5,7 +5,6 @@ publish.workspace = true
 edition.workspace = true
 
 [dependencies]
-koe-audio.workspace = true
 koe-call.workspace = true
 koe-config.workspace = true
 koe-db.workspace = true

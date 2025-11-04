@@ -20,7 +20,7 @@ RUN --mount=type=cache,target=/root/.cargo/bin \
 FROM debian:bullseye-slim
 
 RUN apt-get update && \
-    apt-get install -y ca-certificates ffmpeg && \
+    apt-get install -y ca-certificates libopus0 && \
     rm -rf /var/lib/apt/lists/*
 
 # Switch to unpriviledged user

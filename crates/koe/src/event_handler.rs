@@ -3,12 +3,9 @@ use log::info;
 use serenity::{
     async_trait,
     client::{Context, EventHandler},
+    gateway::ActivityData,
     model::{
-        application::interaction::Interaction,
-        channel::Message,
-        gateway::{Activity, Ready},
-        guild::Guild,
-        voice::VoiceState,
+        application::Interaction, channel::Message, gateway::Ready, guild::Guild, voice::VoiceState,
     },
 };
 
@@ -21,8 +18,7 @@ impl EventHandler for Handler {
     async fn ready(&self, ctx: Context, ready: Ready) {
         info!("Connected as {}", ready.user.name);
 
-        ctx.set_activity(Activity::playing("テキストチャット 読み上げBot"))
-            .await;
+        ctx.set_activity(Some(ActivityData::playing("テキストチャット 読み上げBot")));
 
         for guild in &ready.guilds {
             if let Err(err) = command::setup::setup_guild_commands(&ctx, guild.id)
@@ -34,7 +30,7 @@ impl EventHandler for Handler {
         }
     }
 
-    async fn guild_create(&self, ctx: Context, guild: Guild, _is_new: bool) {
+    async fn guild_create(&self, ctx: Context, guild: Guild, _is_new: Option<bool>) {
         if let Err(err) = command::setup::setup_guild_commands(&ctx, guild.id)
             .await
             .context("Failed to set guild application commands")
@@ -45,7 +41,7 @@ impl EventHandler for Handler {
 
     async fn interaction_create(&self, ctx: Context, interaction: Interaction) {
         match interaction {
-            Interaction::ApplicationCommand(command) => {
+            Interaction::Command(command) => {
                 if let Err(err) = command::handler::handle(&ctx, &command)
                     .await
                     .context("Failed to respond to slash command")
@@ -53,7 +49,7 @@ impl EventHandler for Handler {
                     report_error(err);
                 }
             }
-            Interaction::MessageComponent(component_interaction) => {
+            Interaction::Component(component_interaction) => {
                 if let Err(err) =
                     component_interaction::handler::handle(&ctx, &component_interaction)
                         .await

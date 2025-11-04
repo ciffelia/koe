@@ -6,14 +6,12 @@ use koe_db::{
 use rand::seq::SliceRandom;
 use serenity::{
     builder::{
-        CreateActionRow, CreateComponents, CreateEmbed, CreateSelectMenu, CreateSelectMenuOption,
+        CreateActionRow, CreateEmbed, CreateInteractionResponse, CreateInteractionResponseMessage,
+        CreateSelectMenu, CreateSelectMenuKind, CreateSelectMenuOption,
     },
     client::Context,
     model::{
-        application::interaction::{
-            InteractionResponseType, MessageFlags,
-            application_command::ApplicationCommandInteraction,
-        },
+        application::CommandInteraction,
         id::{ChannelId, GuildId, UserId},
     },
 };
@@ -24,7 +22,7 @@ use super::{
 };
 use crate::{app_state, component_interaction::custom_id};
 
-pub async fn handle(ctx: &Context, cmd: &ApplicationCommandInteraction) -> Result<()> {
+pub async fn handle(ctx: &Context, cmd: &CommandInteraction) -> Result<()> {
     match parse(cmd) {
         Command::Join => handle_join(ctx, cmd)
             .await
@@ -58,7 +56,7 @@ pub async fn handle(ctx: &Context, cmd: &ApplicationCommandInteraction) -> Resul
     Ok(())
 }
 
-async fn handle_join(ctx: &Context, cmd: &ApplicationCommandInteraction) -> Result<()> {
+async fn handle_join(ctx: &Context, cmd: &CommandInteraction) -> Result<()> {
     let guild_id = match cmd.guild_id {
         Some(id) => id,
         None => {
@@ -97,7 +95,7 @@ async fn handle_join(ctx: &Context, cmd: &ApplicationCommandInteraction) -> Resu
     Ok(())
 }
 
-async fn handle_leave(ctx: &Context, cmd: &ApplicationCommandInteraction) -> Result<()> {
+async fn handle_leave(ctx: &Context, cmd: &CommandInteraction) -> Result<()> {
     let guild_id = match cmd.guild_id {
         Some(id) => id,
         None => {
@@ -122,7 +120,7 @@ async fn handle_leave(ctx: &Context, cmd: &ApplicationCommandInteraction) -> Res
     Ok(())
 }
 
-async fn handle_skip(ctx: &Context, cmd: &ApplicationCommandInteraction) -> Result<()> {
+async fn handle_skip(ctx: &Context, cmd: &CommandInteraction) -> Result<()> {
     let guild_id = match cmd.guild_id {
         Some(id) => id,
         None => {
@@ -144,7 +142,7 @@ async fn handle_skip(ctx: &Context, cmd: &ApplicationCommandInteraction) -> Resu
     Ok(())
 }
 
-async fn handle_voice(ctx: &Context, cmd: &ApplicationCommandInteraction) -> Result<()> {
+async fn handle_voice(ctx: &Context, cmd: &CommandInteraction) -> Result<()> {
     let guild_id = match cmd.guild_id {
         Some(id) => id,
         None => {
@@ -176,36 +174,27 @@ async fn handle_voice(ctx: &Context, cmd: &ApplicationCommandInteraction) -> Res
         let option_list = available_presets
             .iter()
             .map(|p| {
-                let mut option = CreateSelectMenuOption::default();
-                option
-                    .label(&p.name)
-                    .value(p.id)
-                    .default_selection(p.id == current_preset);
-                option
+                CreateSelectMenuOption::new(&p.name, p.id.to_string())
+                    .default_selection(p.id == current_preset)
             })
             .collect::<Vec<_>>();
 
-        let mut select = CreateSelectMenu::default();
-        select.custom_id(custom_id::CUSTOM_ID_VOICE);
-        select.options(|create_options| create_options.set_options(option_list));
+        let select_menu = CreateSelectMenu::new(
+            custom_id::CUSTOM_ID_VOICE,
+            CreateSelectMenuKind::String {
+                options: option_list,
+            },
+        );
 
-        let mut action_row = CreateActionRow::default();
-        action_row.add_select_menu(select);
+        let action_row = CreateActionRow::SelectMenu(select_menu);
 
-        let mut components = CreateComponents::default();
-        components.add_action_row(action_row);
+        let message = CreateInteractionResponseMessage::new()
+            .ephemeral(true)
+            .components(vec![action_row]);
 
-        cmd.create_interaction_response(&ctx.http, |create_response| {
-            create_response
-                .kind(InteractionResponseType::ChannelMessageWithSource)
-                .interaction_response_data(|create_message| {
-                    create_message
-                        .flags(MessageFlags::EPHEMERAL)
-                        .set_components(components)
-                })
-        })
-        .await
-        .context("Failed to create interaction response")?;
+        cmd.create_response(&ctx.http, CreateInteractionResponse::Message(message))
+            .await
+            .context("Failed to create interaction response")?;
     };
 
     Ok(())
@@ -213,7 +202,7 @@ async fn handle_voice(ctx: &Context, cmd: &ApplicationCommandInteraction) -> Res
 
 async fn handle_dict_add(
     ctx: &Context,
-    cmd: &ApplicationCommandInteraction,
+    cmd: &CommandInteraction,
     option: DictAddOption,
 ) -> Result<()> {
     let guild_id = match cmd.guild_id {
@@ -254,7 +243,7 @@ async fn handle_dict_add(
 
 async fn handle_dict_remove(
     ctx: &Context,
-    cmd: &ApplicationCommandInteraction,
+    cmd: &CommandInteraction,
     option: DictRemoveOption,
 ) -> Result<()> {
     let guild_id = match cmd.guild_id {
@@ -291,7 +280,7 @@ async fn handle_dict_remove(
     Ok(())
 }
 
-async fn handle_dict_view(ctx: &Context, cmd: &ApplicationCommandInteraction) -> Result<()> {
+async fn handle_dict_view(ctx: &Context, cmd: &CommandInteraction) -> Result<()> {
     let guild_id = match cmd.guild_id {
         Some(id) => id,
         None => {
@@ -317,26 +306,25 @@ async fn handle_dict_view(ctx: &Context, cmd: &ApplicationCommandInteraction) ->
         let guild_name = guild_id
             .name(&ctx.cache)
             .unwrap_or_else(|| "サーバー".to_string());
-        embed.title(format!("📕 {}の辞書", guild_name));
 
-        embed.fields(
+        embed = embed.title(format!("📕 {}の辞書", guild_name));
+
+        embed = embed.fields(
             dict.into_iter()
                 .map(|(word, read_as)| (word, sanitize_response(&read_as), false)),
         );
 
-        cmd.create_interaction_response(&ctx.http, |create_response| {
-            create_response
-                .kind(InteractionResponseType::ChannelMessageWithSource)
-                .interaction_response_data(|create_message| create_message.add_embed(embed))
-        })
-        .await
-        .context("Failed to create interaction response")?;
+        let message = CreateInteractionResponseMessage::new().embed(embed);
+
+        cmd.create_response(&ctx.http, CreateInteractionResponse::Message(message))
+            .await
+            .context("Failed to create interaction response")?;
     };
 
     Ok(())
 }
 
-async fn handle_help(ctx: &Context, cmd: &ApplicationCommandInteraction) -> Result<()> {
+async fn handle_help(ctx: &Context, cmd: &CommandInteraction) -> Result<()> {
     r(
         ctx,
         cmd,
@@ -364,14 +352,12 @@ fn get_user_voice_channel(
 }
 
 // Helper function to create text message response
-async fn r(ctx: &Context, cmd: &ApplicationCommandInteraction, text: impl ToString) -> Result<()> {
-    cmd.create_interaction_response(&ctx.http, |create_response| {
-        create_response
-            .kind(InteractionResponseType::ChannelMessageWithSource)
-            .interaction_response_data(|create_message| create_message.content(text))
-    })
-    .await
-    .context("Failed to create interaction response")?;
+async fn r(ctx: &Context, cmd: &CommandInteraction, text: impl ToString) -> Result<()> {
+    let message = CreateInteractionResponseMessage::new().content(text.to_string());
+
+    cmd.create_response(&ctx.http, CreateInteractionResponse::Message(message))
+        .await
+        .context("Failed to create interaction response")?;
 
     Ok(())
 }

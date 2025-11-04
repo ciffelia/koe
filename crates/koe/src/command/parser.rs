@@ -1,62 +1,71 @@
-use serenity::model::application::interaction::application_command::{
-    ApplicationCommandInteraction, CommandDataOptionValue,
-};
+use serenity::model::application::{CommandInteraction, ResolvedOption, ResolvedValue};
 
 use super::model::{Command, DictAddOption, DictRemoveOption};
 
-pub fn parse(cmd: &ApplicationCommandInteraction) -> Command {
+pub fn parse(cmd: &CommandInteraction) -> Command {
     match cmd.data.name.as_str() {
         "join" | "kjoin" => Command::Join,
         "leave" | "kleave" => Command::Leave,
         "skip" | "kskip" => Command::Skip,
         "voice" => Command::Voice,
-        "dict" => parse_dict(cmd),
+        "dict" => parse_dict(&cmd.data.options()),
         "help" => Command::Help,
         _ => Command::Unknown,
     }
 }
 
-fn parse_dict(cmd: &ApplicationCommandInteraction) -> Command {
-    let option_dict = match cmd.data.options.first() {
+fn parse_dict(options: &[ResolvedOption]) -> Command {
+    let option_dict = match options.first() {
         Some(option) => option,
         None => return Command::Unknown,
     };
 
-    match option_dict.name.as_str() {
+    match option_dict.name {
         "add" => {
-            let option_word = match option_dict.options.first() {
-                Some(x) => x,
-                None => return Command::Unknown,
+            let ResolvedValue::SubCommand(suboptions) = &option_dict.value else {
+                return Command::Unknown;
             };
-            let option_read_as = match option_dict.options.get(1) {
-                Some(x) => x,
-                None => return Command::Unknown,
-            };
-            let word = match &option_word.resolved {
-                Some(CommandDataOptionValue::String(x)) => x,
-                _ => return Command::Unknown,
-            };
-            let read_as = match &option_read_as.resolved {
-                Some(CommandDataOptionValue::String(x)) => x,
-                _ => return Command::Unknown,
+
+            let [
+                ResolvedOption {
+                    name: "word",
+                    value: ResolvedValue::String(word),
+                    ..
+                },
+                ResolvedOption {
+                    name: "read-as",
+                    value: ResolvedValue::String(read_as),
+                    ..
+                },
+            ] = &suboptions[..]
+            else {
+                return Command::Unknown;
             };
 
             Command::DictAdd(DictAddOption {
-                word: word.clone(),
-                read_as: read_as.clone(),
+                word: word.to_string(),
+                read_as: read_as.to_string(),
             })
         }
         "remove" => {
-            let option_word = match option_dict.options.first() {
-                Some(x) => x,
-                None => return Command::Unknown,
-            };
-            let word = match &option_word.resolved {
-                Some(CommandDataOptionValue::String(x)) => x,
-                _ => return Command::Unknown,
+            let ResolvedValue::SubCommand(suboptions) = &option_dict.value else {
+                return Command::Unknown;
             };
 
-            Command::DictRemove(DictRemoveOption { word: word.clone() })
+            let [
+                ResolvedOption {
+                    name: "word",
+                    value: ResolvedValue::String(word),
+                    ..
+                },
+            ] = &suboptions[..]
+            else {
+                return Command::Unknown;
+            };
+
+            Command::DictRemove(DictRemoveOption {
+                word: word.to_string(),
+            })
         }
         "view" => Command::DictView,
         _ => Command::Unknown,

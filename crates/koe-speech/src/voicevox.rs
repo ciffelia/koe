@@ -1,5 +1,4 @@
 use anyhow::Result;
-use koe_audio::EncodedAudio;
 use reqwest::Url;
 use serde::Deserialize;
 
@@ -40,7 +39,7 @@ impl VoicevoxClient {
         Ok(resp)
     }
 
-    pub async fn synthesis(&self, params: SynthesisParams) -> Result<EncodedAudio> {
+    pub async fn synthesis(&self, params: SynthesisParams) -> Result<Vec<u8>> {
         let url = Url::parse_with_params(
             &self.get_endpoint("/synthesis"),
             &[("speaker", params.style_id.to_string())],
@@ -57,7 +56,7 @@ impl VoicevoxClient {
             .bytes()
             .await?;
 
-        Ok(EncodedAudio::from(resp.to_vec()))
+        Ok(resp.to_vec())
     }
 
     pub async fn presets(&self) -> Result<Vec<Preset>> {

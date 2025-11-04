@@ -29,7 +29,7 @@ pub async fn handle(ctx: &Context, msg: Message) -> Result<()> {
     }
 
     // Skip message from Koe itself
-    if msg.author.id == ctx.cache.current_user_id() {
+    if msg.author.id == ctx.cache.current_user().id {
         return Ok(());
     }
 
@@ -71,12 +71,11 @@ pub async fn handle(ctx: &Context, msg: Message) -> Result<()> {
     .await?
     .into();
 
-    let encoded_audio = make_speech(&state.voicevox_client, SpeechRequest { text, preset_id })
+    let audio = make_speech(&state.voicevox_client, SpeechRequest { text, preset_id })
         .await
         .context("Failed to execute Text-to-Speech")?;
-    let raw_audio = encoded_audio.decode().await?.into();
 
-    koe_call::enqueue(ctx, guild_id, raw_audio).await?;
+    koe_call::enqueue(ctx, guild_id, audio).await?;
 
     guild_state.last_message_read = Some(msg);
 

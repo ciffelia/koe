@@ -5,7 +5,6 @@ use serenity::client::Context;
 use songbird::{
     Call, Songbird,
     id::{ChannelId, GuildId},
-    input::{Codec, Container, Input, Reader},
     join::Join,
 };
 use tokio::sync::Mutex;
@@ -55,22 +54,12 @@ pub async fn is_connected(ctx: &Context, guild_id: impl Into<GuildId>) -> Result
     Ok(is_connected)
 }
 
-pub async fn enqueue(
-    ctx: &Context,
-    guild_id: impl Into<GuildId>,
-    raw_audio: Vec<u8>,
-) -> Result<()> {
+pub async fn enqueue(ctx: &Context, guild_id: impl Into<GuildId>, audio: Vec<u8>) -> Result<()> {
     let manager = extract_songbird(ctx).await?;
     let call = get_call(manager, guild_id).await?;
 
     let mut handler = call.lock().await;
-    handler.enqueue_source(Input::new(
-        false,
-        Reader::from_memory(raw_audio),
-        Codec::Pcm,
-        Container::Raw,
-        None,
-    ));
+    handler.enqueue_input(audio.into()).await;
 
     Ok(())
 }

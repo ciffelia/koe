@@ -5,8 +5,6 @@ publish.workspace = true
 edition.workspace = true
 
 [dependencies]
-koe-audio.workspace = true
-
 anyhow.workspace = true
 serde.workspace = true
 reqwest.workspace = true

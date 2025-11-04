@@ -4,7 +4,10 @@ use koe_db::redis;
 use koe_speech::{speech::initialize_speakers, voicevox::VoicevoxClient};
 use log::info;
 use sentry::integrations::anyhow::capture_anyhow;
-use serenity::{Client, model::gateway::GatewayIntents};
+use serenity::{
+    Client,
+    model::{gateway::GatewayIntents, id::ApplicationId},
+};
 use songbird::SerenityInit;
 use tokio::time::Duration;
 
@@ -38,7 +41,7 @@ async fn run() -> Result<()> {
 
     let mut client = Client::builder(config.discord.bot_token, intents)
         .event_handler(event_handler::Handler)
-        .application_id(config.discord.client_id)
+        .application_id(ApplicationId::new(config.discord.client_id))
         .register_songbird()
         .await
         .context("Failed to build serenity client")?;

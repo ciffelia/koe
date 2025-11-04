@@ -1,5 +1,4 @@
 use anyhow::{Result, anyhow};
-use koe_audio::EncodedAudio;
 
 use crate::voicevox::{GenerateQueryFromPresetParams, Preset, SynthesisParams, VoicevoxClient};
 
@@ -11,7 +10,7 @@ pub async fn initialize_speakers(client: &VoicevoxClient) -> Result<()> {
     Ok(())
 }
 
-pub async fn make_speech(client: &VoicevoxClient, option: SpeechRequest) -> Result<EncodedAudio> {
+pub async fn make_speech(client: &VoicevoxClient, option: SpeechRequest) -> Result<Vec<u8>> {
     let preset = get_preset(client, option.preset_id).await?;
 
     let query = client

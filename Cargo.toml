@@ -7,7 +7,6 @@ publish = false
 edition = "2021"
 
 [workspace.dependencies]
-koe-audio = { path = "./crates/koe-audio" }
 koe-call = { path = "./crates/koe-call" }
 koe-config = { path = "./crates/koe-config" }
 koe-db = { path = "./crates/koe-db" }
@@ -15,7 +14,7 @@ koe-speech = { path = "./crates/koe-speech" }
 
 # Basics
 anyhow = { version = "1.0.82", features = ["backtrace"] }
-tokio = { version = "1.37.0", features = ["rt-multi-thread", "macros", "sync", "time", "rt", "process", "io-util", "fs"] }
+tokio = { version = "1.37.0", features = ["rt-multi-thread", "macros", "sync", "time", "fs"] }
 
 # Logging
 log = "0.4.20"
@@ -25,8 +24,9 @@ ecs-logger = "1.1.0"
 sentry = { version = "0.31.8", features = ["anyhow"] }
 
 # Discord
-serenity = { version = "0.11.7", default-features = false, features = ["cache", "client", "utils", "voice", "native_tls_backend"] }
-songbird = { version = "0.3.2", default-features = false, features = ["serenity-native", "driver", "builtin-queue"] }
+serenity = { version = "0.12.4", default-features = false, features = ["cache", "client", "utils", "voice", "native_tls_backend"] }
+songbird = { version = "0.5.0", default-features = false, features = ["driver", "gateway", "builtin-queue", "native", "serenity", "tungstenite"] }
+symphonia = { version = "0.5.5", default-features = false, features = ["wav", "pcm"] }
 discord-md = "3.0.0"
 
 # Database

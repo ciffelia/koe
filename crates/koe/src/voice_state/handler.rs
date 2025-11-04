@@ -31,21 +31,20 @@ pub async fn handle_update(ctx: &Context, guild_id: Option<GuildId>) -> Result<(
         let state = app_state::get(ctx).await?;
         state.connected_guild_states.remove(&guild_id);
 
-        debug!("Automatically disconnected in guild {}", guild_id.as_u64());
+        debug!("Automatically disconnected in guild {}", guild_id.get());
     }
 
     Ok(())
 }
 
 fn get_current_voice_channel_id(ctx: &Context, guild_id: GuildId) -> Result<Option<ChannelId>> {
-    let current_user_id = ctx.cache.current_user_id();
+    let current_user_id = ctx.cache.current_user().id;
 
-    let voice_state_map = guild_id
+    let guild = guild_id
         .to_guild_cached(&ctx.cache)
-        .context("Failed to find guild in the cache")?
-        .voice_states;
+        .context("Failed to find guild in the cache")?;
 
-    let current_voice_state = match voice_state_map.get(&current_user_id) {
+    let current_voice_state = match guild.voice_states.get(&current_user_id) {
         Some(state) => state,
         None => return Ok(None),
     };
@@ -58,13 +57,13 @@ fn list_users_in_voice_channel(
     guild_id: GuildId,
     channel_id: ChannelId,
 ) -> Result<Vec<UserId>> {
-    let voice_state_map = guild_id
+    let guild = guild_id
         .to_guild_cached(&ctx.cache)
-        .context("Failed to find guild in the cache")?
-        .voice_states;
+        .context("Failed to find guild in the cache")?;
 
-    let list = voice_state_map
-        .into_iter()
+    let list = guild
+        .voice_states
+        .iter()
         .filter(|(_, state)| state.channel_id == Some(channel_id))
         .map(|(_, state)| state.user_id)
         .collect();
