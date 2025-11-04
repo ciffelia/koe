@@ -1,5 +1,5 @@
 use anyhow::Result;
-use redis::{AsyncCommands, aio::MultiplexedConnection};
+use redis::{AsyncTypedCommands, aio::MultiplexedConnection};
 
 #[derive(Debug, Clone)]
 pub struct GetOption {
