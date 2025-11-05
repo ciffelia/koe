@@ -1,27 +1,11 @@
 {
   $schema: 'https://docs.renovatebot.com/renovate-schema.json',
   extends: [
-    'config:base',
+    'config:recommended',
     ':semanticCommits',
     ':semanticCommitTypeAll(chore)',
     ':prHourlyLimitNone',
-  ],
-  timezone: 'Asia/Tokyo',
-  schedule: ['before 9am on Saturday'],
-  packageRules: [
-    {
-      matchUpdateTypes: ['minor', 'patch'],
-      matchCurrentVersion: '!/^0/',
-      automerge: true,
-    },
-    {
-      matchManagers: ['npm'],
-      rangeStrategy: 'bump',
-    },
-    {
-      matchManagers: ['dockerfile'],
-      matchPackageNames: ['rust'],
-      enabled: false,
-    },
+    ':prConcurrentLimitNone',
+    ':dependencyDashboardApproval',
   ],
 }
