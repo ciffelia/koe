@@ -10,8 +10,6 @@ permissions:
   contents: read
 
 env:
-  RUST_TOOLCHAIN: "1.91.0"
-  RUST_TOOLCHAIN_RUSTFMT: nightly
   CARGO_TERM_COLOR: always
 
 jobs:
@@ -22,11 +20,8 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: Setup Rust
-        run: |
-          rustup set profile minimal
-          rustup toolchain install "$RUST_TOOLCHAIN_RUSTFMT" --component rustfmt
-          rustup override set "$RUST_TOOLCHAIN_RUSTFMT"
+      - name: Setup nightly Rust
+        run: rustup override set nightly
 
       - name: cargo fmt
         run: cargo fmt --all -- --check
@@ -37,12 +32,6 @@ jobs:
       - uses: actions/checkout@v5
         with:
           persist-credentials: false
-
-      - name: Setup Rust
-        run: |
-          rustup set profile minimal
-          rustup toolchain install "$RUST_TOOLCHAIN" --component clippy
-          rustup override set "$RUST_TOOLCHAIN"
 
       - uses: Swatinem/rust-cache@v2
 
