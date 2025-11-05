@@ -2,13 +2,14 @@ use anyhow::{Context as _, Result, anyhow};
 use koe_db::voice::GetOption;
 use koe_speech::speech::{SpeechRequest, list_preset_ids, make_speech};
 use log::trace;
+use poise::serenity_prelude as serenity;
 use rand::seq::IndexedRandom;
-use serenity::{client::Context, model::channel::Message};
+use serenity::model::channel::Message;
 
 use super::read::build_read_text;
-use crate::app_state;
+use crate::app_state::AppState;
 
-pub async fn handle(ctx: &Context, msg: Message) -> Result<()> {
+pub async fn handle(ctx: &serenity::Context, msg: Message, state: &AppState) -> Result<()> {
     let guild_id = match msg.guild_id {
         Some(id) => id,
         None => return Ok(()),
@@ -17,8 +18,6 @@ pub async fn handle(ctx: &Context, msg: Message) -> Result<()> {
     if !koe_call::is_connected(ctx, guild_id).await? {
         return Ok(());
     }
-
-    let state = app_state::get(ctx).await?;
     let mut guild_state = match state.connected_guild_states.get_mut(&guild_id) {
         Some(status) => status,
         None => return Ok(()),

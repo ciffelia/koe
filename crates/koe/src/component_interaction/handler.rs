@@ -1,17 +1,21 @@
 use anyhow::{Context as _, Result, anyhow, bail};
 use koe_db::voice::SetOption;
+use poise::serenity_prelude as serenity;
 use serenity::{
     builder::{CreateInteractionResponse, CreateInteractionResponseMessage},
-    client::Context,
     model::application::{ComponentInteraction, ComponentInteractionDataKind},
 };
 
 use super::custom_id;
-use crate::app_state;
+use crate::app_state::AppState;
 
-pub async fn handle(ctx: &Context, interaction: &ComponentInteraction) -> Result<()> {
+pub async fn handle(
+    ctx: &serenity::Context,
+    interaction: &ComponentInteraction,
+    state: &AppState,
+) -> Result<()> {
     if interaction.data.custom_id == custom_id::CUSTOM_ID_VOICE {
-        handle_voice(ctx, interaction)
+        handle_voice(ctx, interaction, state)
             .await
             .context(r#"Failed to handle "voice" message component interaction"#)?;
     } else {
@@ -24,7 +28,11 @@ pub async fn handle(ctx: &Context, interaction: &ComponentInteraction) -> Result
     Ok(())
 }
 
-async fn handle_voice(ctx: &Context, interaction: &ComponentInteraction) -> Result<()> {
+async fn handle_voice(
+    ctx: &serenity::Context,
+    interaction: &ComponentInteraction,
+    state: &AppState,
+) -> Result<()> {
     let guild_id = interaction
         .guild_id
         .ok_or_else(|| anyhow!("Failed to get guild ID"))?;
@@ -37,8 +45,6 @@ async fn handle_voice(ctx: &Context, interaction: &ComponentInteraction) -> Resu
         .first()
         .ok_or_else(|| anyhow!("Value not available in message component interaction"))?
         .parse::<i64>()?;
-
-    let state = app_state::get(ctx).await?;
 
     let available_presets = state.voicevox_client.presets().await?;
     let selected_preset = available_presets
@@ -73,7 +79,11 @@ async fn handle_voice(ctx: &Context, interaction: &ComponentInteraction) -> Resu
 }
 
 // Helper function to create text message response
-async fn r(ctx: &Context, interaction: &ComponentInteraction, text: impl ToString) -> Result<()> {
+async fn r(
+    ctx: &serenity::Context,
+    interaction: &ComponentInteraction,
+    text: impl ToString,
+) -> Result<()> {
     let message = CreateInteractionResponseMessage::new().content(text.to_string());
 
     interaction

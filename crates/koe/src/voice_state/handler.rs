@@ -1,13 +1,15 @@
 use anyhow::{Context as _, Result};
 use log::debug;
-use serenity::{
-    client::Context,
-    model::id::{ChannelId, GuildId, UserId},
-};
+use poise::serenity_prelude as serenity;
+use serenity::model::id::{ChannelId, GuildId, UserId};
 
-use crate::app_state;
+use crate::app_state::AppState;
 
-pub async fn handle_update(ctx: &Context, guild_id: Option<GuildId>) -> Result<()> {
+pub async fn handle_update(
+    ctx: &serenity::Context,
+    guild_id: Option<GuildId>,
+    state: &AppState,
+) -> Result<()> {
     let guild_id = match guild_id {
         Some(id) => id,
         None => return Ok(()),
@@ -28,7 +30,6 @@ pub async fn handle_update(ctx: &Context, guild_id: Option<GuildId>) -> Result<(
             .await
             .context("Failed to leave voice channel")?;
 
-        let state = app_state::get(ctx).await?;
         state.connected_guild_states.remove(&guild_id);
 
         debug!("Automatically disconnected in guild {}", guild_id.get());
@@ -37,7 +38,10 @@ pub async fn handle_update(ctx: &Context, guild_id: Option<GuildId>) -> Result<(
     Ok(())
 }
 
-fn get_current_voice_channel_id(ctx: &Context, guild_id: GuildId) -> Result<Option<ChannelId>> {
+fn get_current_voice_channel_id(
+    ctx: &serenity::Context,
+    guild_id: GuildId,
+) -> Result<Option<ChannelId>> {
     let current_user_id = ctx.cache.current_user().id;
 
     let guild = guild_id
@@ -53,7 +57,7 @@ fn get_current_voice_channel_id(ctx: &Context, guild_id: GuildId) -> Result<Opti
 }
 
 fn list_users_in_voice_channel(
-    ctx: &Context,
+    ctx: &serenity::Context,
     guild_id: GuildId,
     channel_id: ChannelId,
 ) -> Result<Vec<UserId>> {

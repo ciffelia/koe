@@ -20,6 +20,7 @@ ecs-logger.workspace = true
 
 # Discord
 serenity.workspace = true
+poise.workspace = true
 songbird.workspace = true
 discord-md.workspace = true
 
