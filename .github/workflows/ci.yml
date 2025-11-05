@@ -99,27 +99,6 @@ jobs:
         with:
           context: .
           tags: ghcr.io/ciffelia/koe:git-${{ github.sha }}
-          build-args: |
-            SENTRY_RELEASE=${{ github.sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
           push: ${{ github.ref == 'refs/heads/main' }}
-
-  sentry-release:
-    # if: github.ref == 'refs/heads/main'
-    if: false
-    needs: [docker-build-push]
-    runs-on: ubuntu-24.04
-    steps:
-      - uses: actions/checkout@v5
-        with:
-          persist-credentials: false
-
-      - name: Create Sentry release
-        uses: getsentry/action-release@v3
-        env:
-          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
-          SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
-          SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
-        with:
-          environment: production

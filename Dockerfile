@@ -29,7 +29,4 @@ USER koe
 
 COPY --from=builder /usr/local/bin/koe /usr/local/bin/koe
 
-ARG SENTRY_RELEASE
-ENV SENTRY_RELEASE=$SENTRY_RELEASE
-
 ENTRYPOINT ["koe"]

@@ -14,15 +14,12 @@ koe-db = { path = "./crates/koe-db" }
 koe-speech = { path = "./crates/koe-speech" }
 
 # Basics
-anyhow = { version = "1.0.100", features = ["backtrace"] }
+anyhow = "1.0.100"
 tokio = { version = "1.48.0", features = ["rt-multi-thread", "macros", "sync", "time", "fs"] }
 
 # Logging
 log = "0.4.28"
 ecs-logger = "1.1.0"
-
-# Error reporting
-sentry = { version = "0.31.8", features = ["anyhow"] }
 
 # Discord
 serenity = { version = "0.12.4", default-features = false, features = ["cache", "client", "utils", "voice", "native_tls_backend"] }

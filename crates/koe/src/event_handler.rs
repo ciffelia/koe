@@ -1,5 +1,5 @@
 use anyhow::Context as _;
-use log::info;
+use log::{error, info};
 use serenity::{
     async_trait,
     client::{Context, EventHandler},
@@ -9,7 +9,7 @@ use serenity::{
     },
 };
 
-use crate::{command, component_interaction, error::report_error, message, voice_state};
+use crate::{command, component_interaction, message, voice_state};
 
 pub struct Handler;
 
@@ -25,7 +25,7 @@ impl EventHandler for Handler {
                 .await
                 .context("Failed to set guild application commands")
             {
-                report_error(err);
+                error!("{:?}", err);
             }
         }
     }
@@ -35,7 +35,7 @@ impl EventHandler for Handler {
             .await
             .context("Failed to set guild application commands")
         {
-            report_error(err);
+            error!("{:?}", err);
         }
     }
 
@@ -46,7 +46,7 @@ impl EventHandler for Handler {
                     .await
                     .context("Failed to respond to slash command")
                 {
-                    report_error(err);
+                    error!("{:?}", err);
                 }
             }
             Interaction::Component(component_interaction) => {
@@ -55,7 +55,7 @@ impl EventHandler for Handler {
                         .await
                         .context("Failed to respond to message components interaction")
                 {
-                    report_error(err);
+                    error!("{:?}", err);
                 }
             }
             _ => {}
@@ -67,7 +67,7 @@ impl EventHandler for Handler {
             .await
             .context("Failed to handle message")
         {
-            report_error(err);
+            error!("{:?}", err);
         }
     }
 
@@ -81,7 +81,7 @@ impl EventHandler for Handler {
             .await
             .context("Failed to handle voice state update")
         {
-            report_error(err);
+            error!("{:?}", err);
         }
     }
 }

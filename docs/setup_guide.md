@@ -107,8 +107,6 @@ Bot を他のサーバーにも追加したい場合は、この URL に再度�
 - `RUST_LOG`: ログレベル
   - `koe`に設定すると詳細なログが出力されます。
   - 詳細は https://docs.rs/env_logger#enabling-logging をご確認ください。
-- `SENTRY_DSN`: Sentry の DSN
-  - 設定するとエラーを Sentry に送信することができます。
 
 ## 3. 起動
 

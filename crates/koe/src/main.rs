@@ -2,8 +2,7 @@ use anyhow::{Context, Result};
 use dashmap::DashMap;
 use koe_db::redis;
 use koe_speech::{speech::initialize_speakers, voicevox::VoicevoxClient};
-use log::info;
-use sentry::integrations::anyhow::capture_anyhow;
+use log::{error, info};
 use serenity::{
     Client,
     model::{gateway::GatewayIntents, id::ApplicationId},
@@ -11,12 +10,9 @@ use serenity::{
 use songbird::SerenityInit;
 use tokio::time::Duration;
 
-use crate::error::report_error;
-
 mod app_state;
 mod command;
 mod component_interaction;
-mod error;
 mod event_handler;
 mod message;
 mod regex;
@@ -24,14 +20,6 @@ mod voice_state;
 
 #[tokio::main]
 async fn main() -> Result<()> {
-    let _guard = sentry::init(());
-
-    run().await.inspect_err(|err| {
-        capture_anyhow(err);
-    })
-}
-
-async fn run() -> Result<()> {
     ecs_logger::init();
 
     let config = koe_config::load().await?;
@@ -65,8 +53,11 @@ async fn run() -> Result<()> {
             let data = d.read().await;
             let state = data.get::<app_state::AppState>().unwrap();
 
-            if let Err(err) = initialize_speakers(&state.voicevox_client).await {
-                report_error(err);
+            if let Err(err) = initialize_speakers(&state.voicevox_client)
+                .await
+                .context("Failed to initialize speakers")
+            {
+                error!("{:?}", err);
             }
         });
     }
