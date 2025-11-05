@@ -2,7 +2,7 @@ use anyhow::{Context as _, Result, anyhow};
 use koe_db::voice::GetOption;
 use koe_speech::speech::{SpeechRequest, list_preset_ids, make_speech};
 use log::trace;
-use rand::seq::SliceRandom;
+use rand::seq::IndexedRandom;
 use serenity::{client::Context, model::channel::Message};
 
 use super::read::build_read_text;
@@ -60,7 +60,7 @@ pub async fn handle(ctx: &Context, msg: Message) -> Result<()> {
 
     let available_preset_ids = list_preset_ids(&state.voicevox_client).await?;
     let fallback_preset_id = available_preset_ids
-        .choose(&mut rand::thread_rng())
+        .choose(&mut rand::rng())
         .ok_or_else(|| anyhow!("No presets available"))?
         .into();
     let preset_id = koe_db::voice::get(

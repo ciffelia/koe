@@ -3,7 +3,7 @@ use koe_db::{
     dict::{GetAllOption, InsertOption, InsertResponse, RemoveOption, RemoveResponse},
     voice::GetOption,
 };
-use rand::seq::SliceRandom;
+use rand::seq::IndexedRandom;
 use serenity::{
     builder::{
         CreateActionRow, CreateEmbed, CreateInteractionResponse, CreateInteractionResponseMessage,
@@ -155,7 +155,7 @@ async fn handle_voice(ctx: &Context, cmd: &CommandInteraction) -> Result<()> {
 
     let available_presets = state.voicevox_client.presets().await?;
     let fallback_preset_id = available_presets
-        .choose(&mut rand::thread_rng())
+        .choose(&mut rand::rng())
         .map(|p| p.id)
         .ok_or_else(|| anyhow!("No presets available"))?;
 
