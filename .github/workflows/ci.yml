@@ -21,7 +21,9 @@ jobs:
           persist-credentials: false
 
       - name: Setup nightly Rust
-        run: rustup override set nightly
+        run: |
+          rustup toolchain install nightly --profile minimal --component rustfmt
+          rustup override set nightly
 
       - name: cargo fmt
         run: cargo fmt --all -- --check
