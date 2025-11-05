@@ -1342,7 +1342,6 @@ dependencies = [
  "koe-db",
  "koe-speech",
  "log",
- "once_cell",
  "rand 0.9.2",
  "regex",
  "sentry",

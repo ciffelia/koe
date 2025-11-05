@@ -28,7 +28,6 @@ discord-md.workspace = true
 
 # Utilities
 dashmap.workspace = true
-once_cell.workspace = true
 aho-corasick.workspace = true
 regex.workspace = true
 rand.workspace = true
