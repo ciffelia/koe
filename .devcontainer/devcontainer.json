@@ -8,6 +8,7 @@
     "PROMPT_COMMAND": "history -a",
     "HISTFILE": "${containerWorkspaceFolder}/.devcontainer/persist/.bash_history"
   },
+	"onCreateCommand": ".devcontainer/scripts/on-create.sh",
   "forwardPorts": [
     "redis:6379",
     "voicevox:50021"
