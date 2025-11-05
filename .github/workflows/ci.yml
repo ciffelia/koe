@@ -40,6 +40,16 @@ jobs:
       - name: cargo clippy
         run: cargo clippy --all-targets --all-features -- -D warnings
 
+  lockfile:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+
+      - name: Check if Cargo.lock is up-to-date
+        run: cargo tree --depth 1 --no-dedupe --locked
+
   check-next-version:
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-24.04
