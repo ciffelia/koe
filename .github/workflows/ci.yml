@@ -47,6 +47,8 @@ jobs:
         with:
           persist-credentials: false
 
+      - uses: Swatinem/rust-cache@v2
+
       - name: Check if Cargo.lock is up-to-date
         run: cargo tree --depth 1 --no-dedupe --locked
 
@@ -74,7 +76,7 @@ jobs:
         working-directory: ./devtools
 
   docker-build-push:
-    needs: [format, lint]
+    needs: [format, lint, lockfile]
     runs-on: ubuntu-24.04
     permissions:
       contents: read
