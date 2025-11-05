@@ -5,7 +5,6 @@ use serenity::client::Context;
 use songbird::{
     Call, Songbird,
     id::{ChannelId, GuildId},
-    join::Join,
 };
 use tokio::sync::Mutex;
 
@@ -20,18 +19,15 @@ pub async fn join_deaf(
 
     let call = manager.get_or_insert(guild_id);
 
-    // Call::joinを実行するには、2段階のawaitが必要
-    // 詳細は https://docs.rs/songbird/latest/songbird/struct.Call.html#method.join
-    let join_res: Result<Join> = {
+    // To join a voice channel in a deafened state, you need to use `Call::join` instead of `Songbird::join`.
+    // `Call::join` requires two stages of await, and the Mutex needs to be released before the second await.
+    // For more details, see https://docs.rs/songbird/latest/songbird/struct.Call.html#method.join
+    let stage_1 = {
         let mut handler = call.lock().await;
         handler.deafen(true).await?;
-
-        let join = handler.join(channel_id).await?;
-
-        Ok(join)
+        handler.join(channel_id).await?
     };
-    let join = join_res?;
-    join.await?;
+    stage_1.await?;
 
     Ok(())
 }
