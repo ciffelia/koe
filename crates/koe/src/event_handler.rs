@@ -46,7 +46,7 @@ impl EventHandler for Handler {
     async fn interaction_create(&self, ctx: Context, interaction: Interaction) {
         match interaction {
             Interaction::Command(command) => {
-                if let Err(err) = commands::handle(&ctx, &command)
+                if let Err(err) = commands::handle_interaction(&ctx, &command)
                     .await
                     .context("Failed to respond to slash command")
                 {
@@ -54,7 +54,7 @@ impl EventHandler for Handler {
                 }
             }
             Interaction::Component(component_interaction) => {
-                if let Err(err) = components::handle(&ctx, &component_interaction)
+                if let Err(err) = components::handle_interaction(&ctx, &component_interaction)
                     .await
                     .context("Failed to respond to message components interaction")
                 {

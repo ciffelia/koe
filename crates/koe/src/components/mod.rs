@@ -7,9 +7,9 @@ use serenity::{
     model::application::ComponentInteraction,
 };
 
-pub async fn handle(ctx: &Context, interaction: &ComponentInteraction) -> Result<()> {
+pub async fn handle_interaction(ctx: &Context, interaction: &ComponentInteraction) -> Result<()> {
     if voice_select::custom_id_matches(&interaction.data.custom_id) {
-        voice_select::handle(ctx, interaction)
+        voice_select::handle_interaction(ctx, interaction)
             .await
             .context(r#"Failed to handle "voice" message component interaction"#)?;
     } else {

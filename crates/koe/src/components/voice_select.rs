@@ -63,7 +63,7 @@ pub async fn component(
     Ok(select_menu)
 }
 
-pub async fn handle(ctx: &Context, interaction: &ComponentInteraction) -> Result<()> {
+pub async fn handle_interaction(ctx: &Context, interaction: &ComponentInteraction) -> Result<()> {
     let guild_id = interaction
         .guild_id
         .ok_or_else(|| anyhow!("Failed to get guild ID"))?;

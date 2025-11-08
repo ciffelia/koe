@@ -25,7 +25,7 @@ pub fn commands() -> Vec<CreateCommand> {
     commands
 }
 
-pub async fn handle(ctx: &Context, cmd: &CommandInteraction) -> Result<()> {
+pub async fn handle_interaction(ctx: &Context, cmd: &CommandInteraction) -> Result<()> {
     if dict::matches(cmd) {
         dict::handle(ctx, cmd)
             .await
