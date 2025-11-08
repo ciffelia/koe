@@ -9,15 +9,22 @@ use serenity::{
 use super::super::{respond_text, sanitize_response};
 use crate::app_state;
 
+const SUBCOMMAND_NAME: &str = "remove";
+const WORD_OPTION_NAME: &str = "word";
+
 pub fn subcommand() -> CreateCommandOption {
     CreateCommandOption::new(
         CommandOptionType::SubCommand,
-        "remove",
+        SUBCOMMAND_NAME,
         "辞書から項目を削除",
     )
     .add_sub_option(
-        CreateCommandOption::new(CommandOptionType::String, "word", "削除したい語句")
-            .required(true),
+        CreateCommandOption::new(
+            CommandOptionType::String,
+            WORD_OPTION_NAME,
+            "削除したい語句",
+        )
+        .required(true),
     )
 }
 
@@ -32,7 +39,7 @@ pub async fn handle(
 
     let [
         ResolvedOption {
-            name: "word",
+            name: WORD_OPTION_NAME,
             value: ResolvedValue::String(word),
             ..
         },

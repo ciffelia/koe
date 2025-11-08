@@ -9,16 +9,18 @@ use serenity::{
 
 use crate::components;
 
+const COMMAND_NAME: &str = "voice";
+
 pub fn commands() -> Vec<CreateCommand> {
     vec![
-        CreateCommand::new("voice")
+        CreateCommand::new(COMMAND_NAME)
             .description("話者の設定")
             .contexts(vec![InteractionContext::Guild]),
     ]
 }
 
 pub fn matches(cmd: &CommandInteraction) -> bool {
-    cmd.data.name == "voice"
+    cmd.data.name == COMMAND_NAME
 }
 
 pub async fn handle(ctx: &Context, cmd: &CommandInteraction) -> Result<()> {

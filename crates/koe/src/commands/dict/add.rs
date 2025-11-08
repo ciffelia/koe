@@ -9,16 +9,32 @@ use serenity::{
 use super::super::{respond_text, sanitize_response};
 use crate::app_state;
 
+const SUBCOMMAND_NAME: &str = "add";
+const WORD_OPTION_NAME: &str = "word";
+const READ_AS_OPTION_NAME: &str = "read_as";
+
 pub fn subcommand() -> CreateCommandOption {
-    CreateCommandOption::new(CommandOptionType::SubCommand, "add", "辞書に項目を追加")
-        .add_sub_option(
-            CreateCommandOption::new(CommandOptionType::String, "word", "読み方を指定したい語句")
-                .required(true),
+    CreateCommandOption::new(
+        CommandOptionType::SubCommand,
+        SUBCOMMAND_NAME,
+        "辞書に項目を追加",
+    )
+    .add_sub_option(
+        CreateCommandOption::new(
+            CommandOptionType::String,
+            WORD_OPTION_NAME,
+            "読み方を指定したい語句",
         )
-        .add_sub_option(
-            CreateCommandOption::new(CommandOptionType::String, "read-as", "語句の読み方")
-                .required(true),
+        .required(true),
+    )
+    .add_sub_option(
+        CreateCommandOption::new(
+            CommandOptionType::String,
+            READ_AS_OPTION_NAME,
+            "語句の読み方",
         )
+        .required(true),
+    )
 }
 
 pub async fn handle(
@@ -32,12 +48,12 @@ pub async fn handle(
 
     let [
         ResolvedOption {
-            name: "word",
+            name: WORD_OPTION_NAME,
             value: ResolvedValue::String(word),
             ..
         },
         ResolvedOption {
-            name: "read-as",
+            name: READ_AS_OPTION_NAME,
             value: ResolvedValue::String(read_as),
             ..
         },

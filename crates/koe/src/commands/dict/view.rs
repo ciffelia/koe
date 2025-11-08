@@ -12,8 +12,10 @@ use serenity::{
 use super::super::sanitize_response;
 use crate::app_state;
 
+const SUBCOMMAND_NAME: &str = "view";
+
 pub fn subcommand() -> CreateCommandOption {
-    CreateCommandOption::new(CommandOptionType::SubCommand, "view", "辞書を表示")
+    CreateCommandOption::new(CommandOptionType::SubCommand, SUBCOMMAND_NAME, "辞書を表示")
 }
 
 pub async fn handle(ctx: &Context, cmd: &CommandInteraction) -> Result<()> {

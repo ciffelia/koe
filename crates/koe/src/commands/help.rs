@@ -7,16 +7,18 @@ use serenity::{
 
 use super::respond_text;
 
+const COMMAND_NAME: &str = "help";
+
 pub fn commands() -> Vec<CreateCommand> {
     vec![
-        CreateCommand::new("help")
+        CreateCommand::new(COMMAND_NAME)
             .description("使い方を表示")
             .contexts(vec![InteractionContext::Guild]),
     ]
 }
 
 pub fn matches(cmd: &CommandInteraction) -> bool {
-    cmd.data.name == "help"
+    cmd.data.name == COMMAND_NAME
 }
 
 pub async fn handle(ctx: &Context, cmd: &CommandInteraction) -> Result<()> {

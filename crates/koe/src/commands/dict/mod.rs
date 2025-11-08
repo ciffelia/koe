@@ -9,9 +9,11 @@ use serenity::{
     model::application::{CommandInteraction, InteractionContext, ResolvedValue},
 };
 
+const COMMAND_NAME: &str = "dict";
+
 pub fn commands() -> Vec<CreateCommand> {
     vec![
-        CreateCommand::new("dict")
+        CreateCommand::new(COMMAND_NAME)
             .description("読み上げ辞書の閲覧と編集")
             .contexts(vec![InteractionContext::Guild])
             .add_option(add::subcommand())
@@ -21,7 +23,7 @@ pub fn commands() -> Vec<CreateCommand> {
 }
 
 pub fn matches(cmd: &CommandInteraction) -> bool {
-    cmd.data.name == "dict"
+    cmd.data.name == COMMAND_NAME
 }
 
 pub async fn handle(ctx: &SerenityContext, cmd: &CommandInteraction) -> Result<()> {

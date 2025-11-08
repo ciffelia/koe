@@ -8,19 +8,22 @@ use serenity::{
 use super::respond_text;
 use crate::app_state;
 
+const COMMAND_NAME: &str = "leave";
+const ALIAS_COMMAND_NAME: &str = "kleave";
+
 pub fn commands() -> Vec<CreateCommand> {
     vec![
-        CreateCommand::new("leave")
+        CreateCommand::new(COMMAND_NAME)
             .description("ボイスチャンネルから退出")
             .contexts(vec![InteractionContext::Guild]),
-        CreateCommand::new("kleave")
+        CreateCommand::new(ALIAS_COMMAND_NAME)
             .description("ボイスチャンネルから退出")
             .contexts(vec![InteractionContext::Guild]),
     ]
 }
 
 pub fn matches(cmd: &CommandInteraction) -> bool {
-    matches!(cmd.data.name.as_str(), "leave" | "kleave")
+    matches!(cmd.data.name.as_str(), COMMAND_NAME | ALIAS_COMMAND_NAME)
 }
 
 pub async fn handle(ctx: &Context, cmd: &CommandInteraction) -> Result<()> {
