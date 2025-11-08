@@ -26,9 +26,9 @@ pub async fn handle_interaction(ctx: &Context, interaction: &ComponentInteractio
 async fn respond_text(
     ctx: &Context,
     interaction: &ComponentInteraction,
-    text: impl ToString,
+    text: impl Into<String>,
 ) -> Result<()> {
-    let message = CreateInteractionResponseMessage::new().content(text.to_string());
+    let message = CreateInteractionResponseMessage::new().content(text);
 
     interaction
         .create_response(&ctx.http, CreateInteractionResponse::Message(message))

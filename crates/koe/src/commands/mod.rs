@@ -72,8 +72,12 @@ pub async fn handle_interaction(ctx: &Context, cmd: &CommandInteraction) -> Resu
 }
 
 /// Helper function to create text message response
-async fn respond_text(ctx: &Context, cmd: &CommandInteraction, text: impl ToString) -> Result<()> {
-    let message = CreateInteractionResponseMessage::new().content(text.to_string());
+async fn respond_text(
+    ctx: &Context,
+    cmd: &CommandInteraction,
+    text: impl Into<String>,
+) -> Result<()> {
+    let message = CreateInteractionResponseMessage::new().content(text);
 
     cmd.create_response(&ctx.http, CreateInteractionResponse::Message(message))
         .await
