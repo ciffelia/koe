@@ -30,45 +30,31 @@ pub async fn handle_interaction(ctx: &Context, cmd: &CommandInteraction) -> Resu
         dict::handle(ctx, cmd)
             .await
             .context("Failed to execute /dict")?;
-        return Ok(());
-    }
-
-    if help::matches(cmd) {
+    } else if help::matches(cmd) {
         help::handle(ctx, cmd)
             .await
             .context("Failed to execute /help")?;
-        return Ok(());
-    }
-
-    if join::matches(cmd) {
+    } else if join::matches(cmd) {
         join::handle(ctx, cmd)
             .await
             .context("Failed to execute /join")?;
-        return Ok(());
-    }
-
-    if leave::matches(cmd) {
+    } else if leave::matches(cmd) {
         leave::handle(ctx, cmd)
             .await
             .context("Failed to execute /leave")?;
-        return Ok(());
-    }
-
-    if skip::matches(cmd) {
+    } else if skip::matches(cmd) {
         skip::handle(ctx, cmd)
             .await
             .context("Failed to execute /skip")?;
-        return Ok(());
-    }
-
-    if voice::matches(cmd) {
+    } else if voice::matches(cmd) {
         voice::handle(ctx, cmd)
             .await
             .context("Failed to execute /voice")?;
-        return Ok(());
+    } else {
+        bail!("Unknown command: {:?}", cmd.data.name);
     }
 
-    bail!("Unknown command: {:?}", cmd.data.name);
+    Ok(())
 }
 
 /// Helper function to create text message response
