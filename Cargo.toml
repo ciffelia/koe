@@ -43,8 +43,10 @@ rand = "0.9.2"
 
 [workspace.lints.clippy]
 manual_let_else = "warn"
+must_use_candidate = "warn"
 ref_option = "warn"
 single_match_else = "warn"
 trivially_copy_pass_by_ref = "warn"
 uninlined_format_args = "warn"
 unnecessary_semicolon = "warn"
+unused_async = "warn"

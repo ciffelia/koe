@@ -8,6 +8,7 @@ pub struct VoicevoxClient {
 }
 
 impl VoicevoxClient {
+    #[must_use]
     pub fn new(api_base: String) -> Self {
         Self {
             client: reqwest::Client::new(),
