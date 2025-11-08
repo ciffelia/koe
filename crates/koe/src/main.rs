@@ -43,23 +43,21 @@ async fn main() -> Result<()> {
     )
     .await;
 
-    {
-        let d = client.data.clone();
-        tokio::spawn(async move {
-            tokio::time::sleep(Duration::from_secs(3)).await;
-            info!("Initializing speakers...");
+    let d = client.data.clone();
+    tokio::spawn(async move {
+        tokio::time::sleep(Duration::from_secs(3)).await;
+        info!("Initializing speakers...");
 
-            let data = d.read().await;
-            let state = data.get::<app_state::AppState>().unwrap();
+        let data = d.read().await;
+        let state = data.get::<app_state::AppState>().unwrap();
 
-            if let Err(err) = initialize_speakers(&state.voicevox_client)
-                .await
-                .context("Failed to initialize speakers")
-            {
-                error!("{err:?}");
-            }
-        });
-    }
+        if let Err(err) = initialize_speakers(&state.voicevox_client)
+            .await
+            .context("Failed to initialize speakers")
+        {
+            error!("{err:?}");
+        }
+    });
 
     info!("Starting client...");
     client.start().await.context("Client error occurred")?;
