@@ -26,10 +26,7 @@ pub async fn handle(
     cmd: &CommandInteraction,
     suboptions: &[ResolvedOption<'_>],
 ) -> Result<()> {
-    let Some(guild_id) = cmd.guild_id else {
-        respond_text(ctx, cmd, "`/dict add` はサーバー内でのみ使えます。").await?;
-        return Ok(());
-    };
+    let guild_id = cmd.guild_id.expect("guild_id is Some");
 
     let [
         ResolvedOption {

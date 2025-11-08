@@ -1,12 +1,20 @@
 use anyhow::Result;
-use serenity::{builder::CreateCommand, client::Context, model::application::CommandInteraction};
+use serenity::{
+    builder::CreateCommand,
+    client::Context,
+    model::application::{CommandInteraction, InteractionContext},
+};
 
 use super::respond_text;
 
 pub fn commands() -> Vec<CreateCommand> {
     vec![
-        CreateCommand::new("skip").description("読み上げ中のメッセージをスキップ"),
-        CreateCommand::new("kskip").description("読み上げ中のメッセージをスキップ"),
+        CreateCommand::new("skip")
+            .description("読み上げ中のメッセージをスキップ")
+            .contexts(vec![InteractionContext::Guild]),
+        CreateCommand::new("kskip")
+            .description("読み上げ中のメッセージをスキップ")
+            .contexts(vec![InteractionContext::Guild]),
     ]
 }
 
@@ -15,10 +23,7 @@ pub fn matches(cmd: &CommandInteraction) -> bool {
 }
 
 pub async fn handle(ctx: &Context, cmd: &CommandInteraction) -> Result<()> {
-    let Some(guild_id) = cmd.guild_id else {
-        respond_text(ctx, cmd, "`/skip`, `/kskip` はサーバー内でのみ使えます。").await?;
-        return Ok(());
-    };
+    let guild_id = cmd.guild_id.expect("guild_id is Some");
 
     if !koe_call::is_connected(ctx, guild_id).await? {
         {

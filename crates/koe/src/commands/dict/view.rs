@@ -9,7 +9,7 @@ use serenity::{
     model::application::{CommandInteraction, CommandOptionType},
 };
 
-use super::super::{respond_text, sanitize_response};
+use super::super::sanitize_response;
 use crate::app_state;
 
 pub fn subcommand() -> CreateCommandOption {
@@ -17,10 +17,7 @@ pub fn subcommand() -> CreateCommandOption {
 }
 
 pub async fn handle(ctx: &Context, cmd: &CommandInteraction) -> Result<()> {
-    let Some(guild_id) = cmd.guild_id else {
-        respond_text(ctx, cmd, "`/dict view` はサーバー内でのみ使えます。").await?;
-        return Ok(());
-    };
+    let guild_id = cmd.guild_id.expect("guild_id is Some");
 
     let state = app_state::get(ctx).await?;
     let mut conn = state

@@ -3,7 +3,7 @@ use serenity::{
     builder::CreateCommand,
     client::Context,
     model::{
-        application::CommandInteraction,
+        application::{CommandInteraction, InteractionContext},
         id::{ChannelId, GuildId, UserId},
     },
 };
@@ -13,8 +13,12 @@ use crate::app_state;
 
 pub fn commands() -> Vec<CreateCommand> {
     vec![
-        CreateCommand::new("join").description("ボイスチャンネルに接続し、読み上げを開始"),
-        CreateCommand::new("kjoin").description("ボイスチャンネルに接続し、読み上げを開始"),
+        CreateCommand::new("join")
+            .description("ボイスチャンネルに接続し、読み上げを開始")
+            .contexts(vec![InteractionContext::Guild]),
+        CreateCommand::new("kjoin")
+            .description("ボイスチャンネルに接続し、読み上げを開始")
+            .contexts(vec![InteractionContext::Guild]),
     ]
 }
 
@@ -23,10 +27,7 @@ pub fn matches(cmd: &CommandInteraction) -> bool {
 }
 
 pub async fn handle(ctx: &Context, cmd: &CommandInteraction) -> Result<()> {
-    let Some(guild_id) = cmd.guild_id else {
-        respond_text(ctx, cmd, "`/join`, `/kjoin` はサーバー内でのみ使えます。").await?;
-        return Ok(());
-    };
+    let guild_id = cmd.guild_id.expect("guild_id is Some");
     let user_id = cmd.user.id;
     let text_channel_id = cmd.channel_id;
 

@@ -1,13 +1,21 @@
 use anyhow::Result;
-use serenity::{builder::CreateCommand, client::Context, model::application::CommandInteraction};
+use serenity::{
+    builder::CreateCommand,
+    client::Context,
+    model::application::{CommandInteraction, InteractionContext},
+};
 
 use super::respond_text;
 use crate::app_state;
 
 pub fn commands() -> Vec<CreateCommand> {
     vec![
-        CreateCommand::new("leave").description("ボイスチャンネルから退出"),
-        CreateCommand::new("kleave").description("ボイスチャンネルから退出"),
+        CreateCommand::new("leave")
+            .description("ボイスチャンネルから退出")
+            .contexts(vec![InteractionContext::Guild]),
+        CreateCommand::new("kleave")
+            .description("ボイスチャンネルから退出")
+            .contexts(vec![InteractionContext::Guild]),
     ]
 }
 
@@ -16,10 +24,7 @@ pub fn matches(cmd: &CommandInteraction) -> bool {
 }
 
 pub async fn handle(ctx: &Context, cmd: &CommandInteraction) -> Result<()> {
-    let Some(guild_id) = cmd.guild_id else {
-        respond_text(ctx, cmd, "`/leave`, `/kleave` はサーバー内でのみ使えます。").await?;
-        return Ok(());
-    };
+    let guild_id = cmd.guild_id.expect("guild_id is Some");
 
     if !koe_call::is_connected(ctx, guild_id).await? {
         {

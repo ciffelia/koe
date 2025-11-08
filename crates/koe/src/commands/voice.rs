@@ -8,14 +8,17 @@ use serenity::{
         CreateSelectMenuOption,
     },
     client::Context,
-    model::application::CommandInteraction,
+    model::application::{CommandInteraction, InteractionContext},
 };
 
-use super::respond_text;
 use crate::{app_state, component_interaction::custom_id};
 
 pub fn commands() -> Vec<CreateCommand> {
-    vec![CreateCommand::new("voice").description("話者の設定")]
+    vec![
+        CreateCommand::new("voice")
+            .description("話者の設定")
+            .contexts(vec![InteractionContext::Guild]),
+    ]
 }
 
 pub fn matches(cmd: &CommandInteraction) -> bool {
@@ -23,10 +26,7 @@ pub fn matches(cmd: &CommandInteraction) -> bool {
 }
 
 pub async fn handle(ctx: &Context, cmd: &CommandInteraction) -> Result<()> {
-    let Some(guild_id) = cmd.guild_id else {
-        respond_text(ctx, cmd, "`/voice` はサーバー内でのみ使えます。").await?;
-        return Ok(());
-    };
+    let guild_id = cmd.guild_id.expect("guild_id is Some");
 
     let state = app_state::get(ctx).await?;
 

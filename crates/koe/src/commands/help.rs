@@ -1,10 +1,18 @@
 use anyhow::Result;
-use serenity::{builder::CreateCommand, client::Context, model::application::CommandInteraction};
+use serenity::{
+    builder::CreateCommand,
+    client::Context,
+    model::application::{CommandInteraction, InteractionContext},
+};
 
 use super::respond_text;
 
 pub fn commands() -> Vec<CreateCommand> {
-    vec![CreateCommand::new("help").description("使い方を表示")]
+    vec![
+        CreateCommand::new("help")
+            .description("使い方を表示")
+            .contexts(vec![InteractionContext::Guild]),
+    ]
 }
 
 pub fn matches(cmd: &CommandInteraction) -> bool {

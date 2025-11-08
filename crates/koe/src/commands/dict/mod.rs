@@ -6,13 +6,14 @@ use anyhow::{Context as _, Ok, Result, bail};
 use serenity::{
     builder::CreateCommand,
     client::Context as SerenityContext,
-    model::application::{CommandInteraction, ResolvedValue},
+    model::application::{CommandInteraction, InteractionContext, ResolvedValue},
 };
 
 pub fn commands() -> Vec<CreateCommand> {
     vec![
         CreateCommand::new("dict")
             .description("読み上げ辞書の閲覧と編集")
+            .contexts(vec![InteractionContext::Guild])
             .add_option(add::subcommand())
             .add_option(remove::subcommand())
             .add_option(view::subcommand()),
