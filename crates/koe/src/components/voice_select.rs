@@ -103,7 +103,7 @@ pub async fn handle_interaction(ctx: &Context, interaction: &ComponentInteractio
         ctx,
         interaction,
         format!(
-            "<@{}>さんの声を`{}`に変更しました。",
+            "<@{}>の声を`{}`に設定しました。",
             interaction.user.id, selected_preset.name
         ),
     )
