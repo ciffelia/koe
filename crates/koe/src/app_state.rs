@@ -16,11 +16,16 @@ use serenity::{
 pub struct AppState {
     pub redis_client: redis::Client,
     pub voicevox_client: VoicevoxClient,
+
+    /// The states of guilds where Koe is connected to a voice channel
     pub connected_guild_states: DashMap<GuildId, ConnectedGuildState>,
 }
 
 pub struct ConnectedGuildState {
+    /// The text channel where Koe is bound to read messages
     pub bound_text_channel: ChannelId,
+
+    /// The last message that was read aloud in this guild
     pub last_message_read: Option<Message>,
 }
 
