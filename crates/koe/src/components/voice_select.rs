@@ -1,5 +1,4 @@
 use anyhow::{Context as _, Result, bail};
-use koe_db::voice::{GetOption, SetOption};
 use rand::seq::IndexedRandom;
 use serenity::{
     builder::{CreateSelectMenu, CreateSelectMenuKind, CreateSelectMenuOption},
@@ -10,7 +9,13 @@ use serenity::{
     },
 };
 
-use crate::app_state;
+use crate::{
+    app_state,
+    db::{
+        self,
+        voice::{GetOption, SetOption},
+    },
+};
 
 const CUSTOM_ID_VOICE_SELECT: &str = "voice";
 
@@ -35,7 +40,7 @@ pub async fn component(
         .redis_client
         .get_multiplexed_async_connection()
         .await?;
-    let current_preset = koe_db::voice::get(
+    let current_preset = db::voice::get(
         &mut conn,
         GetOption {
             guild_id: guild_id.into(),
@@ -89,7 +94,7 @@ pub async fn handle_interaction(ctx: &Context, interaction: &ComponentInteractio
         .redis_client
         .get_multiplexed_async_connection()
         .await?;
-    koe_db::voice::set(
+    db::voice::set(
         &mut conn,
         SetOption {
             guild_id: guild_id.into(),

@@ -6,7 +6,7 @@ use serenity::{
 };
 
 use super::respond_text;
-use crate::app_state;
+use crate::{app_state, voice_call};
 
 const COMMAND_NAME: &str = "leave";
 const ALIAS_COMMAND_NAME: &str = "kleave";
@@ -31,14 +31,14 @@ pub async fn handle(ctx: &Context, cmd: &CommandInteraction) -> Result<()> {
         .guild_id
         .context("Guild ID not available in interaction")?;
 
-    if !koe_call::is_connected(ctx, guild_id).await? {
+    if !voice_call::is_connected(ctx, guild_id).await? {
         {
             respond_text(ctx, cmd, "どのボイスチャンネルにも接続していません。").await?;
             return Ok(());
         };
     }
 
-    koe_call::leave(ctx, guild_id).await?;
+    voice_call::leave(ctx, guild_id).await?;
 
     let state = app_state::get(ctx).await?;
     state.connected_guild_states.remove(&guild_id);

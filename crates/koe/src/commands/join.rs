@@ -9,7 +9,7 @@ use serenity::{
 };
 
 use super::respond_text;
-use crate::app_state;
+use crate::{app_state, voice_call};
 
 const COMMAND_NAME: &str = "join";
 const ALIAS_COMMAND_NAME: &str = "kjoin";
@@ -46,7 +46,7 @@ pub async fn handle(ctx: &Context, cmd: &CommandInteraction) -> Result<()> {
         return Ok(());
     };
 
-    koe_call::join_deaf(ctx, guild_id, voice_channel_id).await?;
+    voice_call::join_deaf(ctx, guild_id, voice_channel_id).await?;
 
     let state = app_state::get(ctx).await?;
     state.connected_guild_states.insert(

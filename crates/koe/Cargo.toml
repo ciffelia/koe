@@ -5,11 +5,6 @@ publish.workspace = true
 edition.workspace = true
 
 [dependencies]
-koe-call.workspace = true
-koe-config.workspace = true
-koe-db.workspace = true
-koe-speech.workspace = true
-
 # Basics
 anyhow.workspace = true
 tokio.workspace = true
@@ -21,9 +16,18 @@ ecs-logger.workspace = true
 # Discord
 serenity.workspace = true
 songbird.workspace = true
+symphonia.workspace = true
 discord-md.workspace = true
 
+# Database
+redis.workspace = true
+
+# Configuration
+serde.workspace = true
+serde_yaml.workspace = true
+
 # Utilities
+reqwest.workspace = true
 dashmap.workspace = true
 aho-corasick.workspace = true
 regex.workspace = true

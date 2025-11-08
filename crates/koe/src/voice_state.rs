@@ -5,7 +5,7 @@ use serenity::{
     model::id::{ChannelId, GuildId, UserId},
 };
 
-use crate::app_state;
+use crate::{app_state, voice_call};
 
 pub async fn handle_update(ctx: &Context, guild_id: Option<GuildId>) -> Result<()> {
     let Some(guild_id) = guild_id else {
@@ -22,7 +22,7 @@ pub async fn handle_update(ctx: &Context, guild_id: Option<GuildId>) -> Result<(
 
     // VCのメンバーがKoe自身のみになった場合は抜ける
     if current_channel_user_list.len() == 1 {
-        koe_call::leave(ctx, guild_id)
+        voice_call::leave(ctx, guild_id)
             .await
             .context("Failed to leave voice channel")?;
 

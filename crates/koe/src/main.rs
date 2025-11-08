@@ -1,7 +1,5 @@
 use anyhow::{Context, Result};
 use dashmap::DashMap;
-use koe_db::redis;
-use koe_speech::{speech::initialize_speakers, voicevox::VoicevoxClient};
 use log::{error, info};
 use serenity::{
     Client,
@@ -9,19 +7,24 @@ use serenity::{
 };
 use songbird::SerenityInit;
 use tokio::time::Duration;
+use tts::{speech::initialize_speakers, voicevox::VoicevoxClient};
 
 mod app_state;
 mod commands;
 mod components;
+mod config;
+mod db;
 mod event_handler;
 mod message;
+mod tts;
+mod voice_call;
 mod voice_state;
 
 #[tokio::main]
 async fn main() -> Result<()> {
     ecs_logger::init();
 
-    let config = koe_config::load().await?;
+    let config = config::load().await?;
     info!("Config loaded");
 
     let intents = GatewayIntents::non_privileged() | GatewayIntents::MESSAGE_CONTENT;

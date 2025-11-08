@@ -2,8 +2,6 @@ use std::sync::Arc;
 
 use anyhow::{Context as _, Result};
 use dashmap::DashMap;
-use koe_db::redis;
-use koe_speech::voicevox::VoicevoxClient;
 use serenity::{
     client::{Client, Context},
     model::{
@@ -12,6 +10,8 @@ use serenity::{
     },
     prelude::TypeMapKey,
 };
+
+use crate::tts::voicevox::VoicevoxClient;
 
 pub struct AppState {
     pub redis_client: redis::Client,

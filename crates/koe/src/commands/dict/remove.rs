@@ -1,5 +1,4 @@
 use anyhow::{Context as _, Result, bail};
-use koe_db::dict::RemoveResponse;
 use serenity::{
     builder::CreateCommandOption,
     client::Context,
@@ -7,7 +6,10 @@ use serenity::{
 };
 
 use super::super::{respond_text, sanitize_response};
-use crate::app_state;
+use crate::{
+    app_state,
+    db::{self, dict::RemoveResponse},
+};
 
 const SUBCOMMAND_NAME: &str = "remove";
 const WORD_OPTION_NAME: &str = "word";
@@ -61,9 +63,9 @@ pub async fn handle(
         .get_multiplexed_async_connection()
         .await?;
 
-    let resp = koe_db::dict::remove(
+    let resp = db::dict::remove(
         &mut conn,
-        koe_db::dict::RemoveOption {
+        db::dict::RemoveOption {
             guild_id: guild_id.into(),
             word: word.to_string(),
         },

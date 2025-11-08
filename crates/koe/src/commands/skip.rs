@@ -6,6 +6,7 @@ use serenity::{
 };
 
 use super::respond_text;
+use crate::voice_call;
 
 const COMMAND_NAME: &str = "skip";
 const ALIAS_COMMAND_NAME: &str = "kskip";
@@ -30,14 +31,14 @@ pub async fn handle(ctx: &Context, cmd: &CommandInteraction) -> Result<()> {
         .guild_id
         .context("Guild ID not available in interaction")?;
 
-    if !koe_call::is_connected(ctx, guild_id).await? {
+    if !voice_call::is_connected(ctx, guild_id).await? {
         {
             respond_text(ctx, cmd, "どのボイスチャンネルにも接続していません。").await?;
             return Ok(());
         };
     }
 
-    koe_call::skip(ctx, guild_id).await?;
+    voice_call::skip(ctx, guild_id).await?;
 
     respond_text(ctx, cmd, "読み上げ中のメッセージをスキップしました。").await?;
     Ok(())

@@ -1,6 +1,6 @@
 use anyhow::{Context, Result};
 
-use crate::voicevox::{GenerateQueryFromPresetParams, Preset, SynthesisParams, VoicevoxClient};
+use super::voicevox::{GenerateQueryFromPresetParams, Preset, SynthesisParams, VoicevoxClient};
 
 pub async fn initialize_speakers(client: &VoicevoxClient) -> Result<()> {
     let preset_list = client.presets().await?;

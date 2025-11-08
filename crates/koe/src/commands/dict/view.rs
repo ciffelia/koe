@@ -1,5 +1,4 @@
 use anyhow::{Context as _, Result};
-use koe_db::dict::GetAllOption;
 use serenity::{
     builder::{
         CreateCommandOption, CreateEmbed, CreateInteractionResponse,
@@ -10,7 +9,10 @@ use serenity::{
 };
 
 use super::super::sanitize_response;
-use crate::app_state;
+use crate::{
+    app_state,
+    db::{self, dict::GetAllOption},
+};
 
 const SUBCOMMAND_NAME: &str = "view";
 
@@ -33,7 +35,7 @@ pub async fn handle(ctx: &Context, cmd: &CommandInteraction) -> Result<()> {
         .get_multiplexed_async_connection()
         .await?;
 
-    let dict = koe_db::dict::get_all(
+    let dict = db::dict::get_all(
         &mut conn,
         GetAllOption {
             guild_id: guild_id.into(),

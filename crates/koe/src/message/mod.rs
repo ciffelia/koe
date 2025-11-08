@@ -1,20 +1,23 @@
 mod read;
 
 use anyhow::{Context as _, Result};
-use koe_db::voice::GetOption;
-use koe_speech::speech::{SpeechRequest, list_preset_ids, make_speech};
 use log::trace;
 use rand::seq::IndexedRandom;
 use serenity::{client::Context, model::channel::Message};
 
-use crate::app_state;
+use crate::{
+    app_state,
+    db::{self, voice::GetOption},
+    tts::speech::{SpeechRequest, list_preset_ids, make_speech},
+    voice_call,
+};
 
 pub async fn handle(ctx: &Context, msg: Message) -> Result<()> {
     let Some(guild_id) = msg.guild_id else {
         return Ok(());
     };
 
-    if !koe_call::is_connected(ctx, guild_id).await? {
+    if !voice_call::is_connected(ctx, guild_id).await? {
         return Ok(());
     }
 
@@ -63,7 +66,7 @@ pub async fn handle(ctx: &Context, msg: Message) -> Result<()> {
         .choose(&mut rand::rng())
         .context("No presets available")?
         .into();
-    let preset_id = koe_db::voice::get(
+    let preset_id = db::voice::get(
         &mut conn,
         GetOption {
             guild_id: guild_id.into(),
@@ -78,7 +81,7 @@ pub async fn handle(ctx: &Context, msg: Message) -> Result<()> {
         .await
         .context("Failed to execute Text-to-Speech")?;
 
-    koe_call::enqueue(ctx, guild_id, audio).await?;
+    voice_call::enqueue(ctx, guild_id, audio).await?;
 
     guild_state.last_message_read = Some(msg);
 

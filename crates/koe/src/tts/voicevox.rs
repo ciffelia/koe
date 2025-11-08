@@ -104,6 +104,7 @@ pub struct SynthesisParams {
 }
 
 #[derive(Debug, Clone, Deserialize)]
+#[allow(unused)]
 pub struct Preset {
     pub id: i64,
     pub name: String,

@@ -1,13 +1,14 @@
 use aho_corasick::{AhoCorasickBuilder, MatchKind};
 use anyhow::Result;
 use discord_md::generate::{ToMarkdownString, ToMarkdownStringOption};
-use koe_db::{dict::GetAllOption, redis};
 use regex::Regex;
 use serenity::{
     client::Context,
     model::{channel::Message, id::GuildId},
     utils::ContentSafeOptions,
 };
+
+use crate::db::{self, dict::GetAllOption};
 
 pub async fn build_read_text(
     ctx: &Context,
@@ -85,7 +86,7 @@ async fn replace_words_on_dict(
     guild_id: GuildId,
     text: &str,
 ) -> Result<String> {
-    let dict = koe_db::dict::get_all(
+    let dict = db::dict::get_all(
         conn,
         GetAllOption {
             guild_id: guild_id.into(),
