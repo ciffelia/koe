@@ -31,11 +31,14 @@ pub fn subcommand() -> CreateCommandOption {
 pub async fn handle(
     ctx: &Context,
     cmd: &CommandInteraction,
-    suboptions: &[ResolvedOption<'_>],
+    option: &ResolvedOption<'_>,
 ) -> Result<()> {
     let guild_id = cmd
         .guild_id
         .context("Guild ID not available in interaction")?;
+    let ResolvedValue::SubCommand(suboptions) = &option.value else {
+        bail!("Invalid subcommand value for /dict remove");
+    };
 
     let [
         ResolvedOption {
@@ -43,7 +46,7 @@ pub async fn handle(
             value: ResolvedValue::String(word),
             ..
         },
-    ] = suboptions
+    ] = &suboptions[..]
     else {
         bail!("Failed to parse /dict remove options");
     };

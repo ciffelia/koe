@@ -6,7 +6,7 @@ use anyhow::{Context as _, Ok, Result, bail};
 use serenity::{
     builder::CreateCommand,
     client::Context as SerenityContext,
-    model::application::{CommandInteraction, InteractionContext, ResolvedValue},
+    model::application::{CommandInteraction, InteractionContext},
 };
 
 const COMMAND_NAME: &str = "dict";
@@ -34,20 +34,12 @@ pub async fn handle(ctx: &SerenityContext, cmd: &CommandInteraction) -> Result<(
 
     match option.name {
         "add" => {
-            let ResolvedValue::SubCommand(suboptions) = &option.value else {
-                bail!("Invalid subcommand value for /dict add");
-            };
-
-            add::handle(ctx, cmd, suboptions)
+            add::handle(ctx, cmd, option)
                 .await
                 .context("Failed to execute /dict add")?;
         }
         "remove" => {
-            let ResolvedValue::SubCommand(suboptions) = &option.value else {
-                bail!("Invalid subcommand value for /dict remove");
-            };
-
-            remove::handle(ctx, cmd, suboptions)
+            remove::handle(ctx, cmd, option)
                 .await
                 .context("Failed to execute /dict remove")?;
         }
