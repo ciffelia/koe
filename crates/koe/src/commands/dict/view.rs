@@ -17,7 +17,9 @@ pub fn subcommand() -> CreateCommandOption {
 }
 
 pub async fn handle(ctx: &Context, cmd: &CommandInteraction) -> Result<()> {
-    let guild_id = cmd.guild_id.expect("guild_id is Some");
+    let guild_id = cmd
+        .guild_id
+        .context("Guild ID not available in interaction")?;
 
     let state = app_state::get(ctx).await?;
     let mut conn = state

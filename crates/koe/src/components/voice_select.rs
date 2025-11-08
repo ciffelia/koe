@@ -64,7 +64,9 @@ pub async fn component(
 }
 
 pub async fn handle_interaction(ctx: &Context, interaction: &ComponentInteraction) -> Result<()> {
-    let guild_id = interaction.guild_id.context("guild_id is Some")?;
+    let guild_id = interaction
+        .guild_id
+        .context("Guild ID not available in interaction")?;
 
     let ComponentInteractionDataKind::StringSelect { values } = &interaction.data.kind else {
         bail!("Expected string select interaction")

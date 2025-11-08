@@ -27,7 +27,9 @@ pub fn matches(cmd: &CommandInteraction) -> bool {
 }
 
 pub async fn handle(ctx: &Context, cmd: &CommandInteraction) -> Result<()> {
-    let guild_id = cmd.guild_id.expect("guild_id is Some");
+    let guild_id = cmd
+        .guild_id
+        .context("Guild ID not available in interaction")?;
     let user_id = cmd.user.id;
     let text_channel_id = cmd.channel_id;
 

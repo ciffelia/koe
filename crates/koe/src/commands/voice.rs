@@ -22,7 +22,9 @@ pub fn matches(cmd: &CommandInteraction) -> bool {
 }
 
 pub async fn handle(ctx: &Context, cmd: &CommandInteraction) -> Result<()> {
-    let guild_id = cmd.guild_id.expect("guild_id is Some");
+    let guild_id = cmd
+        .guild_id
+        .context("Guild ID not available in interaction")?;
 
     let select_menu = components::voice_select::component(ctx, guild_id, cmd.user.id).await?;
 

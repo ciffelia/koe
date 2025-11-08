@@ -1,4 +1,4 @@
-use anyhow::{Result, bail};
+use anyhow::{Context as _, Result, bail};
 use koe_db::dict::{InsertOption, InsertResponse};
 use serenity::{
     builder::CreateCommandOption,
@@ -26,7 +26,9 @@ pub async fn handle(
     cmd: &CommandInteraction,
     suboptions: &[ResolvedOption<'_>],
 ) -> Result<()> {
-    let guild_id = cmd.guild_id.expect("guild_id is Some");
+    let guild_id = cmd
+        .guild_id
+        .context("Guild ID not available in interaction")?;
 
     let [
         ResolvedOption {
