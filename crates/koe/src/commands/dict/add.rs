@@ -37,6 +37,10 @@ pub fn subcommand() -> CreateCommandOption {
     )
 }
 
+pub fn matches(option: &ResolvedOption<'_>) -> bool {
+    option.name == SUBCOMMAND_NAME
+}
+
 pub async fn handle(
     ctx: &Context,
     cmd: &CommandInteraction,

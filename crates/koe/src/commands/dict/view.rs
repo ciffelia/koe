@@ -6,7 +6,7 @@ use serenity::{
         CreateInteractionResponseMessage,
     },
     client::Context,
-    model::application::{CommandInteraction, CommandOptionType},
+    model::application::{CommandInteraction, CommandOptionType, ResolvedOption},
 };
 
 use super::super::sanitize_response;
@@ -16,6 +16,10 @@ const SUBCOMMAND_NAME: &str = "view";
 
 pub fn subcommand() -> CreateCommandOption {
     CreateCommandOption::new(CommandOptionType::SubCommand, SUBCOMMAND_NAME, "辞書を表示")
+}
+
+pub fn matches(option: &ResolvedOption<'_>) -> bool {
+    option.name == SUBCOMMAND_NAME
 }
 
 pub async fn handle(ctx: &Context, cmd: &CommandInteraction) -> Result<()> {

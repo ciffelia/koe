@@ -32,23 +32,20 @@ pub async fn handle(ctx: &SerenityContext, cmd: &CommandInteraction) -> Result<(
         bail!("No subcommand provided for /dict");
     };
 
-    match option.name {
-        "add" => {
-            add::handle(ctx, cmd, option)
-                .await
-                .context("Failed to execute /dict add")?;
-        }
-        "remove" => {
-            remove::handle(ctx, cmd, option)
-                .await
-                .context("Failed to execute /dict remove")?;
-        }
-        "view" => {
-            view::handle(ctx, cmd)
-                .await
-                .context("Failed to execute /dict view")?;
-        }
-        _ => bail!("Unknown subcommand for /dict: {}", option.name),
+    if add::matches(option) {
+        add::handle(ctx, cmd, option)
+            .await
+            .context("Failed to execute /dict add")?;
+    } else if remove::matches(option) {
+        remove::handle(ctx, cmd, option)
+            .await
+            .context("Failed to execute /dict remove")?;
+    } else if view::matches(option) {
+        view::handle(ctx, cmd)
+            .await
+            .context("Failed to execute /dict view")?;
+    } else {
+        bail!("Unknown subcommand for /dict: {}", option.name);
     }
 
     Ok(())
