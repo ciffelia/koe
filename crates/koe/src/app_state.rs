@@ -1,6 +1,6 @@
 use std::sync::Arc;
 
-use anyhow::{Result, anyhow};
+use anyhow::{Context as _, Result};
 use dashmap::DashMap;
 use koe_db::redis;
 use koe_speech::voicevox::VoicevoxClient;
@@ -38,7 +38,7 @@ pub async fn get(ctx: &Context) -> Result<Arc<AppState>> {
 
     let state_ref = data
         .get::<AppState>()
-        .ok_or_else(|| anyhow!("AppState is not initialized"))?;
+        .context("AppState is not initialized")?;
 
     Ok(state_ref.clone())
 }
