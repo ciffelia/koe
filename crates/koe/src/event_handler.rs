@@ -9,7 +9,7 @@ use serenity::{
     },
 };
 
-use crate::{command, component_interaction, message, voice_state};
+use crate::{commands, component_interaction, message, voice_state};
 
 pub struct Handler;
 
@@ -21,7 +21,9 @@ impl EventHandler for Handler {
         ctx.set_activity(Some(ActivityData::playing("テキストチャット 読み上げBot")));
 
         for guild in &ready.guilds {
-            if let Err(err) = command::setup::setup_guild_commands(&ctx, guild.id)
+            if let Err(err) = guild
+                .id
+                .set_commands(&ctx.http, commands::commands())
                 .await
                 .context("Failed to set guild application commands")
             {
@@ -31,7 +33,9 @@ impl EventHandler for Handler {
     }
 
     async fn guild_create(&self, ctx: Context, guild: Guild, _is_new: Option<bool>) {
-        if let Err(err) = command::setup::setup_guild_commands(&ctx, guild.id)
+        if let Err(err) = guild
+            .id
+            .set_commands(&ctx.http, commands::commands())
             .await
             .context("Failed to set guild application commands")
         {
@@ -42,7 +46,7 @@ impl EventHandler for Handler {
     async fn interaction_create(&self, ctx: Context, interaction: Interaction) {
         match interaction {
             Interaction::Command(command) => {
-                if let Err(err) = command::handler::handle(&ctx, &command)
+                if let Err(err) = commands::handle(&ctx, &command)
                     .await
                     .context("Failed to respond to slash command")
                 {

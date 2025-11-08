@@ -11,7 +11,7 @@ use songbird::SerenityInit;
 use tokio::time::Duration;
 
 mod app_state;
-mod command;
+mod commands;
 mod component_interaction;
 mod event_handler;
 mod message;
