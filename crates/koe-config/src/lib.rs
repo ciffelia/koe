@@ -31,7 +31,7 @@ pub async fn load() -> Result<Config> {
         .await
         .with_context(|| format!("Failed to load config file from {config_path}"))?;
 
-    let config = serde_yaml::from_str::<Config>(&yaml).context("Failed to parse config file")?;
+    let config: Config = serde_yaml::from_str(&yaml).context("Failed to parse config file")?;
 
     Ok(config)
 }

@@ -45,13 +45,13 @@ pub async fn component(
     )
     .await?;
 
-    let option_list = available_presets
+    let option_list: Vec<_> = available_presets
         .iter()
         .map(|p| {
             CreateSelectMenuOption::new(&p.name, p.id.to_string())
                 .default_selection(p.id == current_preset)
         })
-        .collect::<Vec<_>>();
+        .collect();
 
     let select_menu = CreateSelectMenu::new(
         CUSTOM_ID_VOICE_SELECT,
@@ -72,10 +72,10 @@ pub async fn handle_interaction(ctx: &Context, interaction: &ComponentInteractio
         bail!("Expected string select interaction")
     };
 
-    let selected_preset_id = values
+    let selected_preset_id: i64 = values
         .first()
         .context("Value not available in message component interaction")?
-        .parse::<i64>()?;
+        .parse()?;
 
     let state = app_state::get(ctx).await?;
 
