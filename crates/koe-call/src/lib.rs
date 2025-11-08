@@ -52,7 +52,7 @@ pub async fn is_connected(ctx: &Context, guild_id: impl Into<GuildId>) -> Result
 
 pub async fn enqueue(ctx: &Context, guild_id: impl Into<GuildId>, audio: Vec<u8>) -> Result<()> {
     let manager = extract_songbird(ctx).await?;
-    let call = get_call(manager, guild_id)?;
+    let call = get_call(&manager, guild_id)?;
 
     let mut handler = call.lock().await;
     handler.enqueue_input(audio.into()).await;
@@ -62,7 +62,7 @@ pub async fn enqueue(ctx: &Context, guild_id: impl Into<GuildId>, audio: Vec<u8>
 
 pub async fn skip(ctx: &Context, guild_id: impl Into<GuildId>) -> Result<()> {
     let manager = extract_songbird(ctx).await?;
-    let call = get_call(manager, guild_id)?;
+    let call = get_call(&manager, guild_id)?;
 
     let handler = call.lock().await;
     let current_track = handler.queue().current();
@@ -82,7 +82,7 @@ async fn extract_songbird(ctx: &Context) -> Result<Arc<Songbird>> {
     Ok(songbird)
 }
 
-fn get_call(manager: Arc<Songbird>, guild_id: impl Into<GuildId>) -> Result<Arc<Mutex<Call>>> {
+fn get_call(manager: &Songbird, guild_id: impl Into<GuildId>) -> Result<Arc<Mutex<Call>>> {
     let guild_id = guild_id.into();
 
     let call = manager
