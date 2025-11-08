@@ -50,32 +50,30 @@ pub async fn handle(ctx: &Context, cmd: &CommandInteraction) -> Result<()> {
     )
     .await?;
 
-    {
-        let option_list = available_presets
-            .iter()
-            .map(|p| {
-                CreateSelectMenuOption::new(&p.name, p.id.to_string())
-                    .default_selection(p.id == current_preset)
-            })
-            .collect::<Vec<_>>();
+    let option_list = available_presets
+        .iter()
+        .map(|p| {
+            CreateSelectMenuOption::new(&p.name, p.id.to_string())
+                .default_selection(p.id == current_preset)
+        })
+        .collect::<Vec<_>>();
 
-        let select_menu = CreateSelectMenu::new(
-            custom_id::CUSTOM_ID_VOICE,
-            CreateSelectMenuKind::String {
-                options: option_list,
-            },
-        );
+    let select_menu = CreateSelectMenu::new(
+        custom_id::CUSTOM_ID_VOICE,
+        CreateSelectMenuKind::String {
+            options: option_list,
+        },
+    );
 
-        let action_row = CreateActionRow::SelectMenu(select_menu);
+    let action_row = CreateActionRow::SelectMenu(select_menu);
 
-        let message = CreateInteractionResponseMessage::new()
-            .ephemeral(true)
-            .components(vec![action_row]);
+    let message = CreateInteractionResponseMessage::new()
+        .ephemeral(true)
+        .components(vec![action_row]);
 
-        cmd.create_response(&ctx.http, CreateInteractionResponse::Message(message))
-            .await
-            .context("Failed to create interaction response")?;
-    };
+    cmd.create_response(&ctx.http, CreateInteractionResponse::Message(message))
+        .await
+        .context("Failed to create interaction response")?;
 
     Ok(())
 }
