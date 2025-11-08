@@ -9,7 +9,7 @@ use serenity::{
     },
 };
 
-use crate::{commands, component_interaction, message, voice_state};
+use crate::{commands, components, message, voice_state};
 
 pub struct Handler;
 
@@ -54,10 +54,9 @@ impl EventHandler for Handler {
                 }
             }
             Interaction::Component(component_interaction) => {
-                if let Err(err) =
-                    component_interaction::handler::handle(&ctx, &component_interaction)
-                        .await
-                        .context("Failed to respond to message components interaction")
+                if let Err(err) = components::handle(&ctx, &component_interaction)
+                    .await
+                    .context("Failed to respond to message components interaction")
                 {
                     error!("{err:?}");
                 }

@@ -12,7 +12,7 @@ use tokio::time::Duration;
 
 mod app_state;
 mod commands;
-mod component_interaction;
+mod components;
 mod event_handler;
 mod message;
 mod regex;
