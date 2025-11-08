@@ -18,9 +18,10 @@ pub async fn handle(ctx: &Context, msg: Message) -> Result<()> {
     }
 
     let state = app_state::get(ctx).await?;
-    let Some(mut guild_state) = state.connected_guild_states.get_mut(&guild_id) else {
-        return Ok(());
-    };
+    let mut guild_state = state
+        .connected_guild_states
+        .get_mut(&guild_id)
+        .with_context(|| format!("Guild state not found for guild {guild_id}"))?;
 
     if guild_state.bound_text_channel != msg.channel_id {
         return Ok(());
