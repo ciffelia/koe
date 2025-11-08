@@ -1,4 +1,4 @@
-use anyhow::{Result, anyhow, bail};
+use anyhow::{Context as _, Result, bail};
 use koe_db::voice::{GetOption, SetOption};
 use rand::seq::IndexedRandom;
 use serenity::{
@@ -29,7 +29,7 @@ pub async fn component(
     let fallback_preset_id = available_presets
         .choose(&mut rand::rng())
         .map(|p| p.id)
-        .ok_or_else(|| anyhow!("No presets available"))?;
+        .context("No presets available")?;
 
     let mut conn = state
         .redis_client
@@ -64,9 +64,7 @@ pub async fn component(
 }
 
 pub async fn handle_interaction(ctx: &Context, interaction: &ComponentInteraction) -> Result<()> {
-    let guild_id = interaction
-        .guild_id
-        .ok_or_else(|| anyhow!("Failed to get guild ID"))?;
+    let guild_id = interaction.guild_id.context("guild_id is Some")?;
 
     let ComponentInteractionDataKind::StringSelect { values } = &interaction.data.kind else {
         bail!("Expected string select interaction")
@@ -74,7 +72,7 @@ pub async fn handle_interaction(ctx: &Context, interaction: &ComponentInteractio
 
     let selected_preset_id = values
         .first()
-        .ok_or_else(|| anyhow!("Value not available in message component interaction"))?
+        .context("Value not available in message component interaction")?
         .parse::<i64>()?;
 
     let state = app_state::get(ctx).await?;
@@ -83,7 +81,7 @@ pub async fn handle_interaction(ctx: &Context, interaction: &ComponentInteractio
     let selected_preset = available_presets
         .into_iter()
         .find(|p| p.id == selected_preset_id)
-        .ok_or_else(|| anyhow!("Preset {selected_preset_id} not available"))?;
+        .with_context(|| format!("Preset {selected_preset_id} not available"))?;
 
     let mut conn = state
         .redis_client
