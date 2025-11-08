@@ -8,14 +8,12 @@ use serenity::{
 use crate::app_state;
 
 pub async fn handle_update(ctx: &Context, guild_id: Option<GuildId>) -> Result<()> {
-    let guild_id = match guild_id {
-        Some(id) => id,
-        None => return Ok(()),
+    let Some(guild_id) = guild_id else {
+        return Ok(());
     };
 
-    let current_voice_channel_id = match get_current_voice_channel_id(ctx, guild_id)? {
-        Some(id) => id,
-        None => return Ok(()),
+    let Some(current_voice_channel_id) = get_current_voice_channel_id(ctx, guild_id)? else {
+        return Ok(());
     };
 
     let current_channel_user_list =
@@ -44,9 +42,8 @@ fn get_current_voice_channel_id(ctx: &Context, guild_id: GuildId) -> Result<Opti
         .to_guild_cached(&ctx.cache)
         .context("Failed to find guild in the cache")?;
 
-    let current_voice_state = match guild.voice_states.get(&current_user_id) {
-        Some(state) => state,
-        None => return Ok(None),
+    let Some(current_voice_state) = guild.voice_states.get(&current_user_id) else {
+        return Ok(None);
     };
 
     Ok(current_voice_state.channel_id)

@@ -25,9 +25,8 @@ pub fn matches(cmd: &CommandInteraction) -> bool {
 
 pub async fn handle(ctx: &SerenityContext, cmd: &CommandInteraction) -> Result<()> {
     let options = cmd.data.options();
-    let option = match options.first() {
-        Some(option) => option,
-        None => bail!("No subcommand provided for /dict"),
+    let Some(option) = options.first() else {
+        bail!("No subcommand provided for /dict");
     };
 
     match option.name {
@@ -55,7 +54,7 @@ pub async fn handle(ctx: &SerenityContext, cmd: &CommandInteraction) -> Result<(
                 .context("Failed to execute /dict view")?;
         }
         _ => bail!("Unknown subcommand for /dict: {}", option.name),
-    };
+    }
 
     Ok(())
 }

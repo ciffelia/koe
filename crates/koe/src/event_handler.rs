@@ -27,7 +27,7 @@ impl EventHandler for Handler {
                 .await
                 .context("Failed to set guild application commands")
             {
-                error!("{:?}", err);
+                error!("{err:?}");
             }
         }
     }
@@ -39,7 +39,7 @@ impl EventHandler for Handler {
             .await
             .context("Failed to set guild application commands")
         {
-            error!("{:?}", err);
+            error!("{err:?}");
         }
     }
 
@@ -50,7 +50,7 @@ impl EventHandler for Handler {
                     .await
                     .context("Failed to respond to slash command")
                 {
-                    error!("{:?}", err);
+                    error!("{err:?}");
                 }
             }
             Interaction::Component(component_interaction) => {
@@ -59,11 +59,11 @@ impl EventHandler for Handler {
                         .await
                         .context("Failed to respond to message components interaction")
                 {
-                    error!("{:?}", err);
+                    error!("{err:?}");
                 }
             }
             _ => {}
-        };
+        }
     }
 
     async fn message(&self, ctx: Context, msg: Message) {
@@ -71,7 +71,7 @@ impl EventHandler for Handler {
             .await
             .context("Failed to handle message")
         {
-            error!("{:?}", err);
+            error!("{err:?}");
         }
     }
 
@@ -85,7 +85,7 @@ impl EventHandler for Handler {
             .await
             .context("Failed to handle voice state update")
         {
-            error!("{:?}", err);
+            error!("{err:?}");
         }
     }
 }

@@ -90,7 +90,7 @@ async fn get_call(
 
     let call = manager
         .get(guild_id)
-        .ok_or_else(|| anyhow!("Failed to retrieve call for guild {}", guild_id))?;
+        .ok_or_else(|| anyhow!("Failed to retrieve call for guild {guild_id}"))?;
 
     Ok(call)
 }

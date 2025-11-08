@@ -15,12 +15,9 @@ pub fn matches(cmd: &CommandInteraction) -> bool {
 }
 
 pub async fn handle(ctx: &Context, cmd: &CommandInteraction) -> Result<()> {
-    let guild_id = match cmd.guild_id {
-        Some(id) => id,
-        None => {
-            respond_text(ctx, cmd, "`/skip`, `/kskip` はサーバー内でのみ使えます。").await?;
-            return Ok(());
-        }
+    let Some(guild_id) = cmd.guild_id else {
+        respond_text(ctx, cmd, "`/skip`, `/kskip` はサーバー内でのみ使えます。").await?;
+        return Ok(());
     };
 
     if !koe_call::is_connected(ctx, guild_id).await? {

@@ -26,7 +26,7 @@ pub async fn insert(
     Ok(match resp {
         0 => InsertResponse::WordAlreadyExists,
         1 => InsertResponse::Success,
-        x => bail!("Unknown HSETNX response from Redis: {}", x),
+        x => bail!("Unknown HSETNX response from Redis: {x}"),
     })
 }
 
@@ -54,7 +54,7 @@ pub async fn remove(
     Ok(match resp {
         0 => RemoveResponse::WordDoesNotExist,
         1 => RemoveResponse::Success,
-        x => bail!("Unknown HDEL response from Redis: {}", x),
+        x => bail!("Unknown HDEL response from Redis: {x}"),
     })
 }
 
@@ -74,5 +74,5 @@ pub async fn get_all(
 }
 
 fn dict_key(guild_id: u64) -> String {
-    format!("guild:{}:dict", guild_id)
+    format!("guild:{guild_id}:dict")
 }

@@ -29,7 +29,7 @@ pub async fn load() -> Result<Config> {
 
     let yaml = tokio::fs::read_to_string(&config_path)
         .await
-        .with_context(|| format!("Failed to load config file from {}", config_path))?;
+        .with_context(|| format!("Failed to load config file from {config_path}"))?;
 
     let config = serde_yaml::from_str::<Config>(&yaml).context("Failed to parse config file")?;
 

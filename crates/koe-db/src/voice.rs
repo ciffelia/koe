@@ -38,5 +38,5 @@ pub async fn set(connection: &mut MultiplexedConnection, option: SetOption) -> R
 }
 
 fn voice_key(guild_id: u64, user_id: u64) -> String {
-    format!("guild:{}:user:{}:voice", guild_id, user_id)
+    format!("guild:{guild_id}:user:{user_id}:voice")
 }

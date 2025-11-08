@@ -23,27 +23,21 @@ pub fn matches(cmd: &CommandInteraction) -> bool {
 }
 
 pub async fn handle(ctx: &Context, cmd: &CommandInteraction) -> Result<()> {
-    let guild_id = match cmd.guild_id {
-        Some(id) => id,
-        None => {
-            respond_text(ctx, cmd, "`/join`, `/kjoin` はサーバー内でのみ使えます。").await?;
-            return Ok(());
-        }
+    let Some(guild_id) = cmd.guild_id else {
+        respond_text(ctx, cmd, "`/join`, `/kjoin` はサーバー内でのみ使えます。").await?;
+        return Ok(());
     };
     let user_id = cmd.user.id;
     let text_channel_id = cmd.channel_id;
 
-    let voice_channel_id = match get_user_voice_channel(ctx, &guild_id, &user_id)? {
-        Some(channel) => channel,
-        None => {
-            respond_text(
-                ctx,
-                cmd,
-                "ボイスチャンネルに接続してから `/join` を送信してください。",
-            )
-            .await?;
-            return Ok(());
-        }
+    let Some(voice_channel_id) = get_user_voice_channel(ctx, guild_id, user_id)? else {
+        respond_text(
+            ctx,
+            cmd,
+            "ボイスチャンネルに接続してから `/join` を送信してください。",
+        )
+        .await?;
+        return Ok(());
     };
 
     koe_call::join_deaf(ctx, guild_id, voice_channel_id).await?;
@@ -64,8 +58,8 @@ pub async fn handle(ctx: &Context, cmd: &CommandInteraction) -> Result<()> {
 /// Helper function to get the voice channel a user is currently in
 fn get_user_voice_channel(
     ctx: &Context,
-    guild_id: &GuildId,
-    user_id: &UserId,
+    guild_id: GuildId,
+    user_id: UserId,
 ) -> Result<Option<ChannelId>> {
     let guild = guild_id
         .to_guild_cached(&ctx.cache)
@@ -73,7 +67,7 @@ fn get_user_voice_channel(
 
     let channel_id = guild
         .voice_states
-        .get(user_id)
+        .get(&user_id)
         .and_then(|voice_state| voice_state.channel_id);
 
     Ok(channel_id)

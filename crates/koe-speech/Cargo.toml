@@ -8,3 +8,6 @@ edition.workspace = true
 anyhow.workspace = true
 serde.workspace = true
 reqwest.workspace = true
+
+[lints]
+workspace = true

@@ -28,3 +28,6 @@ dashmap.workspace = true
 aho-corasick.workspace = true
 regex.workspace = true
 rand.workspace = true
+
+[lints]
+workspace = true

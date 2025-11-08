@@ -44,7 +44,7 @@ async fn handle_voice(ctx: &Context, interaction: &ComponentInteraction) -> Resu
     let selected_preset = available_presets
         .into_iter()
         .find(|p| p.id == selected_preset_id)
-        .ok_or_else(|| anyhow!("Preset {} not available", selected_preset_id))?;
+        .ok_or_else(|| anyhow!("Preset {selected_preset_id} not available"))?;
 
     let mut conn = state
         .redis_client

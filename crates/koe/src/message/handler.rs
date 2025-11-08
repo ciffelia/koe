@@ -9,9 +9,8 @@ use super::read::build_read_text;
 use crate::app_state;
 
 pub async fn handle(ctx: &Context, msg: Message) -> Result<()> {
-    let guild_id = match msg.guild_id {
-        Some(id) => id,
-        None => return Ok(()),
+    let Some(guild_id) = msg.guild_id else {
+        return Ok(());
     };
 
     if !koe_call::is_connected(ctx, guild_id).await? {
@@ -19,9 +18,8 @@ pub async fn handle(ctx: &Context, msg: Message) -> Result<()> {
     }
 
     let state = app_state::get(ctx).await?;
-    let mut guild_state = match state.connected_guild_states.get_mut(&guild_id) {
-        Some(status) => status,
-        None => return Ok(()),
+    let Some(mut guild_state) = state.connected_guild_states.get_mut(&guild_id) else {
+        return Ok(());
     };
 
     if guild_state.bound_text_channel != msg.channel_id {
@@ -48,7 +46,7 @@ pub async fn handle(ctx: &Context, msg: Message) -> Result<()> {
         &mut conn,
         guild_id,
         &msg,
-        &guild_state.last_message_read,
+        guild_state.last_message_read.as_ref(),
     )
     .await?;
     trace!("Built text: {:?}", &text);

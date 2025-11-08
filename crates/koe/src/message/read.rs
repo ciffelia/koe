@@ -15,7 +15,7 @@ pub async fn build_read_text(
     conn: &mut redis::aio::MultiplexedConnection,
     guild_id: GuildId,
     msg: &Message,
-    last_msg: &Option<Message>,
+    last_msg: Option<&Message>,
 ) -> Result<String> {
     let author_name = build_author_name(ctx, msg).await;
 
@@ -29,7 +29,7 @@ pub async fn build_read_text(
     let content = remove_url(&content);
 
     let text = if should_read_author_name(msg, last_msg) {
-        format!("{}。{}", author_name, content)
+        format!("{author_name}。{content}")
     } else {
         content
     };
@@ -44,10 +44,9 @@ pub async fn build_read_text(
     }
 }
 
-fn should_read_author_name(msg: &Message, last_msg: &Option<Message>) -> bool {
-    let last_msg = match last_msg {
-        Some(msg) => msg,
-        None => return true,
+fn should_read_author_name(msg: &Message, last_msg: Option<&Message>) -> bool {
+    let Some(last_msg) = last_msg else {
+        return true;
     };
 
     msg.author != last_msg.author

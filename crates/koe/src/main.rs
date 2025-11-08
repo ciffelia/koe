@@ -57,7 +57,7 @@ async fn main() -> Result<()> {
                 .await
                 .context("Failed to initialize speakers")
             {
-                error!("{:?}", err);
+                error!("{err:?}");
             }
         });
     }

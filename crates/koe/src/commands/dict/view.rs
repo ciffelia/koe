@@ -17,12 +17,9 @@ pub fn subcommand() -> CreateCommandOption {
 }
 
 pub async fn handle(ctx: &Context, cmd: &CommandInteraction) -> Result<()> {
-    let guild_id = match cmd.guild_id {
-        Some(id) => id,
-        None => {
-            respond_text(ctx, cmd, "`/dict view` はサーバー内でのみ使えます。").await?;
-            return Ok(());
-        }
+    let Some(guild_id) = cmd.guild_id else {
+        respond_text(ctx, cmd, "`/dict view` はサーバー内でのみ使えます。").await?;
+        return Ok(());
     };
 
     let state = app_state::get(ctx).await?;
@@ -46,7 +43,7 @@ pub async fn handle(ctx: &Context, cmd: &CommandInteraction) -> Result<()> {
             .name(&ctx.cache)
             .unwrap_or_else(|| "サーバー".to_string());
 
-        embed = embed.title(format!("📕 {}の辞書", guild_name));
+        embed = embed.title(format!("📕 {guild_name}の辞書"));
 
         embed = embed.fields(
             dict.into_iter()
