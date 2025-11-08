@@ -15,7 +15,6 @@ mod commands;
 mod components;
 mod event_handler;
 mod message;
-mod regex;
 mod voice_state;
 
 #[tokio::main]

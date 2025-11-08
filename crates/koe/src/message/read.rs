@@ -2,13 +2,12 @@ use aho_corasick::{AhoCorasickBuilder, MatchKind};
 use anyhow::Result;
 use discord_md::generate::{ToMarkdownString, ToMarkdownStringOption};
 use koe_db::{dict::GetAllOption, redis};
+use regex::Regex;
 use serenity::{
     client::Context,
     model::{channel::Message, id::GuildId},
     utils::ContentSafeOptions,
 };
-
-use crate::regex::{custom_emoji_regex, url_regex};
 
 pub async fn build_read_text(
     ctx: &Context,
@@ -106,4 +105,20 @@ async fn replace_words_on_dict(
 /// メッセージのURLを除去
 fn remove_url(text: &str) -> String {
     url_regex().replace_all(text, "、").into()
+}
+
+macro_rules! regex {
+    ($re:literal $(,)?) => {{
+        static RE: std::sync::LazyLock<regex::Regex> =
+            std::sync::LazyLock::new(|| regex::Regex::new($re).unwrap());
+        &RE
+    }};
+}
+
+fn url_regex() -> &'static Regex {
+    regex!(r"https?://\S\S+")
+}
+
+fn custom_emoji_regex() -> &'static Regex {
+    regex!(r"<(:\w+:)\d+>")
 }
