@@ -1,6 +1,6 @@
 mod read;
 
-use anyhow::{Context as _, Result, anyhow};
+use anyhow::{Context as _, Result};
 use koe_db::voice::GetOption;
 use koe_speech::speech::{SpeechRequest, list_preset_ids, make_speech};
 use log::trace;
@@ -61,7 +61,7 @@ pub async fn handle(ctx: &Context, msg: Message) -> Result<()> {
     let available_preset_ids = list_preset_ids(&state.voicevox_client).await?;
     let fallback_preset_id = available_preset_ids
         .choose(&mut rand::rng())
-        .ok_or_else(|| anyhow!("No presets available"))?
+        .context("No presets available")?
         .into();
     let preset_id = koe_db::voice::get(
         &mut conn,

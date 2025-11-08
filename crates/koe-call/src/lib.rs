@@ -1,6 +1,6 @@
 use std::sync::Arc;
 
-use anyhow::{Context as _, Result, anyhow};
+use anyhow::{Context as _, Result};
 use serenity::client::Context;
 use songbird::{
     Call, Songbird,
@@ -77,7 +77,7 @@ pub async fn skip(ctx: &Context, guild_id: impl Into<GuildId>) -> Result<()> {
 async fn extract_songbird(ctx: &Context) -> Result<Arc<Songbird>> {
     let songbird = songbird::get(ctx)
         .await
-        .ok_or_else(|| anyhow!("Songbird voice client is not initialized"))?;
+        .context("Songbird voice client is not initialized")?;
 
     Ok(songbird)
 }
@@ -87,7 +87,7 @@ fn get_call(manager: &Songbird, guild_id: impl Into<GuildId>) -> Result<Arc<Mute
 
     let call = manager
         .get(guild_id)
-        .ok_or_else(|| anyhow!("Failed to retrieve call for guild {guild_id}"))?;
+        .with_context(|| format!("Failed to retrieve call for guild {guild_id}"))?;
 
     Ok(call)
 }

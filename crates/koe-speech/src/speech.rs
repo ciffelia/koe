@@ -1,4 +1,4 @@
-use anyhow::{Result, anyhow};
+use anyhow::{Context, Result};
 
 use crate::voicevox::{GenerateQueryFromPresetParams, Preset, SynthesisParams, VoicevoxClient};
 
@@ -42,7 +42,7 @@ async fn get_preset(client: &VoicevoxClient, id: PresetId) -> Result<Preset> {
     let preset = preset_list
         .into_iter()
         .find(|p| PresetId(p.id) == id)
-        .ok_or_else(|| anyhow!("Preset {} is not available", id.0))?;
+        .with_context(|| format!("Preset {} is not available", id.0))?;
 
     Ok(preset)
 }
