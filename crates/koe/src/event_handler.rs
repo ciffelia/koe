@@ -66,7 +66,7 @@ impl EventHandler for Handler {
     }
 
     async fn message(&self, ctx: Context, msg: Message) {
-        if let Err(err) = message::handler::handle(&ctx, msg)
+        if let Err(err) = message::handle(&ctx, msg)
             .await
             .context("Failed to handle message")
         {
