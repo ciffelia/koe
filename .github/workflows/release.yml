@@ -18,6 +18,9 @@ permissions:
   contents: write
   packages: write
 
+env:
+  CONTAINER_IMAGE: ghcr.io/${{ github.repository_owner }}/koe
+
 concurrency: ${{ github.workflow }}
 
 jobs:
@@ -26,7 +29,7 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - name: Make sure that the container image is built
-        run: skopeo inspect 'docker://ghcr.io/ciffelia/koe:git-${{ github.sha }}'
+        run: skopeo inspect "docker://$CONTAINER_IMAGE:git-${{ github.sha }}"
 
       - uses: actions/checkout@v5
         with:
@@ -79,5 +82,5 @@ jobs:
         run: |
           for tag in ${{ steps.generate-docker-tags.outputs.tags }}
           do
-            skopeo copy --all 'docker://ghcr.io/ciffelia/koe:git-${{ github.sha }}' "docker://ghcr.io/ciffelia/koe:$tag"
+            skopeo copy --all "docker://$CONTAINER_IMAGE:git-${{ github.sha }}" "docker://$CONTAINER_IMAGE:$tag"
           done
