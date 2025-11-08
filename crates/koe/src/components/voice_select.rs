@@ -99,7 +99,7 @@ pub async fn handle_interaction(ctx: &Context, interaction: &ComponentInteractio
     )
     .await?;
 
-    super::r(
+    super::respond_text(
         ctx,
         interaction,
         format!(

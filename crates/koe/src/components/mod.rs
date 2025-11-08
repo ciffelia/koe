@@ -22,8 +22,12 @@ pub async fn handle_interaction(ctx: &Context, interaction: &ComponentInteractio
     Ok(())
 }
 
-// Helper function to create text message response
-async fn r(ctx: &Context, interaction: &ComponentInteraction, text: impl ToString) -> Result<()> {
+/// Helper function to create text message response
+async fn respond_text(
+    ctx: &Context,
+    interaction: &ComponentInteraction,
+    text: impl ToString,
+) -> Result<()> {
     let message = CreateInteractionResponseMessage::new().content(text.to_string());
 
     interaction
