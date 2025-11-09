@@ -5,7 +5,7 @@ use super::voicevox::{GenerateQueryFromPresetParams, Preset, SynthesisParams, Vo
 pub async fn initialize_speakers(client: &VoicevoxClient) -> Result<()> {
     let preset_list = client.presets().await?;
     for preset in preset_list {
-        client.initialize_speaker(preset.style_id).await?;
+        client.initialize_speaker(preset.style_id, true).await?;
     }
     Ok(())
 }
