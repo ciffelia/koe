@@ -71,7 +71,7 @@ jobs:
         run: |
           tags="$(yarn run generate-docker-tags)"
           echo "$tags"
-          echo "tags=$tags" >> $GITHUB_OUTPUT
+          echo "tags=$tags" >> "$GITHUB_OUTPUT"
         working-directory: ./devtools
 
       - name: Login to GitHub Container Registry
@@ -83,7 +83,9 @@ jobs:
 
       - name: Create Docker tags
         run: |
-          for tag in ${{ steps.generate-docker-tags.outputs.tags }}
+          for tag in $TAGS
           do
             skopeo copy --all "docker://$CONTAINER_IMAGE:git-${{ github.sha }}" "docker://$CONTAINER_IMAGE:$tag"
           done
+        env:
+          TAGS: ${{ steps.generate-docker-tags.outputs.tags }}
