@@ -30,10 +30,12 @@ services:
       start_interval: 3s
 
   voicevox:
-    image: voicevox/voicevox_engine:cpu-ubuntu20.04-0.14.6
+    image: voicevox/voicevox_engine:cpu-0.25.0
     restart: unless-stopped
     expose:
       - 50021
+    environment:
+      VV_PRESET_FILE: /opt/voicevox_engine/presets.yaml
     volumes:
       - "./config/voicevox_presets.yaml:/opt/voicevox_engine/presets.yaml:ro"
     healthcheck:

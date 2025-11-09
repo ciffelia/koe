@@ -10,6 +10,8 @@ services:
     command: redis-server --save 60 1
 
   voicevox:
-    image: voicevox/voicevox_engine:cpu-ubuntu20.04-0.14.6
+    image: voicevox/voicevox_engine:cpu-0.25.0
+    environment:
+      VV_PRESET_FILE: /opt/voicevox_engine/presets.yaml
     volumes:
       - ./config/voicevox_presets.yaml:/opt/voicevox_engine/presets.yaml:ro
