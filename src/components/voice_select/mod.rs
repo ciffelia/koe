@@ -80,7 +80,10 @@ pub async fn components(
         let current_preset_page_idx = pages
             .iter()
             .position(|page| page.iter().any(|p| p.id == current_preset));
-        let page_idx = page_idx.or(current_preset_page_idx).unwrap_or(0);
+        let page_idx = page_idx
+            .map(|idx| idx.min(pages.len() - 1))
+            .or(current_preset_page_idx)
+            .unwrap_or(0);
 
         let select_menu = select::component(pages[page_idx], current_preset);
         let buttons: Vec<_> = pages
