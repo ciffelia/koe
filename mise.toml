@@ -1,4 +1,5 @@
 [tools]
 actionlint = "1.7.8"
 ghalint = "1.5.3"
+pinact = "3.4.2"
 zizmor = "1.16.3"
