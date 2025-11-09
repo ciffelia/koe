@@ -11,15 +11,15 @@
   </a>
 </p>
 
-Koe は、指定されたテキストチャンネルに送信されたメッセージをボイスチャンネルで読み上げる Discord Bot です。
+Koeは、指定されたテキストチャンネルに送信されたメッセージをボイスチャンネルで読み上げるDiscord Botです。
 マイクをミュートにしている聞き専メンバーも会話に参加しやすくなります。
 
 ## 特徴
 
-- [VOICEVOX ENGINE](https://github.com/VOICEVOX/voicevox_engine) を使った流暢な発音
+- [VOICEVOX ENGINE](https://github.com/VOICEVOX/voicevox_engine)を使った流暢な発音
 - 日本語テキストチャットの読み上げに特化
 - 特定の語句の読み方を設定する辞書機能を搭載
-- Slash Commands に対応
+- Slash Commandsに対応
 
 ## 使い方（コマンド一覧）
 
@@ -31,8 +31,8 @@ Koe は、指定されたテキストチャンネルに送信されたメッセ�
 
 ## 不具合の報告
 
-[Issues](https://github.com/ciffelia/koe/issues) から日本語または英語で報告をお願いします。
+[Issues](https://github.com/ciffelia/koe/issues)から日本語または英語で報告をお願いします。
 
 ## 質問・相談
 
-[Discussions](https://github.com/ciffelia/koe/discussions) から日本語または英語でご相談ください。
+[Discussions](https://github.com/ciffelia/koe/discussions)から日本語または英語でご相談ください。
