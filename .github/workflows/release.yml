@@ -14,9 +14,7 @@ on:
           - minor
           - patch
 
-permissions:
-  contents: write
-  packages: write
+permissions: {}
 
 env:
   CONTAINER_IMAGE: ghcr.io/${{ github.repository_owner }}/koe
@@ -27,6 +25,10 @@ jobs:
   create-release:
     if: false
     runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+      packages: write
+    timeout-minutes: 5
     steps:
       - name: Make sure that the container image is built
         run: skopeo inspect "docker://$CONTAINER_IMAGE:git-${{ github.sha }}"
@@ -34,6 +36,7 @@ jobs:
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
         with:
           fetch-depth: 0
+          persist-credentials: true
 
       - uses: actions/setup-node@2028fbc5c25fe9cf00d9f06a71cc4710d4507903 # v6.0.0
         with:
