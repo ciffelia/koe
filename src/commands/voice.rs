@@ -30,6 +30,9 @@ pub async fn handle(ctx: &Context, cmd: &CommandInteraction) -> Result<()> {
 
     let message = CreateInteractionResponseMessage::new()
         .ephemeral(true)
+        .content(
+            "-# [VOICEVOXウェブサイト](<https://voicevox.hiroshiba.jp/#characters>)で音声サンプルを試聴できます。",
+        )
         .components(components);
 
     cmd.create_response(&ctx.http, CreateInteractionResponse::Message(message))
