@@ -31,24 +31,28 @@ pub async fn components(
     let state = app_state::get(ctx).await?;
 
     let available_presets = state.voicevox_client.presets().await?;
-    let fallback_preset_id = available_presets
-        .choose(&mut rand::rng())
-        .map(|p| p.id)
-        .context("No presets available")?;
 
-    let mut conn = state
-        .redis_client
-        .get_multiplexed_async_connection()
-        .await?;
-    let current_preset = db::voice::get(
-        &mut conn,
-        GetOption {
-            guild_id: guild_id.into(),
-            user_id: user_id.into(),
-            fallback: fallback_preset_id,
-        },
-    )
-    .await?;
+    let current_preset = {
+        let mut conn = state
+            .redis_client
+            .get_multiplexed_async_connection()
+            .await?;
+
+        let fallback_preset_id = available_presets
+            .choose(&mut rand::rng())
+            .map(|p| p.id)
+            .context("No presets available")?;
+
+        db::voice::get(
+            &mut conn,
+            GetOption {
+                guild_id: guild_id.into(),
+                user_id: user_id.into(),
+                fallback: fallback_preset_id,
+            },
+        )
+        .await?
+    };
 
     const MAX_ITEMS_PER_PAGE: usize = 25;
     const MAX_BUTTONS_PER_ACTION_ROW: usize = 5;
