@@ -15,3 +15,9 @@ USER vscode
 RUN curl -fsSL https://mise.run | sh && \
   echo 'eval "$(mise activate bash --shims)"' >> ~/.bash_profile && \
   echo 'eval "$(mise activate bash)"' >> ~/.bashrc
+
+# Install nightly rustfmt
+RUN rustup toolchain install nightly --profile minimal --component rustfmt
+
+# Install Claude Code
+RUN curl -fsSL https://claude.ai/install.sh | bash
