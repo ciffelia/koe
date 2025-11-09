@@ -109,3 +109,39 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
           push: ${{ github.ref == 'refs/heads/main' }}
+
+  actionlint:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+
+      - uses: jdx/mise-action@v3
+
+      - name: Run actionlint
+        run: actionlint
+
+  ghalint:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+
+      - uses: jdx/mise-action@v3
+
+      - name: Run ghalint
+        run: ghalint run
+
+  zizmor:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+
+      - uses: jdx/mise-action@v3
+
+      - name: Run zizmor
+        run: zizmor .
