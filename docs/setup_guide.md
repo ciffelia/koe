@@ -125,4 +125,4 @@ Botを他のサーバーにも追加したい場合は、このURLに再度ア�
 
 ---
 
-不明な点がありましたら[Discussions](https://github.com/ciffelia/koe/discussions)でご相談ください。
+不明な点がありましたら[FAQ](faq.md)をご確認ください。解決しなければ[Discussions](https://github.com/ciffelia/koe/discussions)でご相談ください。
