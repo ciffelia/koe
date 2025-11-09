@@ -125,4 +125,42 @@ Botを他のサーバーにも追加したい場合は、このURLに再度ア�
 
 ---
 
-不明な点がありましたら[FAQ](faq.md)をご確認ください。解決しなければ[Discussions](https://github.com/ciffelia/koe/discussions)でご相談ください。
+不明な点がありましたら[Discussions](https://github.com/ciffelia/koe/discussions)でご相談ください。
+
+## FAQ
+
+### GPUを使いたい
+
+Koeが使用している音声合成エンジンであるVOICEVOX ENGINEでは、音声合成処理にNVIDIAのGPUを使用することができます。GPUを使用するには、`docker-compose.yml`を以下の手順で編集してください。
+
+1. `voicevox/voicevox_engine:cpu`を`voicevox/voicevox_engine:nvidia`に変更します。
+2. `voicevox`サービスに以下の行を追加します。
+
+```yaml
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - capabilities: ["gpu"]
+              runtime: nvidia
+```
+
+編集後の`voicevox`サービスの例を以下に示します。
+
+```yaml
+  voicevox:
+    image: voicevox/voicevox_engine:nvidia-...
+    restart: unless-stopped
+    expose:
+      # ...
+    volumes:
+      # ...
+    healthcheck:
+      # ...
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - capabilities: ["gpu"]
+              runtime: nvidia
+```
