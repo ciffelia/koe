@@ -1,20 +1,14 @@
 use anyhow::{Context as _, Result, bail};
-use rand::seq::IndexedRandom;
 use serenity::{
     builder::{CreateSelectMenu, CreateSelectMenuKind, CreateSelectMenuOption},
     client::Context,
-    model::{
-        application::{ComponentInteraction, ComponentInteractionDataKind},
-        id::{GuildId, UserId},
-    },
+    model::application::{ComponentInteraction, ComponentInteractionDataKind},
 };
 
+use super::super::respond_text;
 use crate::{
     app_state,
-    db::{
-        self,
-        voice::{GetOption, SetOption},
-    },
+    db::{self, voice::SetOption},
 };
 
 const CUSTOM_ID_VOICE_SELECT: &str = "voice";
@@ -23,34 +17,11 @@ pub fn custom_id_matches(custom_id: &str) -> bool {
     custom_id == CUSTOM_ID_VOICE_SELECT
 }
 
-pub async fn component(
-    ctx: &Context,
-    guild_id: GuildId,
-    user_id: UserId,
-) -> Result<CreateSelectMenu> {
-    let state = app_state::get(ctx).await?;
-
-    let available_presets = state.voicevox_client.presets().await?;
-    let fallback_preset_id = available_presets
-        .choose(&mut rand::rng())
-        .map(|p| p.id)
-        .context("No presets available")?;
-
-    let mut conn = state
-        .redis_client
-        .get_multiplexed_async_connection()
-        .await?;
-    let current_preset = db::voice::get(
-        &mut conn,
-        GetOption {
-            guild_id: guild_id.into(),
-            user_id: user_id.into(),
-            fallback: fallback_preset_id,
-        },
-    )
-    .await?;
-
-    let option_list: Vec<_> = available_presets
+pub fn component(
+    available_presets: &[crate::tts::voicevox::Preset],
+    current_preset: i64,
+) -> CreateSelectMenu {
+    let option_list = available_presets
         .iter()
         .map(|p| {
             CreateSelectMenuOption::new(&p.name, p.id.to_string())
@@ -58,14 +29,12 @@ pub async fn component(
         })
         .collect();
 
-    let select_menu = CreateSelectMenu::new(
+    CreateSelectMenu::new(
         CUSTOM_ID_VOICE_SELECT,
         CreateSelectMenuKind::String {
             options: option_list,
         },
-    );
-
-    Ok(select_menu)
+    )
 }
 
 pub async fn handle_interaction(ctx: &Context, interaction: &ComponentInteraction) -> Result<()> {
@@ -104,7 +73,7 @@ pub async fn handle_interaction(ctx: &Context, interaction: &ComponentInteractio
     )
     .await?;
 
-    super::respond_text(
+    respond_text(
         ctx,
         interaction,
         format!(

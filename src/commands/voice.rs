@@ -1,8 +1,6 @@
 use anyhow::{Context as _, Result};
 use serenity::{
-    builder::{
-        CreateActionRow, CreateCommand, CreateInteractionResponse, CreateInteractionResponseMessage,
-    },
+    builder::{CreateCommand, CreateInteractionResponse, CreateInteractionResponseMessage},
     client::Context,
     model::application::{CommandInteraction, InteractionContext},
 };
@@ -28,13 +26,11 @@ pub async fn handle(ctx: &Context, cmd: &CommandInteraction) -> Result<()> {
         .guild_id
         .context("Guild ID not available in interaction")?;
 
-    let select_menu = components::voice_select::component(ctx, guild_id, cmd.user.id).await?;
-
-    let action_row = CreateActionRow::SelectMenu(select_menu);
+    let components = components::voice_select::components(ctx, guild_id, cmd.user.id, None).await?;
 
     let message = CreateInteractionResponseMessage::new()
         .ephemeral(true)
-        .components(vec![action_row]);
+        .components(components);
 
     cmd.create_response(&ctx.http, CreateInteractionResponse::Message(message))
         .await
