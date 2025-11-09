@@ -50,6 +50,32 @@
   pauseLength: null
   pauseLengthScale: 1
 
+- id: 23
+  name: 四国めたん ささやき
+  speaker_uuid: 7ffcb7ce-00ec-4bdc-82cd-45a8889e43ff
+  style_id: 36
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+  pauseLength: null
+  pauseLengthScale: 1
+
+- id: 24
+  name: 四国めたん ヒソヒソ
+  speaker_uuid: 7ffcb7ce-00ec-4bdc-82cd-45a8889e43ff
+  style_id: 37
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+  pauseLength: null
+  pauseLengthScale: 1
+
 - id: 1
   name: ずんだもん ノーマル
   speaker_uuid: 388f246b-8c41-4ac1-8e2d-5d79f3ff56d9
@@ -115,8 +141,47 @@
   pauseLength: null
   pauseLengthScale: 1
 
+- id: 25
+  name: ずんだもん ヒソヒソ
+  speaker_uuid: 388f246b-8c41-4ac1-8e2d-5d79f3ff56d9
+  style_id: 38
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+  pauseLength: null
+  pauseLengthScale: 1
+
+- id: 26
+  name: ずんだもん ヘロヘロ
+  speaker_uuid: 388f246b-8c41-4ac1-8e2d-5d79f3ff56d9
+  style_id: 75
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+  pauseLength: null
+  pauseLengthScale: 1
+
+- id: 27
+  name: ずんだもん なみだめ
+  speaker_uuid: 388f246b-8c41-4ac1-8e2d-5d79f3ff56d9
+  style_id: 76
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+  pauseLength: null
+  pauseLengthScale: 1
+
 - id: 2
-  name: 春日部つむぎ
+  name: 春日部つむぎ ノーマル
   speaker_uuid: 35b2c544-660e-401e-b503-0e14c635303a
   style_id: 8
   speedScale: 1.2
@@ -129,7 +194,7 @@
   pauseLengthScale: 1
 
 - id: 3
-  name: 雨晴はう
+  name: 雨晴はう ノーマル
   speaker_uuid: 3474ee95-c274-47f9-aa1a-8322163d96f1
   style_id: 10
   speedScale: 1.2
@@ -142,7 +207,7 @@
   pauseLengthScale: 1
 
 - id: 4
-  name: 波音リツ
+  name: 波音リツ ノーマル
   speaker_uuid: b1a81618-b27b-40d2-b0ea-27a9ad408c4b
   style_id: 9
   speedScale: 1.2
@@ -154,8 +219,21 @@
   pauseLength: null
   pauseLengthScale: 1
 
+- id: 28
+  name: 波音リツ クイーン
+  speaker_uuid: b1a81618-b27b-40d2-b0ea-27a9ad408c4b
+  style_id: 65
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+  pauseLength: null
+  pauseLengthScale: 1
+
 - id: 5
-  name: 玄野武宏
+  name: 玄野武宏 ノーマル
   speaker_uuid: c30dc15a-0992-4f8d-8bb8-ad3b314e6a6f
   style_id: 11
   speedScale: 1.2
@@ -167,8 +245,47 @@
   pauseLength: null
   pauseLengthScale: 1
 
+- id: 29
+  name: 玄野武宏 喜び
+  speaker_uuid: c30dc15a-0992-4f8d-8bb8-ad3b314e6a6f
+  style_id: 39
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+  pauseLength: null
+  pauseLengthScale: 1
+
+- id: 30
+  name: 玄野武宏 ツンギレ
+  speaker_uuid: c30dc15a-0992-4f8d-8bb8-ad3b314e6a6f
+  style_id: 40
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+  pauseLength: null
+  pauseLengthScale: 1
+
+- id: 31
+  name: 玄野武宏 悲しみ
+  speaker_uuid: c30dc15a-0992-4f8d-8bb8-ad3b314e6a6f
+  style_id: 41
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+  pauseLength: null
+  pauseLengthScale: 1
+
 - id: 6
-  name: 白上虎太郎
+  name: 白上虎太郎 ふつう
   speaker_uuid: e5020595-5c5d-4e87-b849-270a518d0dcf
   style_id: 12
   speedScale: 1.2
@@ -180,8 +297,60 @@
   pauseLength: null
   pauseLengthScale: 1
 
+- id: 32
+  name: 白上虎太郎 わーい
+  speaker_uuid: e5020595-5c5d-4e87-b849-270a518d0dcf
+  style_id: 32
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+  pauseLength: null
+  pauseLengthScale: 1
+
+- id: 33
+  name: 白上虎太郎 びくびく
+  speaker_uuid: e5020595-5c5d-4e87-b849-270a518d0dcf
+  style_id: 33
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+  pauseLength: null
+  pauseLengthScale: 1
+
+- id: 34
+  name: 白上虎太郎 おこ
+  speaker_uuid: e5020595-5c5d-4e87-b849-270a518d0dcf
+  style_id: 34
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+  pauseLength: null
+  pauseLengthScale: 1
+
+- id: 35
+  name: 白上虎太郎 びえーん
+  speaker_uuid: e5020595-5c5d-4e87-b849-270a518d0dcf
+  style_id: 35
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+  pauseLength: null
+  pauseLengthScale: 1
+
 - id: 7
-  name: 青山龍星
+  name: 青山龍星 ノーマル
   speaker_uuid: 4f51116a-d9ee-4516-925d-21f183e2afad
   style_id: 13
   speedScale: 1.2
@@ -193,8 +362,86 @@
   pauseLength: null
   pauseLengthScale: 1
 
+- id: 36
+  name: 青山龍星 熱血
+  speaker_uuid: 4f51116a-d9ee-4516-925d-21f183e2afad
+  style_id: 81
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+  pauseLength: null
+  pauseLengthScale: 1
+
+- id: 37
+  name: 青山龍星 不機嫌
+  speaker_uuid: 4f51116a-d9ee-4516-925d-21f183e2afad
+  style_id: 82
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+  pauseLength: null
+  pauseLengthScale: 1
+
+- id: 38
+  name: 青山龍星 喜び
+  speaker_uuid: 4f51116a-d9ee-4516-925d-21f183e2afad
+  style_id: 83
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+  pauseLength: null
+  pauseLengthScale: 1
+
+- id: 39
+  name: 青山龍星 しっとり
+  speaker_uuid: 4f51116a-d9ee-4516-925d-21f183e2afad
+  style_id: 84
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+  pauseLength: null
+  pauseLengthScale: 1
+
+- id: 40
+  name: 青山龍星 かなしみ
+  speaker_uuid: 4f51116a-d9ee-4516-925d-21f183e2afad
+  style_id: 85
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+  pauseLength: null
+  pauseLengthScale: 1
+
+- id: 41
+  name: 青山龍星 囁き
+  speaker_uuid: 4f51116a-d9ee-4516-925d-21f183e2afad
+  style_id: 86
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+  pauseLength: null
+  pauseLengthScale: 1
+
 - id: 8
-  name: 冥鳴ひまり
+  name: 冥鳴ひまり ノーマル
   speaker_uuid: 8eaad775-3119-417e-8cf4-2a10bfd592c8
   style_id: 14
   speedScale: 1.2
@@ -272,7 +519,7 @@
   pauseLengthScale: 1
 
 - id: 10
-  name: もち子さん
+  name: もち子さん ノーマル
   speaker_uuid: 9f3ee141-26ad-437e-97bd-d22298d02ad2
   style_id: 20
   speedScale: 1.2
@@ -284,10 +531,933 @@
   pauseLength: null
   pauseLengthScale: 1
 
+- id: 42
+  name: もち子さん セクシー／あん子
+  speaker_uuid: 9f3ee141-26ad-437e-97bd-d22298d02ad2
+  style_id: 66
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+  pauseLength: null
+  pauseLengthScale: 1
+
+- id: 43
+  name: もち子さん 泣き
+  speaker_uuid: 9f3ee141-26ad-437e-97bd-d22298d02ad2
+  style_id: 77
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+  pauseLength: null
+  pauseLengthScale: 1
+
+- id: 44
+  name: もち子さん 怒り
+  speaker_uuid: 9f3ee141-26ad-437e-97bd-d22298d02ad2
+  style_id: 78
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+  pauseLength: null
+  pauseLengthScale: 1
+
+- id: 45
+  name: もち子さん 喜び
+  speaker_uuid: 9f3ee141-26ad-437e-97bd-d22298d02ad2
+  style_id: 79
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+  pauseLength: null
+  pauseLengthScale: 1
+
+- id: 46
+  name: もち子さん のんびり
+  speaker_uuid: 9f3ee141-26ad-437e-97bd-d22298d02ad2
+  style_id: 80
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+  pauseLength: null
+  pauseLengthScale: 1
+
 - id: 11
-  name: 剣崎雌雄
+  name: 剣崎雌雄 ノーマル
   speaker_uuid: 1a17ca16-7ee5-4ea5-b191-2f02ace24d21
   style_id: 21
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+  pauseLength: null
+  pauseLengthScale: 1
+
+- id: 47
+  name: WhiteCUL ノーマル
+  speaker_uuid: 67d5d8da-acd7-4207-bb10-b5542d3a663b
+  style_id: 23
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+  pauseLength: null
+  pauseLengthScale: 1
+
+- id: 48
+  name: WhiteCUL たのしい
+  speaker_uuid: 67d5d8da-acd7-4207-bb10-b5542d3a663b
+  style_id: 24
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+  pauseLength: null
+  pauseLengthScale: 1
+
+- id: 49
+  name: WhiteCUL かなしい
+  speaker_uuid: 67d5d8da-acd7-4207-bb10-b5542d3a663b
+  style_id: 25
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+  pauseLength: null
+  pauseLengthScale: 1
+
+- id: 50
+  name: WhiteCUL びえーん
+  speaker_uuid: 67d5d8da-acd7-4207-bb10-b5542d3a663b
+  style_id: 26
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+  pauseLength: null
+  pauseLengthScale: 1
+
+- id: 51
+  name: 後鬼 人間ver.
+  speaker_uuid: 0f56c2f2-644c-49c9-8989-94e11f7129d0
+  style_id: 27
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+  pauseLength: null
+  pauseLengthScale: 1
+
+- id: 52
+  name: 後鬼 ぬいぐるみver.
+  speaker_uuid: 0f56c2f2-644c-49c9-8989-94e11f7129d0
+  style_id: 28
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+  pauseLength: null
+  pauseLengthScale: 1
+
+- id: 53
+  name: 後鬼 人間（怒り）ver.
+  speaker_uuid: 0f56c2f2-644c-49c9-8989-94e11f7129d0
+  style_id: 87
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+  pauseLength: null
+  pauseLengthScale: 1
+
+- id: 54
+  name: 後鬼 鬼ver.
+  speaker_uuid: 0f56c2f2-644c-49c9-8989-94e11f7129d0
+  style_id: 88
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+  pauseLength: null
+  pauseLengthScale: 1
+
+- id: 55
+  name: No.7 ノーマル
+  speaker_uuid: 044830d2-f23b-44d6-ac0d-b5d733caa900
+  style_id: 29
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+  pauseLength: null
+  pauseLengthScale: 1
+
+- id: 56
+  name: No.7 アナウンス
+  speaker_uuid: 044830d2-f23b-44d6-ac0d-b5d733caa900
+  style_id: 30
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+  pauseLength: null
+  pauseLengthScale: 1
+
+- id: 57
+  name: No.7 読み聞かせ
+  speaker_uuid: 044830d2-f23b-44d6-ac0d-b5d733caa900
+  style_id: 31
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+  pauseLength: null
+  pauseLengthScale: 1
+
+- id: 58
+  name: ちび式じい ノーマル
+  speaker_uuid: 468b8e94-9da4-4f7a-8715-a22a48844f9e
+  style_id: 42
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+  pauseLength: null
+  pauseLengthScale: 1
+
+- id: 59
+  name: 櫻歌ミコ ノーマル
+  speaker_uuid: 0693554c-338e-4790-8982-b9c6d476dc69
+  style_id: 43
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+  pauseLength: null
+  pauseLengthScale: 1
+
+- id: 60
+  name: 櫻歌ミコ 第二形態
+  speaker_uuid: 0693554c-338e-4790-8982-b9c6d476dc69
+  style_id: 44
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+  pauseLength: null
+  pauseLengthScale: 1
+
+- id: 61
+  name: 櫻歌ミコ ロリ
+  speaker_uuid: 0693554c-338e-4790-8982-b9c6d476dc69
+  style_id: 45
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+  pauseLength: null
+  pauseLengthScale: 1
+
+- id: 62
+  name: 小夜/SAYO ノーマル
+  speaker_uuid: a8cc6d22-aad0-4ab8-bf1e-2f843924164a
+  style_id: 46
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+  pauseLength: null
+  pauseLengthScale: 1
+
+- id: 63
+  name: ナースロボ＿タイプＴ ノーマル
+  speaker_uuid: 882a636f-3bac-431a-966d-c5e6bba9f949
+  style_id: 47
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+  pauseLength: null
+  pauseLengthScale: 1
+
+- id: 64
+  name: ナースロボ＿タイプＴ 楽々
+  speaker_uuid: 882a636f-3bac-431a-966d-c5e6bba9f949
+  style_id: 48
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+  pauseLength: null
+  pauseLengthScale: 1
+
+- id: 65
+  name: ナースロボ＿タイプＴ 恐怖
+  speaker_uuid: 882a636f-3bac-431a-966d-c5e6bba9f949
+  style_id: 49
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+  pauseLength: null
+  pauseLengthScale: 1
+
+- id: 66
+  name: ナースロボ＿タイプＴ 内緒話
+  speaker_uuid: 882a636f-3bac-431a-966d-c5e6bba9f949
+  style_id: 50
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+  pauseLength: null
+  pauseLengthScale: 1
+
+- id: 67
+  name: †聖騎士 紅桜† ノーマル
+  speaker_uuid: 471e39d2-fb11-4c8c-8d89-4b322d2498e0
+  style_id: 51
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+  pauseLength: null
+  pauseLengthScale: 1
+
+- id: 68
+  name: 雀松朱司 ノーマル
+  speaker_uuid: 0acebdee-a4a5-4e12-a695-e19609728e30
+  style_id: 52
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+  pauseLength: null
+  pauseLengthScale: 1
+
+- id: 69
+  name: 麒ヶ島宗麟 ノーマル
+  speaker_uuid: 7d1e7ba7-f957-40e5-a3fc-da49f769ab65
+  style_id: 53
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+  pauseLength: null
+  pauseLengthScale: 1
+
+- id: 70
+  name: 春歌ナナ ノーマル
+  speaker_uuid: ba5d2428-f7e0-4c20-ac41-9dd56e9178b4
+  style_id: 54
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+  pauseLength: null
+  pauseLengthScale: 1
+
+- id: 71
+  name: 猫使アル ノーマル
+  speaker_uuid: 00a5c10c-d3bd-459f-83fd-43180b521a44
+  style_id: 55
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+  pauseLength: null
+  pauseLengthScale: 1
+
+- id: 72
+  name: 猫使アル おちつき
+  speaker_uuid: 00a5c10c-d3bd-459f-83fd-43180b521a44
+  style_id: 56
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+  pauseLength: null
+  pauseLengthScale: 1
+
+- id: 73
+  name: 猫使アル うきうき
+  speaker_uuid: 00a5c10c-d3bd-459f-83fd-43180b521a44
+  style_id: 57
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+  pauseLength: null
+  pauseLengthScale: 1
+
+- id: 74
+  name: 猫使アル つよつよ
+  speaker_uuid: 00a5c10c-d3bd-459f-83fd-43180b521a44
+  style_id: 110
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+  pauseLength: null
+  pauseLengthScale: 1
+
+- id: 75
+  name: 猫使アル へろへろ
+  speaker_uuid: 00a5c10c-d3bd-459f-83fd-43180b521a44
+  style_id: 111
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+  pauseLength: null
+  pauseLengthScale: 1
+
+- id: 76
+  name: 猫使ビィ ノーマル
+  speaker_uuid: c20a2254-0349-4470-9fc8-e5c0f8cf3404
+  style_id: 58
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+  pauseLength: null
+  pauseLengthScale: 1
+
+- id: 77
+  name: 猫使ビィ おちつき
+  speaker_uuid: c20a2254-0349-4470-9fc8-e5c0f8cf3404
+  style_id: 59
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+  pauseLength: null
+  pauseLengthScale: 1
+
+- id: 78
+  name: 猫使ビィ 人見知り
+  speaker_uuid: c20a2254-0349-4470-9fc8-e5c0f8cf3404
+  style_id: 60
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+  pauseLength: null
+  pauseLengthScale: 1
+
+- id: 79
+  name: 猫使ビィ つよつよ
+  speaker_uuid: c20a2254-0349-4470-9fc8-e5c0f8cf3404
+  style_id: 112
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+  pauseLength: null
+  pauseLengthScale: 1
+
+- id: 80
+  name: 中国うさぎ ノーマル
+  speaker_uuid: 1f18ffc3-47ea-4ce0-9829-0576d03a7ec8
+  style_id: 61
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+  pauseLength: null
+  pauseLengthScale: 1
+
+- id: 81
+  name: 中国うさぎ おどろき
+  speaker_uuid: 1f18ffc3-47ea-4ce0-9829-0576d03a7ec8
+  style_id: 62
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+  pauseLength: null
+  pauseLengthScale: 1
+
+- id: 82
+  name: 中国うさぎ こわがり
+  speaker_uuid: 1f18ffc3-47ea-4ce0-9829-0576d03a7ec8
+  style_id: 63
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+  pauseLength: null
+  pauseLengthScale: 1
+
+- id: 83
+  name: 中国うさぎ へろへろ
+  speaker_uuid: 1f18ffc3-47ea-4ce0-9829-0576d03a7ec8
+  style_id: 64
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+  pauseLength: null
+  pauseLengthScale: 1
+
+- id: 84
+  name: 栗田まろん ノーマル
+  speaker_uuid: 04dbd989-32d0-40b4-9e71-17c920f2a8a9
+  style_id: 67
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+  pauseLength: null
+  pauseLengthScale: 1
+
+- id: 85
+  name: あいえるたん ノーマル
+  speaker_uuid: dda44ade-5f9c-4a3a-9d2c-2a976c7476d9
+  style_id: 68
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+  pauseLength: null
+  pauseLengthScale: 1
+
+- id: 86
+  name: 満別花丸 ノーマル
+  speaker_uuid: 287aa49f-e56b-4530-a469-855776c84a8d
+  style_id: 69
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+  pauseLength: null
+  pauseLengthScale: 1
+
+- id: 87
+  name: 満別花丸 元気
+  speaker_uuid: 287aa49f-e56b-4530-a469-855776c84a8d
+  style_id: 70
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+  pauseLength: null
+  pauseLengthScale: 1
+
+- id: 88
+  name: 満別花丸 ささやき
+  speaker_uuid: 287aa49f-e56b-4530-a469-855776c84a8d
+  style_id: 71
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+  pauseLength: null
+  pauseLengthScale: 1
+
+- id: 89
+  name: 満別花丸 ぶりっ子
+  speaker_uuid: 287aa49f-e56b-4530-a469-855776c84a8d
+  style_id: 72
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+  pauseLength: null
+  pauseLengthScale: 1
+
+- id: 90
+  name: 満別花丸 ボーイ
+  speaker_uuid: 287aa49f-e56b-4530-a469-855776c84a8d
+  style_id: 73
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+  pauseLength: null
+  pauseLengthScale: 1
+
+- id: 91
+  name: 琴詠ニア ノーマル
+  speaker_uuid: 97a4af4b-086e-4efd-b125-7ae2da85e697
+  style_id: 74
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+  pauseLength: null
+  pauseLengthScale: 1
+
+- id: 92
+  name: Voidoll ノーマル
+  speaker_uuid: 0ebe2c7d-96f3-4f0e-a2e3-ae13fe27c403
+  style_id: 89
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+  pauseLength: null
+  pauseLengthScale: 1
+
+- id: 93
+  name: ぞん子 ノーマル
+  speaker_uuid: 0156da66-4300-474a-a398-49eb2e8dd853
+  style_id: 90
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+  pauseLength: null
+  pauseLengthScale: 1
+
+- id: 94
+  name: ぞん子 低血圧
+  speaker_uuid: 0156da66-4300-474a-a398-49eb2e8dd853
+  style_id: 91
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+  pauseLength: null
+  pauseLengthScale: 1
+
+- id: 95
+  name: ぞん子 覚醒
+  speaker_uuid: 0156da66-4300-474a-a398-49eb2e8dd853
+  style_id: 92
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+  pauseLength: null
+  pauseLengthScale: 1
+
+- id: 96
+  name: ぞん子 実況風
+  speaker_uuid: 0156da66-4300-474a-a398-49eb2e8dd853
+  style_id: 93
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+  pauseLength: null
+  pauseLengthScale: 1
+
+- id: 97
+  name: 中部つるぎ ノーマル
+  speaker_uuid: 4614a7de-9829-465d-9791-97eb8a5f9b86
+  style_id: 94
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+  pauseLength: null
+  pauseLengthScale: 1
+
+- id: 98
+  name: 中部つるぎ 怒り
+  speaker_uuid: 4614a7de-9829-465d-9791-97eb8a5f9b86
+  style_id: 95
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+  pauseLength: null
+  pauseLengthScale: 1
+
+- id: 99
+  name: 中部つるぎ ヒソヒソ
+  speaker_uuid: 4614a7de-9829-465d-9791-97eb8a5f9b86
+  style_id: 96
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+  pauseLength: null
+  pauseLengthScale: 1
+
+- id: 100
+  name: 中部つるぎ おどおど
+  speaker_uuid: 4614a7de-9829-465d-9791-97eb8a5f9b86
+  style_id: 97
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+  pauseLength: null
+  pauseLengthScale: 1
+
+- id: 101
+  name: 中部つるぎ 絶望と敗北
+  speaker_uuid: 4614a7de-9829-465d-9791-97eb8a5f9b86
+  style_id: 98
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+  pauseLength: null
+  pauseLengthScale: 1
+
+- id: 102
+  name: 離途 ノーマル
+  speaker_uuid: 3b91e034-e028-4acb-a08d-fbdcd207ea63
+  style_id: 99
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+  pauseLength: null
+  pauseLengthScale: 1
+
+- id: 103
+  name: 離途 シリアス
+  speaker_uuid: 3b91e034-e028-4acb-a08d-fbdcd207ea63
+  style_id: 101
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+  pauseLength: null
+  pauseLengthScale: 1
+
+- id: 104
+  name: 黒沢冴白 ノーマル
+  speaker_uuid: 0b466290-f9b6-4718-8d37-6c0c81e824ac
+  style_id: 100
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+  pauseLength: null
+  pauseLengthScale: 1
+
+- id: 105
+  name: ユーレイちゃん ノーマル
+  speaker_uuid: 462cd6b4-c088-42b0-b357-3816e24f112e
+  style_id: 102
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+  pauseLength: null
+  pauseLengthScale: 1
+
+- id: 106
+  name: ユーレイちゃん 甘々
+  speaker_uuid: 462cd6b4-c088-42b0-b357-3816e24f112e
+  style_id: 103
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+  pauseLength: null
+  pauseLengthScale: 1
+
+- id: 107
+  name: ユーレイちゃん 哀しみ
+  speaker_uuid: 462cd6b4-c088-42b0-b357-3816e24f112e
+  style_id: 104
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+  pauseLength: null
+  pauseLengthScale: 1
+
+- id: 108
+  name: ユーレイちゃん ささやき
+  speaker_uuid: 462cd6b4-c088-42b0-b357-3816e24f112e
+  style_id: 105
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+  pauseLength: null
+  pauseLengthScale: 1
+
+- id: 109
+  name: ユーレイちゃん ツクモちゃん
+  speaker_uuid: 462cd6b4-c088-42b0-b357-3816e24f112e
+  style_id: 106
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+  pauseLength: null
+  pauseLengthScale: 1
+
+- id: 110
+  name: 東北ずん子 ノーマル
+  speaker_uuid: 80802b2d-8c75-4429-978b-515105017010
+  style_id: 107
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+  pauseLength: null
+  pauseLengthScale: 1
+
+- id: 111
+  name: 東北きりたん ノーマル
+  speaker_uuid: 1bd6b32b-d650-4072-bbe5-1d0ef4aaa28b
+  style_id: 108
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+  pauseLength: null
+  pauseLengthScale: 1
+
+- id: 112
+  name: 東北イタコ ノーマル
+  speaker_uuid: ab4c31a3-8769-422a-b412-708f5ae637e8
+  style_id: 109
   speedScale: 1.2
   pitchScale: 0
   intonationScale: 1
