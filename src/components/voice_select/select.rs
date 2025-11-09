@@ -1,6 +1,9 @@
 use anyhow::{Context as _, Result, bail};
 use serenity::{
-    builder::{CreateSelectMenu, CreateSelectMenuKind, CreateSelectMenuOption},
+    builder::{
+        CreateInteractionResponse, CreateInteractionResponseMessage, CreateSelectMenu,
+        CreateSelectMenuKind, CreateSelectMenuOption,
+    },
     client::Context,
     model::application::{ComponentInteraction, ComponentInteractionDataKind},
 };
@@ -54,10 +57,21 @@ pub async fn handle_interaction(ctx: &Context, interaction: &ComponentInteractio
     let state = app_state::get(ctx).await?;
 
     let available_presets = state.voicevox_client.presets().await?;
-    let selected_preset = available_presets
+    let Some(selected_preset) = available_presets
         .into_iter()
         .find(|p| p.id == selected_preset_id)
-        .with_context(|| format!("Preset {selected_preset_id} not available"))?;
+    else {
+        let message = CreateInteractionResponseMessage::new()
+            .content("選択された話者が見つかりませんでした。既に削除された可能性があります。")
+            .ephemeral(true);
+
+        interaction
+            .create_response(&ctx.http, CreateInteractionResponse::Message(message))
+            .await
+            .context("Failed to create interaction response")?;
+
+        return Ok(());
+    };
 
     let mut conn = state
         .redis_client
