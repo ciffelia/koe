@@ -8,6 +8,8 @@
   volumeScale: 1
   prePhonemeLength: 0.1
   postPhonemeLength: 0.1
+  pauseLength: null
+  pauseLengthScale: 1
 
 - id: 12
   name: 四国めたん あまあま
@@ -19,6 +21,8 @@
   volumeScale: 1
   prePhonemeLength: 0.1
   postPhonemeLength: 0.1
+  pauseLength: null
+  pauseLengthScale: 1
 
 - id: 13
   name: 四国めたん ツンツン
@@ -30,6 +34,8 @@
   volumeScale: 1
   prePhonemeLength: 0.1
   postPhonemeLength: 0.1
+  pauseLength: null
+  pauseLengthScale: 1
 
 - id: 14
   name: 四国めたん セクシー
@@ -41,6 +47,8 @@
   volumeScale: 1
   prePhonemeLength: 0.1
   postPhonemeLength: 0.1
+  pauseLength: null
+  pauseLengthScale: 1
 
 - id: 1
   name: ずんだもん ノーマル
@@ -52,6 +60,8 @@
   volumeScale: 1
   prePhonemeLength: 0.1
   postPhonemeLength: 0.1
+  pauseLength: null
+  pauseLengthScale: 1
 
 - id: 15
   name: ずんだもん あまあま
@@ -63,6 +73,8 @@
   volumeScale: 1
   prePhonemeLength: 0.1
   postPhonemeLength: 0.1
+  pauseLength: null
+  pauseLengthScale: 1
 
 - id: 16
   name: ずんだもん ツンツン
@@ -74,6 +86,8 @@
   volumeScale: 1
   prePhonemeLength: 0.1
   postPhonemeLength: 0.1
+  pauseLength: null
+  pauseLengthScale: 1
 
 - id: 17
   name: ずんだもん セクシー
@@ -85,6 +99,8 @@
   volumeScale: 1
   prePhonemeLength: 0.1
   postPhonemeLength: 0.1
+  pauseLength: null
+  pauseLengthScale: 1
 
 - id: 18
   name: ずんだもん ささやき
@@ -96,6 +112,8 @@
   volumeScale: 1
   prePhonemeLength: 0.1
   postPhonemeLength: 0.1
+  pauseLength: null
+  pauseLengthScale: 1
 
 - id: 2
   name: 春日部つむぎ
@@ -107,6 +125,8 @@
   volumeScale: 1
   prePhonemeLength: 0.1
   postPhonemeLength: 0.1
+  pauseLength: null
+  pauseLengthScale: 1
 
 - id: 3
   name: 雨晴はう
@@ -118,6 +138,8 @@
   volumeScale: 1
   prePhonemeLength: 0.1
   postPhonemeLength: 0.1
+  pauseLength: null
+  pauseLengthScale: 1
 
 - id: 4
   name: 波音リツ
@@ -129,6 +151,8 @@
   volumeScale: 1
   prePhonemeLength: 0.1
   postPhonemeLength: 0.1
+  pauseLength: null
+  pauseLengthScale: 1
 
 - id: 5
   name: 玄野武宏
@@ -140,6 +164,8 @@
   volumeScale: 1
   prePhonemeLength: 0.1
   postPhonemeLength: 0.1
+  pauseLength: null
+  pauseLengthScale: 1
 
 - id: 6
   name: 白上虎太郎
@@ -151,6 +177,8 @@
   volumeScale: 1
   prePhonemeLength: 0.1
   postPhonemeLength: 0.1
+  pauseLength: null
+  pauseLengthScale: 1
 
 - id: 7
   name: 青山龍星
@@ -162,6 +190,8 @@
   volumeScale: 1
   prePhonemeLength: 0.1
   postPhonemeLength: 0.1
+  pauseLength: null
+  pauseLengthScale: 1
 
 - id: 8
   name: 冥鳴ひまり
@@ -173,6 +203,8 @@
   volumeScale: 1
   prePhonemeLength: 0.1
   postPhonemeLength: 0.1
+  pauseLength: null
+  pauseLengthScale: 1
 
 - id: 9
   name: 九州そら ノーマル
@@ -184,6 +216,8 @@
   volumeScale: 1
   prePhonemeLength: 0.1
   postPhonemeLength: 0.1
+  pauseLength: null
+  pauseLengthScale: 1
 
 - id: 19
   name: 九州そら あまあま
@@ -195,6 +229,8 @@
   volumeScale: 1
   prePhonemeLength: 0.1
   postPhonemeLength: 0.1
+  pauseLength: null
+  pauseLengthScale: 1
 
 - id: 20
   name: 九州そら ツンツン
@@ -206,6 +242,8 @@
   volumeScale: 1
   prePhonemeLength: 0.1
   postPhonemeLength: 0.1
+  pauseLength: null
+  pauseLengthScale: 1
 
 - id: 21
   name: 九州そら セクシー
@@ -217,6 +255,8 @@
   volumeScale: 1
   prePhonemeLength: 0.1
   postPhonemeLength: 0.1
+  pauseLength: null
+  pauseLengthScale: 1
 
 - id: 22
   name: 九州そら ささやき
@@ -228,6 +268,8 @@
   volumeScale: 1
   prePhonemeLength: 0.1
   postPhonemeLength: 0.1
+  pauseLength: null
+  pauseLengthScale: 1
 
 - id: 10
   name: もち子さん
@@ -239,6 +281,8 @@
   volumeScale: 1
   prePhonemeLength: 0.1
   postPhonemeLength: 0.1
+  pauseLength: null
+  pauseLengthScale: 1
 
 - id: 11
   name: 剣崎雌雄
@@ -250,3 +294,5 @@
   volumeScale: 1
   prePhonemeLength: 0.1
   postPhonemeLength: 0.1
+  pauseLength: null
+  pauseLengthScale: 1
