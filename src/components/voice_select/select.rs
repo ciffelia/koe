@@ -73,19 +73,21 @@ pub async fn handle_interaction(ctx: &Context, interaction: &ComponentInteractio
         return Ok(());
     };
 
-    let mut conn = state
-        .redis_client
-        .get_multiplexed_async_connection()
+    {
+        let mut conn = state
+            .redis_client
+            .get_multiplexed_async_connection()
+            .await?;
+        db::voice::set(
+            &mut conn,
+            SetOption {
+                guild_id: guild_id.into(),
+                user_id: interaction.user.id.into(),
+                value: selected_preset_id,
+            },
+        )
         .await?;
-    db::voice::set(
-        &mut conn,
-        SetOption {
-            guild_id: guild_id.into(),
-            user_id: interaction.user.id.into(),
-            value: selected_preset_id,
-        },
-    )
-    .await?;
+    }
 
     respond_text(
         ctx,
