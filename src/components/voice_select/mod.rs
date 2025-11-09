@@ -55,15 +55,15 @@ pub async fn components(
     };
 
     const MAX_ITEMS_PER_PAGE: usize = 25;
-    const MAX_BUTTONS_PER_ACTION_ROW: usize = 5;
-    const MAX_BUTTON_ACTION_ROWS: usize = 4;
-    const MAX_PAGES: usize = MAX_BUTTONS_PER_ACTION_ROW * MAX_BUTTON_ACTION_ROWS;
     if available_presets.len() <= MAX_ITEMS_PER_PAGE {
         Ok(vec![CreateActionRow::SelectMenu(select::component(
             &available_presets,
             current_preset,
         ))])
     } else {
+        const MAX_BUTTONS_PER_ACTION_ROW: usize = 5;
+        const MAX_BUTTON_ACTION_ROWS: usize = 4;
+        const MAX_PAGES: usize = MAX_BUTTONS_PER_ACTION_ROW * MAX_BUTTON_ACTION_ROWS;
         if available_presets.len() > MAX_ITEMS_PER_PAGE * MAX_PAGES {
             warn!(
                 "Number of available presets ({}) exceeds the maximum supported ({}). Truncating \
