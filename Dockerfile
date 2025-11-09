@@ -5,13 +5,13 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 WORKDIR /root/koe
-COPY . .
 
-RUN --mount=type=cache,target=/root/.cargo/bin \
-    --mount=type=cache,target=/root/.cargo/registry/index \
-    --mount=type=cache,target=/root/.cargo/registry/cache \
-    --mount=type=cache,target=/root/.cargo/git/db \
+RUN --mount=type=bind,source=src,target=src \
+    --mount=type=bind,source=Cargo.toml,target=Cargo.toml \
+    --mount=type=bind,source=Cargo.lock,target=Cargo.lock \
     --mount=type=cache,target=/root/koe/target \
+    --mount=type=cache,target=/usr/local/cargo/registry \
+    --mount=type=cache,target=/usr/local/cargo/git/db \
     cargo build --release --bin koe && \
     cp target/release/koe /usr/local/bin/koe
 
