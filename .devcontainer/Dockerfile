@@ -1,8 +1,13 @@
-FROM ghcr.io/ciffelia/rust-devcontainer
+FROM mcr.microsoft.com/devcontainers/rust:1-bookworm
 
 RUN export DEBIAN_FRONTEND=noninteractive && \
   apt-get update && \
-  apt-get install -y libopus-dev
+  apt-get install -y mold libopus-dev
+
+# Set up cargo to use mold
+RUN mkdir -p /.cargo && \
+  echo '[target.x86_64-unknown-linux-gnu]' >> /.cargo/config.toml && \
+  echo 'rustflags = ["-C", "link-arg=-fuse-ld=mold"]' >> /.cargo/config.toml
 
 USER vscode
 
