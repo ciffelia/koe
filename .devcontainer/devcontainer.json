@@ -21,6 +21,7 @@
   "customizations": {
     "vscode": {
       "extensions": [
+        "EditorConfig.EditorConfig",
         "ms-azuretools.vscode-containers",
         "redhat.vscode-yaml"
       ]
