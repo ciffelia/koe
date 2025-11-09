@@ -17,8 +17,6 @@ services:
     image: redis:8.2.3
     command: /usr/local/etc/redis/redis.conf
     restart: unless-stopped
-    expose:
-      - 6379
     volumes:
       - "./config/redis.conf:/usr/local/etc/redis/redis.conf:ro"
       - "redis-data:/data"
@@ -32,8 +30,6 @@ services:
   voicevox:
     image: voicevox/voicevox_engine:cpu-0.25.0
     restart: unless-stopped
-    expose:
-      - 50021
     environment:
       VV_PRESET_FILE: /opt/voicevox_engine/presets.yaml
     volumes:
