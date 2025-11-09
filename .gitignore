@@ -1,8 +1,1 @@
-# Rust build output
 /target
-
-# Config files
-/deployment_dev
-
-# CLion
-/.idea
