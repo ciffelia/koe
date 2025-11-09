@@ -6,9 +6,11 @@
   "containerEnv": {
     // Persist bash history
     "PROMPT_COMMAND": "history -a",
-    "HISTFILE": "${containerWorkspaceFolder}/.devcontainer/persist/.bash_history"
+    "HISTFILE": "${containerWorkspaceFolder}/.devcontainer/persist/.bash_history",
+    // Persist Claude Code config
+    "CLAUDE_CONFIG_DIR": "${containerWorkspaceFolder}/.devcontainer/persist/.claude"
   },
-	"onCreateCommand": ".devcontainer/scripts/on-create.sh",
+	"onCreateCommand": "CONTAINER_WORKSPACE_FOLDER='${containerWorkspaceFolder}' .devcontainer/scripts/on-create.sh",
   "forwardPorts": [
     "redis:6379",
     "voicevox:50021"
