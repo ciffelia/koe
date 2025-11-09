@@ -1,4 +1,4 @@
-FROM rust:1.91.0-bullseye as builder
+FROM rust:1.91.0-bookworm as builder
 
 RUN apt-get update && \
     apt-get install -y libopus-dev && \
@@ -17,7 +17,7 @@ RUN --mount=type=cache,target=/root/.cargo/bin \
 
 ###
 
-FROM debian:bullseye-slim
+FROM debian:bookworm-slim
 
 RUN apt-get update && \
     apt-get install -y ca-certificates libopus0 && \
