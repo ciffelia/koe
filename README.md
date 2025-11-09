@@ -3,8 +3,8 @@
 </h1>
 
 <p align="center">
-  <a href="https://github.com/ciffelia/koe/actions?query=workflow%3ACI+branch%3Amain">
-    <img src="https://github.com/ciffelia/koe/workflows/CI/badge.svg?branch=main" alt="CI status">
+  <a href="https://github.com/ciffelia/koe/actions/workflows/ci.yml?query=branch%3Amain">
+    <img src="https://github.com/ciffelia/koe/actions/workflows/ci.yml/badge.svg" alt="CI status">
   </a>
   <a href="./LICENSE">
     <img src="https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat" alt="MIT License">
