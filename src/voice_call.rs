@@ -20,7 +20,7 @@ pub async fn join_deaf(
     let call = manager.get_or_insert(guild_id);
 
     // To join a voice channel in a deafened state, you need to use `Call::join` instead of `Songbird::join`.
-    // `Call::join` requires two stages of await, and the Mutex needs to be released before the second await.
+    // `Call::join` requires two stages of await, and the Mutex lock needs to be released before the second await.
     // For more details, see https://docs.rs/songbird/latest/songbird/struct.Call.html#method.join
     let stage_1 = {
         let mut handler = call.lock().await;
