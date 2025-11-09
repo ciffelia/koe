@@ -14,5 +14,12 @@
   "forwardPorts": [
     "redis:6379",
     "voicevox:50021"
-  ]
+  ],
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-azuretools.vscode-containers"
+      ]
+    }
+  }
 }
