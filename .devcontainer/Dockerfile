@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/devcontainers/rust:1-bookworm
+FROM mcr.microsoft.com/devcontainers/rust:2-bookworm
 
 RUN export DEBIAN_FRONTEND=noninteractive && \
     apt-get update && \
