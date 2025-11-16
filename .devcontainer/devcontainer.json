@@ -4,6 +4,7 @@
   "service": "app",
   "workspaceFolder": "/workspaces/koe",
   "containerEnv": {
+    "KOE_CONFIG": "/workspaces/koe/.devcontainer/config/koe.yaml",
     // Persist bash history
     "PROMPT_COMMAND": "history -a",
     "HISTFILE": "${containerWorkspaceFolder}/.devcontainer/persist/.bash_history",
