@@ -171,8 +171,8 @@ Koeを同じDiscordサーバーの複数のボイスチャンネルで同時に�
 
 1. Koeの設定ファイル`koe.yaml`をコピーして複数用意します。例えば`koe2.yaml`、`koe3.yaml`のようにします。
 2. 新しいBotを作成し、各設定ファイルの`discord.client_id`と`discord.bot_token`をそれぞれ異なるものに変更します。Botを作成する手順は、セットアップガイドの「Discord Botの登録」を参照してください。
-3. `docker-compose.yml`の`app`サービスをコピーして複数用意します。例えば`app2`、`app3`のようにします。それぞれ参照するKoeの設定ファイルを`koe1.yaml`、`koe2.yaml`に変更します。
-  - `redis`サービスと`voicevox`サービスは1つだけで問題ありません。
+3. `docker-compose.yml`の`app`サービスをコピーして複数用意します。例えば`app2`、`app3`のようにします。それぞれ参照するKoeの設定ファイルを`koe2.yaml`、`koe3.yaml`に変更します。
+   - `redis`サービスと`voicevox`サービスは1つだけで問題ありません。
 
 以上の手順を実行すると、`docker-compose.yaml`は次のようになるはずです。
 
