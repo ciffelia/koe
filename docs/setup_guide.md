@@ -164,3 +164,33 @@ Koeが使用している音声合成エンジンであるVOICEVOX ENGINEでは�
             - capabilities: ["gpu"]
               runtime: nvidia
 ```
+
+### 同じDiscordサーバーの複数のボイスチャンネルで同時に使いたい
+
+Koeを同じDiscordサーバーの複数のボイスチャンネルで同時に使用するには、Botを複数インスタンス起動する必要があります。手順は以下の通りです。
+
+1. Koeの設定ファイル`koe.yaml`をコピーして複数用意します。例えば`koe2.yaml`、`koe3.yaml`のようにします。
+2. 新しいBotを作成し、各設定ファイルの`discord.client_id`と`discord.bot_token`をそれぞれ異なるものに変更します。Botを作成する手順は、セットアップガイドの「Discord Botの登録」を参照してください。
+3. `docker-compose.yml`の`app`サービスをコピーして複数用意します。例えば`app2`、`app3`のようにします。それぞれ参照するKoeの設定ファイルを`koe1.yaml`、`koe2.yaml`に変更します。
+  - `redis`サービスと`voicevox`サービスは1つだけで問題ありません。
+
+以上の手順を実行すると、`docker-compose.yaml`は次のようになるはずです。
+
+```yaml
+services:
+  app:
+    image: ghcr.io/ciffelia/koe:...
+    # ...
+    volumes:
+      - "./config/koe.yaml:/etc/koe.yaml:ro"
+    # ...
+
+  app2:
+    image: ghcr.io/ciffelia/koe:...
+    # ...
+    volumes:
+      - "./config/koe2.yaml:/etc/koe.yaml:ro"
+    # ...
+
+  # ...
+```
