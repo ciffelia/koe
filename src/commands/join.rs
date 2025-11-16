@@ -60,7 +60,7 @@ pub async fn handle(ctx: &Context, cmd: &CommandInteraction) -> Result<()> {
     respond_text(
         ctx,
         cmd,
-        "接続しました。\n-# Koeは[VOICEVOX](<https://voicevox.hiroshiba.jp/>)を用いて音声合成を行っています。VOICEVOXや各音源の利用規約を遵守してご利用ください。",
+        "接続しました。\n-# Koeは[VOICEVOX](<https://voicevox.hiroshiba.jp/>)を用いて音声合成を行っています。VOICEVOXや各音声ライブラリの利用規約を遵守してご利用ください。",
     )
     .await?;
     Ok(())

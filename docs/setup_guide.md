@@ -28,7 +28,7 @@ Koeの実行にはDockerおよびDocker Composeが必要です。あらかじめ
 
 1. [Discord Developer Portal](https://discord.com/developers/applications)を開き、新しくアプリケーションを作成します。
 2. General Informationページに記載されているApplication ID (Client ID)を控えておきます。
-3. DescriptionにVOICEVOXや各音源のクレジット、使用上の注意事項などを入力します。ここで記入した内容はBotのプロフィールに表示されます。
+3. DescriptionにVOICEVOXや各音声ライブラリのクレジット、使用上の注意事項などを入力します。ここで記入した内容はBotのプロフィールに表示されます。
 4. Installationページに移動し、Install LinkをNoneに設定します。
 5. Botページに移動します。
 6. Reset TokenをクリックしてTokenを生成し、控えておきます。
