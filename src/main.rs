@@ -22,7 +22,7 @@ mod voice_state;
 
 #[tokio::main]
 async fn main() -> Result<()> {
-    ecs_logger::init();
+    env_logger::init();
 
     let config = config::load().await?;
     info!("Config loaded");
