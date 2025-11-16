@@ -2,8 +2,8 @@
   $schema: 'https://docs.renovatebot.com/renovate-schema.json',
   extends: [
     'config:recommended',
-    ':semanticCommits',
-    ':semanticCommitTypeAll(chore)',
+    "helpers:pinGitHubActionDigestsToSemver",
+    ":configMigration",
     ':prHourlyLimitNone',
     ':prConcurrentLimitNone',
     ':dependencyDashboardApproval',
