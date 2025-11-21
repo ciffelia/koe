@@ -9,6 +9,9 @@
   <a href="./LICENSE">
     <img src="https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat" alt="MIT License">
   </a>
+  <a href="https://deepwiki.com/ciffelia/koe">
+    <img src="https://deepwiki.com/badge.svg" alt="Ask DeepWiki">
+  </a>
 </p>
 
 Koeは、指定されたテキストチャンネルに送信されたメッセージをボイスチャンネルで読み上げるDiscord Botです。
