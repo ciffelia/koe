@@ -1,7 +1,7 @@
 [tools]
-actionlint = "1.7.8"
+actionlint = "1.7.9"
 bun = "1.3.2"
 ghalint = "1.5.3"
-pinact = "3.4.2"
+pinact = "3.4.4"
 shellcheck = "0.11.0"
 zizmor = "1.16.3"
