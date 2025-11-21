@@ -28,6 +28,7 @@ jobs:
 
       - name: Create release archive
         run: |
+          set -u
           cp -r ./deployment ./koe
           zip -r "koe_${VERSION}.zip" ./koe
           rm -rf ./koe
@@ -35,7 +36,9 @@ jobs:
           VERSION: ${{ inputs.version }}
 
       - name: Create GitHub Release
-        run: gh release create --draft --generate-notes --target "$GITHUB_SHA" "v$VERSION" "koe_${VERSION}.zip"
+        run: |
+          set -u
+          gh release create --draft --generate-notes --target "$GITHUB_SHA" "v$VERSION" "koe_${VERSION}.zip"
         env:
           GH_TOKEN: ${{ github.token }}
           VERSION: ${{ inputs.version }}
@@ -53,11 +56,14 @@ jobs:
       - uses: oven-sh/setup-bun@735343b667d3e6f658f44d0eca948eb6282f2b76 # v2.0.2
 
       - name: Make sure that the container image is built
-        run: skopeo inspect "docker://$CONTAINER_IMAGE:git-$GITHUB_SHA"
+        run: |
+          set -u
+          skopeo inspect "docker://$CONTAINER_IMAGE:git-$GITHUB_SHA"
 
       - name: Generate image tags
         id: generate-image-tags
         run: |
+          set -u
           tags="$(bun run ./generate-image-tags.js "$VERSION")"
           echo "$tags"
           echo "tags=$tags" >> "$GITHUB_OUTPUT"
@@ -74,6 +80,7 @@ jobs:
 
       - name: Push image tags
         run: |
+          set -u
           for tag in $TAGS
           do
             skopeo copy --all "docker://$CONTAINER_IMAGE:git-$GITHUB_SHA" "docker://$CONTAINER_IMAGE:$tag"
