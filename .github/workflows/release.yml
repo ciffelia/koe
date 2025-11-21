@@ -28,7 +28,7 @@ jobs:
 
       - name: Create release archive
         run: |
-          cp -r ../deployment ./koe
+          cp -r ./deployment ./koe
           zip -r "koe_${VERSION}.zip" ./koe
           rm -rf ./koe
         env:
@@ -43,6 +43,10 @@ jobs:
       packages: write
     timeout-minutes: 5
     steps:
+      - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
+        with:
+          persist-credentials: false
+
       - uses: oven-sh/setup-bun@735343b667d3e6f658f44d0eca948eb6282f2b76 # v2.0.2
 
       - name: Make sure that the container image is built
