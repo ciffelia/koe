@@ -36,6 +36,8 @@ jobs:
 
       - name: Create GitHub Release
         run: gh release create --draft --generate-notes --target "$GITHUB_SHA" "v$VERSION" "koe_${VERSION}.zip"
+        env:
+          GH_TOKEN: ${{ github.token }}
 
   create-image-tags:
     runs-on: ubuntu-24.04
