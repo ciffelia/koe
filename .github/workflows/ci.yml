@@ -64,32 +64,6 @@ jobs:
       - name: Check if Cargo.lock is up-to-date
         run: cargo tree --depth 1 --no-dedupe --locked
 
-  check-next-version:
-    if: github.ref == 'refs/heads/main'
-    runs-on: ubuntu-24.04
-    permissions:
-      contents: read
-    timeout-minutes: 5
-    steps:
-      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
-        with:
-          fetch-depth: 0
-          persist-credentials: false
-
-      - uses: actions/setup-node@2028fbc5c25fe9cf00d9f06a71cc4710d4507903 # v6.0.0
-        with:
-          node-version: 22
-          cache: yarn
-          cache-dependency-path: ./devtools/yarn.lock
-
-      - name: Setup devtools
-        run: yarn install --immutable
-        working-directory: ./devtools
-
-      - name: Check next version
-        run: yarn run print-next-version
-        working-directory: ./devtools
-
   docker-build-push:
     needs: [format, lint, lockfile]
     runs-on: ubuntu-24.04
