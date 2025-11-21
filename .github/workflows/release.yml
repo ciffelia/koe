@@ -1,18 +1,12 @@
-name: Create release
+name: Release
 
 on:
   workflow_dispatch:
     inputs:
-      bump:
-        description: Increment major, minor, or patch version
-        type: choice
+      version:
+        description: Version to release (e.g., 2.0.0)
+        type: string
         required: true
-        default: auto
-        options:
-          - auto
-          - major
-          - minor
-          - patch
 
 permissions: {}
 
@@ -23,56 +17,46 @@ concurrency: ${{ github.workflow }}
 
 jobs:
   create-release:
-    if: false
     runs-on: ubuntu-24.04
     permissions:
       contents: write
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          persist-credentials: false
+
+      - name: Create release archive
+        run: |
+          cp -r ../deployment ./koe
+          zip -r "koe_${VERSION}.zip" ./koe
+          rm -rf ./koe
+        env:
+          VERSION: ${{ inputs.version }}
+
+      - name: Create GitHub Release
+        run: gh release create --draft --generate-notes --target "$GITHUB_SHA" "v$VERSION" "koe_${VERSION}.zip"
+
+  create-image-tags:
+    runs-on: ubuntu-24.04
+    permissions:
       packages: write
     timeout-minutes: 5
     steps:
+      - uses: oven-sh/setup-bun@735343b667d3e6f658f44d0eca948eb6282f2b76 # v2.0.2
+
       - name: Make sure that the container image is built
-        run: skopeo inspect "docker://$CONTAINER_IMAGE:git-${{ github.sha }}"
+        run: skopeo inspect "docker://$CONTAINER_IMAGE:git-$GITHUB_SHA"
 
-      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
-        with:
-          fetch-depth: 0
-          persist-credentials: true
-
-      - uses: actions/setup-node@2028fbc5c25fe9cf00d9f06a71cc4710d4507903 # v6.0.0
-        with:
-          node-version: 22
-          cache: yarn
-          cache-dependency-path: ./devtools/yarn.lock
-
-      - name: Setup devtools
-        run: yarn install --immutable
-        working-directory: ./devtools
-
-      - name: Configure git author
+      - name: Generate image tags
+        id: generate-image-tags
         run: |
-          git config user.name 'github-actions'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-
-      - name: Create release
-        run: |
-          echo 'Creating ${{ inputs.bump }} release'
-
-          if [ '${{ inputs.bump }}' == 'auto' ]; then
-            yarn run create-release
-          else
-            yarn run create-release '${{ inputs.bump }}'
-          fi
-        working-directory: ./devtools
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Generate Docker tags
-        id: generate-docker-tags
-        run: |
-          tags="$(yarn run generate-docker-tags)"
+          tags="$(bun run ./generate-image-tags.js "$VERSION")"
           echo "$tags"
           echo "tags=$tags" >> "$GITHUB_OUTPUT"
         working-directory: ./devtools
+        env:
+          VERSION: ${{ inputs.version }}
 
       - name: Login to GitHub Container Registry
         uses: docker/login-action@5e57cd118135c172c3672efd75eb46360885c0ef # v3.6.0
@@ -81,11 +65,11 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Create Docker tags
+      - name: Push image tags
         run: |
           for tag in $TAGS
           do
-            skopeo copy --all "docker://$CONTAINER_IMAGE:git-${{ github.sha }}" "docker://$CONTAINER_IMAGE:$tag"
+            skopeo copy --all "docker://$CONTAINER_IMAGE:git-$GITHUB_SHA" "docker://$CONTAINER_IMAGE:$tag"
           done
         env:
-          TAGS: ${{ steps.generate-docker-tags.outputs.tags }}
+          TAGS: ${{ steps.generate-image-tags.outputs.tags }}

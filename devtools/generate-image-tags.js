@@ -1,8 +1,13 @@
-const semver = require('semver');
-const pkg = require('../package.json');
+import { parseArgs } from "util";
+import semver from 'semver';
 
 const main = () => {
-  const { version } = pkg;
+  const { positionals } = parseArgs({
+    args: Bun.argv,
+    strict: true,
+    allowPositionals: true,
+  });
+  const version = positionals[2];
 
   const parsed = semver.parse(version);
   if (parsed === null) {
