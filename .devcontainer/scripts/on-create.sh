@@ -1,8 +1,13 @@
 #!/usr/bin/env bash
 set -euxo pipefail
 
-# Workaround for Claude Code IDE integration
-ln -s "$CONTAINER_WORKSPACE_FOLDER/.devcontainer/persist/.claude" "$HOME/.claude"
+# Persist Codex data
+mkdir -p "${CONTAINER_WORKSPACE_FOLDER}/.devcontainer/persist/codex"
+ln -s "${CONTAINER_WORKSPACE_FOLDER}/.devcontainer/persist/codex" "$HOME/.codex"
+
+# Persist Claude Code data
+mkdir -p "${CONTAINER_WORKSPACE_FOLDER}/.devcontainer/persist/.claude"
+ln -s "${CONTAINER_WORKSPACE_FOLDER}/.devcontainer/persist/.claude" "$HOME/.claude"
 
 # Install rust toolchain
 rustup toolchain install
