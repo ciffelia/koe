@@ -1466,3 +1466,186 @@
   postPhonemeLength: 0.1
   pauseLength: null
   pauseLengthScale: 1
+
+- id: 113
+  name: あんこもん ノーマル
+  speaker_uuid: 3be49e15-34bb-48a0-9e2f-9b80c96e9905
+  style_id: 113
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+  pauseLength: null
+  pauseLengthScale: 1
+
+- id: 114
+  name: あんこもん つよつよ
+  speaker_uuid: 3be49e15-34bb-48a0-9e2f-9b80c96e9905
+  style_id: 114
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+  pauseLength: null
+  pauseLengthScale: 1
+
+- id: 115
+  name: あんこもん よわよわ
+  speaker_uuid: 3be49e15-34bb-48a0-9e2f-9b80c96e9905
+  style_id: 115
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+  pauseLength: null
+  pauseLengthScale: 1
+
+- id: 116
+  name: あんこもん けだるげ
+  speaker_uuid: 3be49e15-34bb-48a0-9e2f-9b80c96e9905
+  style_id: 116
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+  pauseLength: null
+  pauseLengthScale: 1
+
+- id: 117
+  name: あんこもん ささやき
+  speaker_uuid: 3be49e15-34bb-48a0-9e2f-9b80c96e9905
+  style_id: 117
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+  pauseLength: null
+  pauseLengthScale: 1
+
+- id: 118
+  name: 夜語トバリ ノーマル
+  speaker_uuid: d3be2066-205b-47f6-8818-1d93a9ca9cef
+  style_id: 118
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+  pauseLength: null
+  pauseLengthScale: 1
+
+- id: 119
+  name: 夜語トバリ 明るい
+  speaker_uuid: d3be2066-205b-47f6-8818-1d93a9ca9cef
+  style_id: 119
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+  pauseLength: null
+  pauseLengthScale: 1
+
+- id: 120
+  name: 夜語トバリ 哀しみ
+  speaker_uuid: d3be2066-205b-47f6-8818-1d93a9ca9cef
+  style_id: 120
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+  pauseLength: null
+  pauseLengthScale: 1
+
+- id: 121
+  name: 夜語トバリ 呆れ
+  speaker_uuid: d3be2066-205b-47f6-8818-1d93a9ca9cef
+  style_id: 121
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+  pauseLength: null
+  pauseLengthScale: 1
+
+- id: 122
+  name: 暁記ミタマ ノーマル
+  speaker_uuid: aca7de06-9ff9-49a3-9f08-9d3bc19689e5
+  style_id: 122
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+  pauseLength: null
+  pauseLengthScale: 1
+
+- id: 123
+  name: 暁記ミタマ 怒り
+  speaker_uuid: aca7de06-9ff9-49a3-9f08-9d3bc19689e5
+  style_id: 123
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+  pauseLength: null
+  pauseLengthScale: 1
+
+- id: 124
+  name: 暁記ミタマ 哀しみ
+  speaker_uuid: aca7de06-9ff9-49a3-9f08-9d3bc19689e5
+  style_id: 124
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+  pauseLength: null
+  pauseLengthScale: 1
+
+- id: 125
+  name: 暁記ミタマ ささやき
+  speaker_uuid: aca7de06-9ff9-49a3-9f08-9d3bc19689e5
+  style_id: 125
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+  pauseLength: null
+  pauseLengthScale: 1
+
+- id: 126
+  name: 里石ユカ つぼみ
+  speaker_uuid: cc7baa71-6c74-4399-803b-b60576176a08
+  style_id: 126
+  speedScale: 1.2
+  pitchScale: 0
+  intonationScale: 1
+  volumeScale: 1
+  prePhonemeLength: 0.1
+  postPhonemeLength: 0.1
+  pauseLength: null
+  pauseLengthScale: 1
+
