@@ -28,7 +28,7 @@ services:
       start_interval: 3s
 
   voicevox:
-    image: voicevox/voicevox_engine:cpu-0.25.0
+    image: voicevox/voicevox_engine:cpu-0.25.2
     restart: unless-stopped
     environment:
       VV_PRESET_FILE: /opt/voicevox_engine/presets.yaml
