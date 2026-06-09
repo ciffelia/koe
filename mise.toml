@@ -1,3 +1,6 @@
+[settings]
+minimum_release_age = "3d"
+
 [tools]
 actionlint = "1.7.12"
 bun = "1.3.14"
