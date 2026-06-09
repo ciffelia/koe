@@ -18,6 +18,3 @@ RUN curl -fsSL https://mise.run | sh && \
 
 # Install nightly rustfmt
 RUN rustup toolchain install nightly --profile minimal --component rustfmt
-
-# Install Claude Code
-RUN curl -fsSL https://claude.ai/install.sh | bash
