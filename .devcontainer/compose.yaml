@@ -6,11 +6,11 @@ services:
       - ..:/workspaces/koe:cached
 
   redis:
-    image: redis:8.4.0-alpine
+    image: redis:8.8.0-alpine
     command: redis-server --save 60 1
 
   voicevox:
-    image: voicevox/voicevox_engine:cpu-0.25.0
+    image: voicevox/voicevox_engine:cpu-0.25.2
     environment:
       VV_PRESET_FILE: /opt/voicevox_engine/presets.yaml
     volumes:
