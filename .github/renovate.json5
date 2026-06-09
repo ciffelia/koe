@@ -3,7 +3,6 @@
   extends: [
     "config:recommended",
     "helpers:pinGitHubActionDigestsToSemver",
-    ":configMigration",
     ":prHourlyLimitNone",
     ":prConcurrentLimitNone",
     ":dependencyDashboardApproval",
