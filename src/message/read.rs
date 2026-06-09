@@ -65,7 +65,6 @@ fn plain_content(ctx: &Context, msg: &Message) -> String {
         .clean_channel(true)
         .clean_role(true)
         .clean_user(true)
-        .show_discriminator(false)
         .clean_here(false)
         .clean_everyone(false);
 
