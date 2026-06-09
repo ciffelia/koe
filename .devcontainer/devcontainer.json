@@ -1,5 +1,4 @@
 {
-  "name": "koe",
   "dockerComposeFile": "compose.yaml",
   "service": "app",
   "workspaceFolder": "/workspaces/koe",
