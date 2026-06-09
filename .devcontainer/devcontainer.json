@@ -7,13 +7,13 @@
     // Persist bash history
     "PROMPT_COMMAND": "history -a",
     "HISTFILE": "${containerWorkspaceFolder}/.devcontainer/persist/.bash_history",
-		// Persist mise data
-		"MISE_DATA_DIR": "${containerWorkspaceFolder}/.devcontainer/persist/mise/data",
-		"MISE_CACHE_DIR": "${containerWorkspaceFolder}/.devcontainer/persist/mise/cache",
+    // Persist mise data
+    "MISE_DATA_DIR": "${containerWorkspaceFolder}/.devcontainer/persist/mise/data",
+    "MISE_CACHE_DIR": "${containerWorkspaceFolder}/.devcontainer/persist/mise/cache",
     // Persist Claude Code config
     "CLAUDE_CONFIG_DIR": "${containerWorkspaceFolder}/.devcontainer/persist/.claude"
   },
-	"onCreateCommand": "CONTAINER_WORKSPACE_FOLDER='${containerWorkspaceFolder}' .devcontainer/scripts/on-create.sh",
+  "onCreateCommand": "CONTAINER_WORKSPACE_FOLDER='${containerWorkspaceFolder}' .devcontainer/scripts/on-create.sh",
   "forwardPorts": [
     "redis:6379",
     "voicevox:50021"
