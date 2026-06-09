@@ -6,5 +6,6 @@
     ":prHourlyLimitNone",
     ":prConcurrentLimitNone",
     ":dependencyDashboardApproval",
+    ":disableVulnerabilityAlerts",
   ],
 }
