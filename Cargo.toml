@@ -27,7 +27,8 @@ serde = { version = "1.0.228", features = ["derive"] }
 serde_yaml = "0.9.34"
 
 # Utilities
-reqwest = { version = "0.13.4", features = ["json"] }
+reqwest = { version = "0.13.4", default-features = false, features = ["json", "rustls-no-provider"] }
+rustls = { version = "0.23.40", default-features = false, features = ["ring"] }
 dashmap = "6.2.1"
 aho-corasick = "1.1.4"
 regex = "1.12.3"

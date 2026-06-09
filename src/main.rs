@@ -22,6 +22,10 @@ mod voice_state;
 
 #[tokio::main]
 async fn main() -> Result<()> {
+    rustls::crypto::ring::default_provider()
+        .install_default()
+        .map_err(|_| anyhow::anyhow!("rustls crypto provider was already installed"))?;
+
     env_logger::init();
 
     let config = config::load().await?;
