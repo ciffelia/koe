@@ -1,11 +1,11 @@
 {
-  $schema: 'https://docs.renovatebot.com/renovate-schema.json',
+  $schema: "https://docs.renovatebot.com/renovate-schema.json",
   extends: [
-    'config:recommended',
+    "config:recommended",
     "helpers:pinGitHubActionDigestsToSemver",
     ":configMigration",
-    ':prHourlyLimitNone',
-    ':prConcurrentLimitNone',
-    ':dependencyDashboardApproval',
+    ":prHourlyLimitNone",
+    ":prConcurrentLimitNone",
+    ":dependencyDashboardApproval",
   ],
 }
